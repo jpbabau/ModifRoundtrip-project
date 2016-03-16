@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- contextQualifierLength=14 -->
+<!-- contextQualifierLength=14 -->
+<feature
+      id="org.eclipse.ocl.examples.unified.core"
+      label="%featureName"
+      version="3.4.3.v20150213-2254"
+      provider-name="%providerName"
+      plugin="org.eclipse.ocl.examples.unified">
+
+   <description url="http://www.eclipse.org/modeling/mdt/ocl">
+      %description
+   </description>
+
+   <copyright>
+      %copyright
+   </copyright>
+
+   <license url="%licenseURL">
+      %license
+   </license>
+
+   <url>
+      <update label="%updateSiteName" url="http://www.eclipse.org/modeling/updates"/>
+      <discovery label="%updateSiteName" url="http://www.eclipse.org/modeling/updates"/>
+   </url>
+
+   <plugin
+         id="org.eclipse.ocl.common"
+         download-size="0"
+         install-size="0"
+         version="1.2.0.v20140610-0641"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ocl.examples.common"
+         download-size="0"
+         install-size="0"
+         version="3.3.0.v20140712-2020"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ocl.examples.domain"
+         download-size="0"
+         install-size="0"
+         version="3.4.4.v20150125-1621"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ocl.examples.library"
+         download-size="0"
+         install-size="0"
+         version="3.4.4.v20150125-1621"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ocl.examples.pivot"
+         download-size="0"
+         install-size="0"
+         version="3.4.4.v20150213-2254"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ocl.examples.xtext.base"
+         download-size="0"
+         install-size="0"
+         version="3.4.2.v20140725-1916"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ocl.examples.xtext.completeocl"
+         download-size="0"
+         install-size="0"
+         version="3.4.2.v20140819-1601"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ocl.examples.xtext.essentialocl"
+         download-size="0"
+         install-size="0"
+         version="3.4.2.v20140819-1601"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ocl.examples.xtext.markup"
+         download-size="0"
+         install-size="0"
+         version="3.4.0.v20140712-2020"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ocl.examples.xtext.oclinecore"
+         download-size="0"
+         install-size="0"
+         version="3.4.2.v20140819-1601"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ocl.examples.xtext.oclstdlib"
+         download-size="0"
+         install-size="0"
+         version="3.4.2.v20140819-1601"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ocl.examples.unified"
+         download-size="0"
+         install-size="0"
+         version="3.4.4.v20150125-1253"
+         unpack="false"/>
+
+</feature>

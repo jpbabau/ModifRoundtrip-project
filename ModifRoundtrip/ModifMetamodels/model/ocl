@@ -1,0 +1,11 @@
+invariant
+		differentName('Names must be uniques.'): self.classModification->forAll(x : ClassModification, y : ClassModification | x <> y implies x.newName <> y.oldName);
+		
+invariant
+		differentAttributeName('Attribute names but be unique'): self.featureModification->forAll(x : StructuralFeatureModification, y : StructuralFeatureModification | x <> y implies x.newName <> y.oldName);
+		
+		
+		
+invariant notRemoveUUID: self.oldName='UUID' and (self.remove=false);
+
+invariant dontRenameUUID: if self.oldName = 'UUID' then self.newName = 'UUID' else false endif;

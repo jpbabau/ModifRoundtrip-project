@@ -1,0 +1,1 @@
+eclipseMR contains the needed plug-ins to execute ModifRoundtrip projects
