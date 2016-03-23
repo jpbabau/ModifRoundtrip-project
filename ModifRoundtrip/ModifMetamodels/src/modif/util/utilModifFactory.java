@@ -43,6 +43,69 @@ public class utilModifFactory {
 		return noModifModel;
 	}
 	
+	public Modifications generateNoModif(EPackage epackage) {
+
+		Modifications noModifModel = myFactory.createModifications();
+
+		noModifModel.setRemoveAllEStringAttributes(false);
+		noModifModel.setRemoveAllOperations(false);
+		noModifModel.setRemoveAllOpposites(false);
+		noModifModel.setAddAllOpposite(false);
+		noModifModel.setRemoveAllAnnotations(false);
+		noModifModel.setAddRootClass(null);
+		noModifModel.setAddNameClass(null);
+
+		noModifModel.setRootPackageModification(generateNoModifPack (epackage));
+
+		return noModifModel;
+	}
+
+	private PackageModification generateNoModifPack(EPackage epackage) {
+
+		PackageModification noModifModel = myFactory.createPackageModification();
+		String newName;
+		String newPrefix;
+		String newUri;
+		newName = epackage.getName()+"2";
+		newPrefix = epackage.getNsPrefix()+"2";
+		newUri = epackage.getNsURI();		
+		if(epackage.getNsURI().toLowerCase().contains((epackage.getName()+".ecore").toLowerCase())){
+			newUri = epackage.getNsURI().toLowerCase().replace(epackage.getName()+".ecore", epackage.getName()+"2.ecore");
+
+		}
+
+		noModifModel.setOldName(epackage.getName());
+		noModifModel.setNewName(newName);
+		noModifModel.setRemoveEAnnotations(false);
+		noModifModel.setRemove(false);		
+
+		noModifModel.setOldPrefixName(epackage.getNsPrefix());
+		noModifModel.setNewPrefixName(newPrefix);
+		noModifModel.setOldURIName(epackage.getNsURI());
+		noModifModel.setNewURIName(newUri);
+		noModifModel.setHide(false);
+
+		for (EPackage subPackage : epackage.getESubpackages()) {
+			noModifModel.getPackageModification().add(generateNoModifPack(subPackage));
+		}
+		for (EClassifier subClassifier : epackage.getEClassifiers()) {
+			if (subClassifier instanceof EClass) {
+				noModifModel.getClassModification().add(generateNoModifClass((EClass) subClassifier));
+			}
+			if (subClassifier instanceof EEnum) {
+				//noModifModel.getEnumModification().add(generateNoModifEnum((EEnum) subClassifier));
+			} else if (subClassifier instanceof EDataType) {
+				noModifModel.getDataTypeModification().add(generateNoModifDataType((EDataType) subClassifier));
+			}
+		}
+		for (EAnnotation eannot : epackage.getEAnnotations()) {
+			noModifModel.getAnnotationModification().add(generateNoModifAnnotation(eannot));
+		}
+
+		return noModifModel;
+	}
+
+	
 	private PackageModification generateNoModifPack(EPackage epackage, boolean withKey) {
 		
 		PackageModification noModifModel = myFactory.createPackageModification();
@@ -119,7 +182,6 @@ public class utilModifFactory {
 			}
 		}
 		for (EAnnotation eannot : eclass.getEAnnotations()) {
-			//System.out.println(eannot);
 			noModifModel.getAnnotationModification().add(generateNoModifAnnotation(eannot));
 		}
 		
@@ -271,6 +333,17 @@ public class utilModifFactory {
 		noModifModel.setRemove(false);
 
 		return noModifModel;
+	}
+	
+	/**
+	 * 
+	 * @param eraseAllModel
+	 */
+	public Modifications generateEraseAll(EPackage epackage) {
+		Modifications eraseAllModel = generateNoModif(epackage);
+		generateEraseAllPackage(eraseAllModel.getRootPackageModification());
+		eraseAllModel.getRootPackageModification().setRemove(false);
+		return eraseAllModel;
 	}
 	
 	public Modifications generateEraseAll(EPackage epackage, boolean withKey) {

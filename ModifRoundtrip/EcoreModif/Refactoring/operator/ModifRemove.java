@@ -40,13 +40,11 @@ public class ModifRemove implements ModifElementVisitor {
 		// for each  subpackage	
 		for (EpackageModif subPackage : pm.getPackageModif()) {
 			//  visitor call for each subpackage
-			System.out.println(subPackage.getNewName());
 			((EpackageModifImpl) subPackage).accept(this);
 		}
 		// for each subclass	
 		for (EclassModif subClass: pm.getClassModif()) {		
 			//  visitor call for each subclass
-			System.out.println(subClass.getNewLongName());
 			((EclassModifImpl)subClass).accept(this);			
 		}
 		// for each subDataType	

@@ -131,6 +131,13 @@ public class modifService {
 		this.toolOutputModelFile = processedMF;
 		this.graphFile = graphF;
 	}
+	
+	/**
+	 * @param originalEF input Ecore
+	 */
+	public void setFiles(String originalEF){
+		this.originalEcoreFile = originalEF;
+	}
 
 	/**
 	 * 
@@ -198,7 +205,6 @@ public class modifService {
 	 * @param UMLPackage with UUID
 	 */
 	public String addUUIDValues(EPackage rootPackage){
-		System.out.println(" (( rootPackage "+rootPackage.getName());
 		String keyModelFile = null;
 		try {
 			File f = new File(originalModelFile);
@@ -242,26 +248,18 @@ public class modifService {
 			}
 			else{
 				// Loading model, changing the metamodel, adding UUIDs, and saving :
-				
-				System.out.println(originalModelFile + " // " + originalEcoreFile);
 				EObject tempModel = UtilEMF.loadModel(originalModelFile, originalEcoreFile);
 				
-				System.out.println( " ** rootKeyPackage  "+rootKeyPackage.getName());
 				EObject tempModel2 = UtilEMF.changeMetamodel(tempModel, rootKeyPackage);
 				
 				UtilEMF.saveModel(tempModel2, "C:/ModifProject/Test_MultiEcore/model/myModel.key.xmi");
 				
-				/*EObject modelRoot = UtilEMF.addUUIDValues(UtilEMF.changeMetamodel(null, tempModel, rootKeyPackage), rootKeyPackage, rootPackage);
-				
-				System.out.println(originalModelFile + "  -  "+rootKeyPackage.getName() + " - - "+rootPackage.getName());
-				
+				/*EObject modelRoot = UtilEMF.addUUIDValues(UtilEMF.changeMetamodel(null, tempModel, rootKeyPackage), rootKeyPackage, rootPackage);				
 				String name = rootPackage.getName();
 				int n = name.length(); 
 				char c = name.charAt(n-1); 
 				
-				keyModelFile = originalModelFile.replace(name.substring(0, n-1),name);
-				System.out.println("  keyModelFile  "+keyModelFile);
-				
+				keyModelFile = originalModelFile.replace(name.substring(0, n-1),name);				
 				UtilEMF.saveModel(modelRoot, keyModelFile);*/
 			}
 		} catch (IOException e) {
@@ -443,7 +441,6 @@ public class modifService {
 			buildSuperTypesMap(theRootEcoreModif);
 			//simple migration
 		}else{
-			System.out.println(" originalEcoreFile : "+ originalEcoreFile + "modifFile : " + modifFile);
 			EPackage domainMM = UtilEMF.loadMetamodel(metamodel);
 			boolean addKeys = true;
 			// verifying if keys were already added
@@ -470,13 +467,8 @@ public class modifService {
 				String modelName = strArray[strArray.length-2];
 				this.keyEcoreFile = (originalEcoreFile.replace(modelName, modelName+"K"));
 			}
-			//System.out.println("setModifIO ");
 			modifIO.setModifIO(keyEcoreFile, modifFile);
-			//System.out.println(" ***** modifIO");
-
 			theRootEcoreModif = modifIO.getEcoreModif();
-			//System.out.println("   *****  theRootEcoreModif "+ theRootEcoreModif);
-
 			theRootEcoreModifCopy = theRootEcoreModif;
 			buildSuperTypesMap(theRootEcoreModif);
 			buildHideList(theRootEcoreModif);
@@ -508,6 +500,148 @@ public class modifService {
 		//buildHideList(theRootEcoreModif);
 		//buildFlattenList(theRootEcoreModif);
 		return theRootEcoreModif;
+	}
+	
+	/**
+	 * Modif specification creation
+	 * @param type
+	 * @param extendedPackage
+	 * @param extendedName
+	 * @return
+	 */
+	public RootEcoreModif createModifSpecification(int type, EPackage extendedPackage, String extendedName) {
+		String modifNoModif;
+		String modifEraseAll;
+		File noModif;
+		File eraseAll;
+		EObject modifSpecification = null;
+
+		File f = new File(this.originalEcoreFile);
+		int idx = f.getName().lastIndexOf('.');
+
+		File modifFolder = new File(f.getParent().replace("metamodel", "modif"));
+
+		// modif folder does not exist
+		if(!modifFolder.exists()){
+			//modif folder creation
+			File dir = new File(f.getParent()+"/../modif");
+			dir.mkdir();
+			System.out.println("The modif folder has been created");
+		}
+
+		switch (type) {
+		case 1:
+			modifNoModif = f.getParent().replace("metamodel", "modif")+"/NoModif"+extendedPackage.getName()+".modif";
+			noModif = new File(modifNoModif);
+			modifFile = modifNoModif;
+			// There is a NoModif specification
+			if(noModif.exists()){
+				System.out.println("[rewriting] The "+ noModif.getName() +" specification will be rewrited");
+			}
+			modifSpecification = createModif(noModif, modifNoModif, type, extendedName);
+			break;
+
+		case 2:
+			modifEraseAll = f.getParent().replace("metamodel", "modif")+"/eraseAll"+extendedPackage.getName()+".modif";
+			eraseAll = new File(modifEraseAll);
+			modifFile = modifEraseAll;
+			// There is a eraseAll specification
+			if(eraseAll.exists()){
+				System.out.println("[rewriting] The "+ eraseAll.getName() +" specification will be rewrited");
+			}
+			modifSpecification = createModif(eraseAll, modifEraseAll, type, extendedName);
+			break;
+		}
+
+		modifIO.setModifIO(extendedName, modifFile);
+		theRootEcoreModif = modifIO.getEcoreModif();
+		return theRootEcoreModif;
+	}	
+	
+	/**
+	 * 
+	 * @param modifFile
+	 * @param modifFileName
+	 * @param type
+	 * @return
+	 */
+	public EObject createModif(File modifFile, String modifFileName, int type, String extendedPackage) {
+		ModifIO aModifIO = new ModifIO();
+		utilModifFactory anUtilModifFactory = new utilModifFactory();
+		EPackage theRootEcore = aModifIO.LoadEcore(extendedPackage);
+		Modifications theRootModif;
+		if (type==2) {
+			theRootModif = anUtilModifFactory.generateEraseAll(theRootEcore);
+		} else {
+			theRootModif = anUtilModifFactory.generateNoModif(theRootEcore);
+		}
+		try {
+			OutputStream ff = new FileOutputStream(modifFile) ;
+			// Saving the modif specification
+			ModifIO.SaveModif(theRootModif, modifFileName);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return (EObject)theRootModif;
+	}
+	
+	/**
+	 * Create for a specific metamodel
+	 */
+	public EObject createModif(File modifFile, String modifFileName, int type) {
+		ModifIO aModifIO = new ModifIO();
+		utilModifFactory anUtilModifFactory = new utilModifFactory();
+		EPackage theRootEcore = aModifIO.LoadEcore(this.originalEcoreFile);
+		Modifications theRootModif;
+		if (type==2) {
+			theRootModif = anUtilModifFactory.generateEraseAll(theRootEcore);
+		} else {
+			theRootModif = anUtilModifFactory.generateNoModif(theRootEcore);
+		}
+		try {
+			OutputStream ff = new FileOutputStream(modifFile) ;
+			ModifIO.SaveModif(theRootModif, modifFileName);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return (EObject)theRootModif;
+	}
+
+	
+	/**
+	 * Select a modif specification
+	 * @param packageName
+	 * @param modifFile
+	 * @return
+	 */
+	public RootEcoreModif loadModifSpecification(String packageName, String modifFile) {
+		modifIO.setModifIO(packageName, modifFile);
+		theRootEcoreModif = modifIO.getEcoreModif();
+		return theRootEcoreModif;
+	}
+	
+	/**
+	 * Refactoring of metamodels
+	 */
+	public ArrayList<EPackage> Refactoring(RootEcoreModif theRootEcoreModif) {
+		ArrayList<EPackage> refactoredPackages = new ArrayList<EPackage>();
+		System.out.println("Refactoring");				
+		if (theRootEcoreModif != null) {
+			if (Refactoring.isOk(theRootEcoreModif)) {
+				// launch refactoring operators
+				Refactoring.operate(theRootEcoreModif);
+			}
+		}
+
+		refactoredPackages.add(theRootEcoreModif.getRoot().getEcore());
+
+		if(!theRootEcoreModif.getRoot().getEcore().getESubpackages().isEmpty()) {
+			for(EPackage subp : theRootEcoreModif.getRoot().getEcore().getESubpackages()) {
+				refactoredPackages.add(subp);
+			}
+		}
+
+		return refactoredPackages;
 	}
 
 	/**
@@ -823,7 +957,6 @@ public class modifService {
 		MigrationRoundtrip migrt = null;
 		try {
 			migration = (Migration) UtilEMF.loadModel(migrationFile, MigrationPackage.eINSTANCE);
-			System.out.println("migrationFile  "+migrationFile);
 			Map<String, Map<String, ArrayList<ArrayList<String>>>>  hideMap = new HashMap<String, Map<String, ArrayList<ArrayList<String>>>>();
 			hideMap = createHideMap(migration);
 			migrt = new MigrationRoundtrip(migration);
@@ -1093,7 +1226,6 @@ public class modifService {
 	public boolean hasHide(Migration migration){
 		boolean hide = false;
 		for(Instance i : migration.getInstances()){
-			//System.out.println(" i// "+ i.getUUID());
 			if(!i.getDerived().isEmpty()){
 				hide = true;
 				break;

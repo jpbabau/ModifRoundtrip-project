@@ -60,7 +60,6 @@ public class ModifIO {
 		resourceSet.getPackageRegistry()
 		.put( EcorePackage.eNS_URI, EcorePackage.eINSTANCE);
 		
-		System.out.println("inputFile   "+inputFile);
 		// uri of ecore file
 		File file = new File(inputFile);
 		URI uri = file.isFile() ?
@@ -104,8 +103,6 @@ public class ModifIO {
 	/** ecore and modif files reading to build theRootEcoreModif
 	 */
 	public void setModifIO(String inputEcoreFile, String modifFile) {
-		System.out.println("inputEcoreFile  "+inputEcoreFile);
-		System.out.println("modifFile  "+modifFile);
 		
 		Modifications theRootModif  = LoadModif(modifFile);
 		EPackage theRootEcore       = LoadEcore(inputEcoreFile);
@@ -153,7 +150,6 @@ public class ModifIO {
 		resourceSet.addLoadOption(XtextResource.OPTION_RESOLVE_ALL, Boolean.TRUE);
 		
 		File file = new File(outputFile);
-		System.out.println("file  "+file);
 
 		URI uri = URI.createFileURI(file.getAbsolutePath());
 				  
@@ -161,7 +157,6 @@ public class ModifIO {
 		resourceSet.getPackageRegistry().put( ModifPackage.eNS_URI, ModifPackage.eINSTANCE);
 		
 		XtextResource resource = (XtextResource) resourceSet.getResource(uri, true);
-		System.out.println("resource  "+resource);
 		
 		resource.getContents().clear();
 		
