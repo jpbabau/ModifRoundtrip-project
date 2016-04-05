@@ -21,7 +21,6 @@ public class Minimize {
 	}
 	
 	private void go(PackageModification modif) {
-		
 		for (PackageModification subPackage : modif.getPackageModification()) {
 			go(subPackage);
 		}
@@ -39,7 +38,8 @@ public class Minimize {
 	private void go(ClassModification subClass) {
 		
 		if (subClass.isRemove() || subClass.isHide()) {
-			subClass.setNewName(null);
+			subClass.setNewName("");
+			//subClass.setNewName(null);
 			
 			if (subClass.isRemove() ) {
 				subClass.getFeatureModification().clear();
@@ -63,7 +63,8 @@ public class Minimize {
 		} else {
 			
 			if (subClass.getOldName().equals(subClass.getNewName())) {
-				subClass.setNewName(null);
+				//subClass.setNewName(null);
+				subClass.setNewName("");
 			}
 			for (StructuralFeatureModification fm : subClass.getFeatureModification()) {
 				if (fm instanceof AttributeModification) {
@@ -80,14 +81,16 @@ public class Minimize {
 	private void go(AttributeModification am) {
 		
 		if (am.isRemove()) {
-			am.setNewName(null);
+			//am.setNewName(null);
+			am.setNewName("");
 			am.getAnnotationModification().clear();
 			am.setRemoveEAnnotations(false);	
 			am.setChangeType(false);
 			
 		} else {
 			if (am.getOldName().equals(am.getNewName())) {
-				am.setNewName(null);
+				//am.setNewName(null);
+				am.setNewName("");
 			}
 		}
 	}
@@ -95,7 +98,8 @@ public class Minimize {
 	private void go(ReferenceModification fm) {
 		
 		if (fm.isRemove()) {
-			fm.setNewName(null);
+			//fm.setNewName(null);
+			fm.setNewName("");
 			fm.getAnnotationModification().clear();
 			fm.setRemoveEAnnotations(false);	
 			fm.setChangeContainement(false);
@@ -105,7 +109,8 @@ public class Minimize {
 			
 		} else {
 			if (fm.getOldName().equals(fm.getNewName())) {
-				fm.setNewName(null);
+				//fm.setNewName(null);
+				fm.setNewName("");
 			}
 		}
 	}
@@ -113,14 +118,16 @@ public class Minimize {
 	private void go(DataTypeModification edm) {
 		
 		if (edm.isRemove()) {
-			edm.setNewName(null);
+			//edm.setNewName(null);
+			edm.setNewName("");
 			edm.setOldInstanceTypeName(null);
 			edm.setNewInstanceTypeName(null);
 			edm.getAnnotationModification().clear();
 			edm.setRemoveEAnnotations(false);
 		} else {
 			if (edm.getOldName().equals(edm.getNewName())) {
-				edm.setNewName(null);
+				//edm.setNewName(null);
+				edm.setNewName("");
 			}
 		}
 	}
@@ -128,7 +135,8 @@ public class Minimize {
 	private void go(EnumModification enm) {
 		
 		if (enm.isRemove()) {
-			enm.setNewName(null);
+			//enm.setNewName(null);
+			enm.setNewName("");
 			enm.setOldInstanceTypeName(null);
 			enm.setNewInstanceTypeName(null);
 			enm.getEnumLiteralModification().clear();
@@ -137,7 +145,8 @@ public class Minimize {
 			enm.setReify(false);	
 		} else {
 			if (enm.getOldName().equals(enm.getNewName())) {
-				enm.setNewName(null);
+				//enm.setNewName(null);
+				enm.setNewName("");
 			}
 		}
 	}
