@@ -28,6 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Scanner;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
@@ -43,7 +44,9 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
+import org.eclipse.uml2.uml.UMLPackage;
 
 import dependency.DependencyPackage;
 import dependency.Graph;
@@ -99,6 +102,8 @@ public class modifService {
 	MigrationSpecificationGenerator migrationSpecificationGenerator;
 
 	protected boolean isUML;
+	
+	EPackage sourceMetamodelUUID;
 
 	protected Migration migration;
 
@@ -607,6 +612,14 @@ public class modifService {
 		return (EObject)theRootModif;
 	}
 
+	/**
+	 * Create the modif file
+	 */
+	public void CreateModifUML() {
+		// fabric call from files
+		modifIO.setModifIO(this.originalEcoreFile, modifFile);
+		theRootEcoreModif = modifIO.getEcoreModif();
+	}
 	
 	/**
 	 * Select a modif specification
@@ -643,11 +656,104 @@ public class modifService {
 
 		return refactoredPackages;
 	}
+	
+	/**
+	 * 
+	 * @param projectSourceFolder
+	 * @param modifSpecificationType
+	 * @param isUML
+	 */
+	public void Refactoring(String projectSourceFolder, int modifSpecificationType, boolean isUML) {
+		if(isUML) {
+			try {
+				RefactoringUML(projectSourceFolder, modifSpecificationType, false);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}else {
+			// TODO Refactoring
+		}
+	}
+	
+	/**
+	 * 
+	 * @param projectSourceFolder
+	 * @param modifSpecificationType
+	 * @throws IOException
+	 */
+	public void RefactoringUML(String projectSourceFolder, int modifSpecificationType, boolean coevolution) throws IOException {
+		// Copie d'UML avec Ecore local
+		EPackage sourceMetamodel = EcoreUtil.copy(UMLPackage.eINSTANCE);
+
+		// Copie d'UML avec Ecore local sans operations, sans annotations et sans ref opposites. 
+		EPackage sourceMetamodelSimple = UtilEMF.removeOperations(UtilEMF.removeAnnotations(UtilEMF.removeOppositeFeature(sourceMetamodel)));
+		UtilEMF.saveMetamodel(sourceMetamodelSimple, projectSourceFolder+"/metamodel/UML.ecore", true);
+
+		if(coevolution) {
+			// Copie d'UML avec Ecore local sans operations, sans annotations et sans ref opposites. 
+			// Avec UUID
+			sourceMetamodelUUID = UtilEMF.addUUIDAttribute(sourceMetamodelSimple);
+			// Deletion of duplicate UUID attribute
+			EPackage sourceMetamodelUUIDunique = UtilEMF.removeDuplicateUUIDAttribute(sourceMetamodelUUID);
+			UtilEMF.saveMetamodel(sourceMetamodelUUIDunique, projectSourceFolder+"/metamodel/UMLUUID.ecore", true);
+		}
+
+		// Create a by default modif specification
+		String modifFileName = null;
+		if(modifSpecificationType == 1) {
+			if(coevolution) {
+				modifFileName = projectSourceFolder+"/modif/NoModifUMLUUID.modif";
+				generateModifFile(projectSourceFolder+"/metamodel/UMLUUID.ecore", modifSpecificationType, modifFileName, true);
+			}else {
+				modifFileName = projectSourceFolder+"/modif/NoModifUML.modif";
+				generateModifFile(projectSourceFolder+"/metamodel/UML.ecore", modifSpecificationType, modifFileName, false);
+			}
+		}else if(modifSpecificationType == 2){
+			if(coevolution) {
+				modifFileName = projectSourceFolder+"/modif/EraseAllUMLUUID.modif";
+				generateModifFile(projectSourceFolder+"/metamodel/UMLUUID.ecore", modifSpecificationType, modifFileName, true);
+			}else {
+				modifFileName = projectSourceFolder+"/modif/EraseAllUML.modif";
+				generateModifFile(projectSourceFolder+"/metamodel/UML.ecore", modifSpecificationType, modifFileName, false);
+			}
+		}
+
+		// Refactoring
+
+		if(coevolution) {
+			setFiles(projectSourceFolder, projectSourceFolder+"/metamodel/UMLUUID.ecore", modifFileName, null, null);
+
+		}else {
+			setFiles(projectSourceFolder, projectSourceFolder+"/metamodel/UML.ecore", modifFileName, null, null);
+		}
+
+		Scanner keyboard = new Scanner(System.in);
+		System.out.println("Modify your modif file in order to indicate de operators to be applied");
+		System.out.println("Did you finish? y/n");
+		String finish = keyboard.nextLine();
+
+		String refactoredMetamodelPath = null;
+		if(finish.equals("y")) {
+			CreateModifUML();
+			// Siplifying the modif specification
+			Minimize(modifFileName);
+			refactoredMetamodelPath = Refactor();
+		}else {
+			// TODO finish != y
+		}
+		keyboard.close();
+		
+		if(coevolution) {
+			// Delete UUIDs from the refactored metamodel
+			EPackage refactoredMetamodel = UtilEMF.removeUUIDAttribute(refactoredMetamodelPath);
+			UtilEMF.saveMetamodel(refactoredMetamodel, refactoredMetamodelPath.replace("UUID",""));
+		}
+	}
 
 	/**
 	 * Transforms the input ecore according to the operators of the modif file
 	 */
-	public void Refactor() {
+	public String Refactor() {
 		if (theRootEcoreModif != null) {
 			if (Refactoring.isOk(theRootEcoreModif)) {
 				// launch refactoring operators
@@ -655,12 +761,12 @@ public class modifService {
 				// save the resulting ecore model		
 				try {
 					// Save refactored metamodel with UUID
-					//modifIO.save(projectFile+"\\"+theRootEcoreModif.getRoot().getNewName()+".ecore");	
-					modifIO.save("C:/ModifProject/Test_Vehicles/test/ComponentType5.ecore");	
-					refactoredEcoreFile = projectFile+"\\"+theRootEcoreModif.getRoot().getNewName()+".ecore";
+					modifIO.save(projectFile+"\\metamodel\\"+theRootEcoreModif.getRoot().getNewName()+".ecore");		
+					refactoredEcoreFile = projectFile+"\\metamodel\\"+theRootEcoreModif.getRoot().getNewName()+".ecore";
 				} catch (IOException e) { e.printStackTrace(); }				
 			}else System.out.println("\nChange the Modif model");	
 		}
+		return refactoredEcoreFile;
 	}
 
 	/**
