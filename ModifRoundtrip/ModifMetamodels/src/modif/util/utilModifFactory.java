@@ -93,7 +93,7 @@ public class utilModifFactory {
 				noModifModel.getClassModification().add(generateNoModifClass((EClass) subClassifier));
 			}
 			if (subClassifier instanceof EEnum) {
-				//noModifModel.getEnumModification().add(generateNoModifEnum((EEnum) subClassifier));
+				noModifModel.getEnumModification().add(generateNoModifEnum((EEnum) subClassifier));
 			} else if (subClassifier instanceof EDataType) {
 				noModifModel.getDataTypeModification().add(generateNoModifDataType((EDataType) subClassifier));
 			}
@@ -105,33 +105,32 @@ public class utilModifFactory {
 		return noModifModel;
 	}
 
-	
-	private PackageModification generateNoModifPack(EPackage epackage, boolean withKey) {
-		
+	private PackageModification generateNoModifPack(EPackage epackage, boolean withUUID) {
 		PackageModification noModifModel = myFactory.createPackageModification();
 		String newName;
 		String newPrefix;
-		String newUri;
-		
-		if(!withKey){
+		String newUri = null;
+
+		if(!withUUID){
 			newName = epackage.getName()+'2';
-			newPrefix = epackage.getNsPrefix()+'2';
-			newUri = epackage.getNsURI()+'2';
+			newPrefix = epackage.getNsPrefix()+'2';			
+			newUri = epackage.getNsURI().toLowerCase().replace(epackage.getName()+".ecore", epackage.getName()+"2.ecore");
+			
 		}else{
-			newName = epackage.getName()+"2K";
-			newPrefix = epackage.getNsPrefix()+"2K";
-			//newUri = epackage.getNsURI()+"2K";
-			newUri = epackage.getNsURI();		
-			if(epackage.getNsURI().toLowerCase().contains((epackage.getName()+"K.ecore").toLowerCase())){
-				newUri = epackage.getNsURI().toLowerCase().replace(epackage.getName()+"k.ecore", epackage.getName()+"2K.ecore");
+			newName = epackage.getName()+"2UUID";
+			newPrefix = epackage.getNsPrefix()+"2UUID";
+			newUri = epackage.getNsURI();	
+			
+			if(epackage.getNsURI().toLowerCase().contains((epackage.getName()+"UUID.ecore").toLowerCase())){
+				newUri = epackage.getNsURI().toLowerCase().replace((epackage.getName()+"UUID.ecore").toLowerCase(), epackage.getName()+"2UUID.ecore");
 			}
 		}
-		
+
 		noModifModel.setOldName(epackage.getName());
 		noModifModel.setNewName(newName);
 		noModifModel.setRemoveEAnnotations(false);
 		noModifModel.setRemove(false);		
-		
+
 		noModifModel.setOldPrefixName(epackage.getNsPrefix());
 		noModifModel.setNewPrefixName(newPrefix);
 		noModifModel.setOldURIName(epackage.getNsURI());
@@ -139,22 +138,22 @@ public class utilModifFactory {
 		noModifModel.setHide(false);
 
 		for (EPackage subPackage : epackage.getESubpackages()) {
-			noModifModel.getPackageModification().add(generateNoModifPack(subPackage, withKey));
+			noModifModel.getPackageModification().add(generateNoModifPack(subPackage, withUUID));
 		}
 		for (EClassifier subClassifier : epackage.getEClassifiers()) {
 			if (subClassifier instanceof EClass) {
 				noModifModel.getClassModification().add(generateNoModifClass((EClass) subClassifier));
 			}
 			if (subClassifier instanceof EEnum) {
-				//noModifModel.getEnumModification().add(generateNoModifEnum((EEnum) subClassifier));
+				noModifModel.getEnumModification().add(generateNoModifEnum((EEnum) subClassifier));
 			} else if (subClassifier instanceof EDataType) {
-					noModifModel.getDataTypeModification().add(generateNoModifDataType((EDataType) subClassifier));
-				}
+				noModifModel.getDataTypeModification().add(generateNoModifDataType((EDataType) subClassifier));
+			}
 		}
 		for (EAnnotation eannot : epackage.getEAnnotations()) {
 			noModifModel.getAnnotationModification().add(generateNoModifAnnotation(eannot));
 		}
-		
+
 		return noModifModel;
 	}
 	
@@ -271,8 +270,8 @@ public class utilModifFactory {
 		noModifModel.setRemove(false);
 		noModifModel.setRemoveEAnnotations(false);
 		
-		noModifModel.setOldInstanceTypeName(enm.getInstanceTypeName());
-		noModifModel.setNewInstanceTypeName(enm.getInstanceTypeName());
+		// noModifModel.setOldInstanceTypeName(enm.getInstanceTypeName());
+		// noModifModel.setNewInstanceTypeName(enm.getInstanceTypeName());
 		noModifModel.setReify(false);
 		
 		for (EEnumLiteral enml : enm.getELiterals()) {
@@ -469,8 +468,6 @@ public class utilModifFactory {
 
 		for (AnnotationModification eAn2 : am.getAnnotationModification()) {
 			generateEraseAllAnnotation(eAn2);
-			
-			
 			
 		}
 		
