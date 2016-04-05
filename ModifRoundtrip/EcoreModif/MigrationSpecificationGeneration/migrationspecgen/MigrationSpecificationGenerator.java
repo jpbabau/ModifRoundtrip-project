@@ -110,6 +110,34 @@ public class MigrationSpecificationGenerator {
 		}
 	}
 
+	/**
+	 * 
+	 * @param rootECM
+	 * @param sourceFolderGen
+	 * @param inputModel
+	 * @param outputModel
+	 */
+	public MigrationSpecificationGenerator(RootEcoreModif rootECM, String sourceFolderGen, String inputModel, String outputModel){
+		System.out.println(" MigrationSpecificationGenerator  ");
+		// object rootEcoreModif creation 
+		this.rootEcoreModif = rootECM;
+		this.inputModelFile = inputModel;
+		this.outputModelFile = outputModel;
+		// directory for source code generation
+		this.sourceFolder = sourceFolderGen;	
+		Migration migrationspecification = this.createMigrationSpecification();
+		EPackage rootPackage = UtilEMF.loadMetamodel(URI.createURI(rootEcoreModif.getRoot().getModif().getOldURIName()).path());
+		rootObject = UtilEMF.loadModel(inputModelFile, rootPackage);
+		Migration migrationresult = this.migrationRoot(migrationspecification, rootObject);
+		this.migrationFile = sourceFolder+"/migration/"+rootEcoreModif.getModifications().getRootPackageModification().getOldName()+"to"+rootEcoreModif.getModifications().getRootPackageModification().getNewName()+".migration.xmi";
+		try {
+			UtilEMF.saveModel((EObject)migrationresult,this.migrationFile);
+			System.out.println("[saving] file "+this.migrationFile+": ok");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public MigrationSpecificationGenerator(){}
 
 	public String getMigrationFileName(){

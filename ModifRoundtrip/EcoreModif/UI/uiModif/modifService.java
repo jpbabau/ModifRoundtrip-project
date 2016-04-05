@@ -106,6 +106,8 @@ public class modifService {
 	EPackage sourceMetamodelUUID;
 
 	protected Migration migration;
+	protected MigrationRoundtrip migrt;
+	EObject migratedModel;
 
 	protected Map<String, Map<String, Map<String, String>>> renamemap;
 	protected Map<String, Map<String, ArrayList<ArrayList<String>>>> hidemap;
@@ -858,6 +860,49 @@ public class modifService {
 		//EPackage refactoredMetamodel = UtilEMF.loadMetamodel(refactoredEcoreFile);
 		return UtilEMF.loadMetamodel(refactoredEcoreFile);
 	}
+	
+	/**
+	 * @throws IOException 
+	 * 
+	 */
+	public void Coevolution(String projectSourceFolder, int modifSpecificationType, boolean isUML,
+			String sourceModelPath, boolean withMigrationCodeGeneration) throws IOException {
+		if(isUML) {
+			// Refactoring
+			RefactoringUML(projectSourceFolder, modifSpecificationType, true);
+
+			String sourceModelUUIDPath = sourceModelPath.replace("."+theRootEcoreModif.getRoot().getModif().getOldName(), ".umluuid.xmi");
+			String sourceMetamodelUUIDPath = theRootEcoreModif.getRoot().getModif().getOldURIName();
+			String migratedModelPath = sourceModelPath.replace("."+theRootEcoreModif.getRoot().getModif().getOldName(), "_migrated."+theRootEcoreModif.getRoot().getModif().getNewName().toLowerCase()+".xmi");
+			String refactoredMetamodelPath = theRootEcoreModif.getRoot().getModif().getNewURIName();
+
+			// Adding UUIDs to the source model
+			EObject modelUUID = UtilEMF.changeMetamodel(UtilEMF.loadModel(sourceModelPath, UMLPackage.eINSTANCE), projectSourceFolder+"/metamodel/UMLUUID.ecore");
+			EObject modelUUID2 = UtilEMF.addUUIDValues(modelUUID);
+			UtilEMF.saveModel(modelUUID2, sourceModelUUIDPath);			
+
+			// Migration Specification generation
+			String migrationSpecificationName = GenerateMigrationSpecification(sourceModelUUIDPath, sourceMetamodelUUIDPath, migratedModelPath, refactoredMetamodelPath);
+
+			if(withMigrationCodeGeneration) {
+				
+			}else { 
+				// Migration execution
+				migrt = Migration();
+				migrt.serializeMigratedModel();
+				System.out.println("[saving] migrated file : ok.");	
+				
+				// Deletion of UUIDs
+				EObject migratedModel = UtilEMF.changeMetamodel(UtilEMF.removeUUIDValues(getMigratedModel()), UMLPackage.eINSTANCE);	
+				
+				// Serialisation of the migrated model
+				UtilEMF.saveModel(migratedModel, projectSourceFolder+"/model/test2.uml");
+			}
+		} else {
+			// TODO Refactoring if not UML
+		}
+	}
+
 
 
 	/**
@@ -932,6 +977,24 @@ public class modifService {
 		System.out.println(" migratedModelFile "+ migratedModelFile);
 		return migratedModelFile;
 	}
+	
+	/**
+	 * 
+	 * @param sourceModelPath
+	 * @param sourceMetamodelPath
+	 * @param targetModelPath
+	 * @param targetMetamodelPath
+	 * @return
+	 * @throws IOException
+	 */
+	public String GenerateMigrationSpecification(String sourceModelPath, String sourceMetamodelPath,
+			String targetModelPath, String targetMetamodelPath) throws IOException{	
+		migratedModelFile = targetModelPath;
+		migrationSpecificationGenerator = new MigrationSpecificationGenerator(theRootEcoreModif, projectFile, sourceModelPath, migratedModelFile);
+		migrationFile = migrationSpecificationGenerator.getMigrationFileName();
+		System.out.println("[saving] migration specification : ok.");
+		return migratedModelFile;
+	}
 
 	/**
 	 * 
@@ -939,6 +1002,14 @@ public class modifService {
 	 */
 	public String getMigratedModelFileName(){
 		return migratedModelFile;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public EObject getMigratedModel() {
+		return migratedModel;
 	}
 
 	/**
@@ -1049,6 +1120,18 @@ public class modifService {
 			migrt.serializeMigratedModel();
 			System.out.println("[saving] migrated file : ok.");	
 		} catch (IOException e) { e.printStackTrace(); }
+		return migrt;
+	}
+	
+	/**
+	 * Onward migration of a given input model to a new model
+	 * conforming with the targeted tool's definition domain
+	 */
+	public MigrationRoundtrip Migration() {
+		MigrationRoundtrip migrt = null;
+			Migration migration = (Migration) UtilEMF.loadModel(this.migrationFile, MigrationPackage.eINSTANCE);
+			migrt = new MigrationRoundtrip(migration);
+			migratedModel = migrt.onwardMigration();
 		return migrt;
 	}
 

@@ -153,6 +153,9 @@ public class Main {
 				break;
 				// coevolution
 			case 2:
+				// Define the path of the source model
+				String sourceModelPath = "C:/ModifRoundtrip/Test_UML/model/model.uml";
+				theModifService.Coevolution(projectSourceFolder, modifSpecificationType, isUML, sourceModelPath, withMigrationCodeGeneration);
 				break;
 				// reuse
 			case 3:
