@@ -885,7 +885,63 @@ public class modifService {
 			String migrationSpecificationName = GenerateMigrationSpecification(sourceModelUUIDPath, sourceMetamodelUUIDPath, migratedModelPath, refactoredMetamodelPath);
 
 			if(withMigrationCodeGeneration) {
-				
+				// Migration code generation
+				File fout = new File(projectSourceFolder+"/srcgen/code/MigrationCode.java");
+				FileOutputStream fos = new FileOutputStream(fout);
+			 
+				BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
+			 			
+				bw.write("package code;\n");
+				bw.newLine();
+				bw.write("import migration.Migration;");
+				bw.newLine();
+				bw.write("import migration.MigrationPackage;");
+				bw.newLine();
+				bw.write("import migration.tools.MigrationRoundtrip;");
+				bw.newLine();
+				bw.write("import migration.tools.UtilEMF;\n");
+				bw.newLine();
+				bw.write("import org.eclipse.emf.ecore.EObject;");
+				bw.newLine();
+				bw.write("import org.eclipse.emf.ecore.EPackage;\n");
+				bw.newLine();
+				bw.write("public class MigrationCode {");
+				bw.newLine();
+				bw.write("    public static void main(String[] args) {");
+				bw.newLine();
+				bw.write("      try {");
+				bw.newLine();
+				bw.write("          MigrationRoundtrip migrt = null;");
+				bw.newLine();
+				bw.write("          String migrationFile = "+migrationSpecificationName+";");
+				bw.newLine();
+				bw.write("          Migration migration = (Migration) UtilEMF.loadModel(migrationFile, MigrationPackage.eINSTANCE);");
+				bw.newLine();
+				bw.write("          migrt = new MigrationRoundtrip(migration);");
+				bw.newLine();
+				bw.write("          EObject migratedModel = migrt.onwardMigration();");
+				bw.newLine();
+				bw.write("          migrt.serializeMigratedModel();");
+				bw.newLine();
+				bw.write("      }");
+				bw.newLine();
+				bw.write("      catch (Exception ioe) {");
+				bw.newLine();
+				bw.write("          ioe.printStackTrace();");
+				bw.newLine();
+				bw.write("          return;");
+				bw.newLine();
+				bw.write("      }");
+				bw.newLine();
+				bw.newLine();
+				bw.write("    }");
+				bw.newLine();
+				bw.newLine();
+				bw.write("}");
+				bw.newLine();
+			 
+				bw.close();
+
 			}else { 
 				// Migration execution
 				migrt = Migration();
