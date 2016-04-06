@@ -102,7 +102,7 @@ public class modifService {
 	MigrationSpecificationGenerator migrationSpecificationGenerator;
 
 	protected boolean isUML;
-	
+
 	EPackage sourceMetamodelUUID;
 
 	protected Migration migration;
@@ -138,7 +138,7 @@ public class modifService {
 		this.toolOutputModelFile = processedMF;
 		this.graphFile = graphF;
 	}
-	
+
 	/**
 	 * @param originalEF input Ecore
 	 */
@@ -234,7 +234,7 @@ public class modifService {
 		}
 		return keyModelFile;
 	}
-	
+
 	/**
 	 * 
 	 * @param rootKeyPackage
@@ -256,16 +256,16 @@ public class modifService {
 			else{
 				// Loading model, changing the metamodel, adding UUIDs, and saving :
 				EObject tempModel = UtilEMF.loadModel(originalModelFile, originalEcoreFile);
-				
+
 				EObject tempModel2 = UtilEMF.changeMetamodel(tempModel, rootKeyPackage);
-				
+
 				UtilEMF.saveModel(tempModel2, "C:/ModifProject/Test_MultiEcore/model/myModel.key.xmi");
-				
+
 				/*EObject modelRoot = UtilEMF.addUUIDValues(UtilEMF.changeMetamodel(null, tempModel, rootKeyPackage), rootKeyPackage, rootPackage);				
 				String name = rootPackage.getName();
 				int n = name.length(); 
 				char c = name.charAt(n-1); 
-				
+
 				keyModelFile = originalModelFile.replace(name.substring(0, n-1),name);				
 				UtilEMF.saveModel(modelRoot, keyModelFile);*/
 			}
@@ -508,7 +508,7 @@ public class modifService {
 		//buildFlattenList(theRootEcoreModif);
 		return theRootEcoreModif;
 	}
-	
+
 	/**
 	 * Modif specification creation
 	 * @param type
@@ -564,7 +564,7 @@ public class modifService {
 		theRootEcoreModif = modifIO.getEcoreModif();
 		return theRootEcoreModif;
 	}	
-	
+
 	/**
 	 * 
 	 * @param modifFile
@@ -591,7 +591,7 @@ public class modifService {
 		}
 		return (EObject)theRootModif;
 	}
-	
+
 	/**
 	 * Create for a specific metamodel
 	 */
@@ -622,7 +622,7 @@ public class modifService {
 		modifIO.setModifIO(this.originalEcoreFile, modifFile);
 		theRootEcoreModif = modifIO.getEcoreModif();
 	}
-	
+
 	/**
 	 * Select a modif specification
 	 * @param packageName
@@ -634,7 +634,7 @@ public class modifService {
 		theRootEcoreModif = modifIO.getEcoreModif();
 		return theRootEcoreModif;
 	}
-	
+
 	/**
 	 * Refactoring of metamodels
 	 */
@@ -658,17 +658,26 @@ public class modifService {
 
 		return refactoredPackages;
 	}
-	
+
 	/**
 	 * 
 	 * @param projectSourceFolder
 	 * @param modifSpecificationType
 	 * @param isUML
 	 */
-	public void Refactoring(String projectSourceFolder, int modifSpecificationType, boolean isUML) {
+	public void Refactoring(String projectSourceFolder, int modifSpecificationType, boolean isUML, boolean GUI, String existingMetamodel) {
 		if(isUML) {
 			try {
-				RefactoringUML(projectSourceFolder, modifSpecificationType, false);
+				String refactoredMetamodelPath = RefactoringUML(projectSourceFolder, modifSpecificationType, false, GUI);
+				// Compares the refactored metamodel with an existing metamodel
+				if(existingMetamodel != "") {
+					boolean check = Compare(refactoredMetamodelPath, existingMetamodel);
+					if(check == true){
+						System.out.println("Refactored Metamodel and target metamodel matches");
+					}else{
+						System.out.println("Refactored Metamodel and target metamodel does not match");
+					}
+				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -676,14 +685,16 @@ public class modifService {
 			// TODO Refactoring
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @param projectSourceFolder
 	 * @param modifSpecificationType
 	 * @throws IOException
 	 */
-	public void RefactoringUML(String projectSourceFolder, int modifSpecificationType, boolean coevolution) throws IOException {
+	public String RefactoringUML(String projectSourceFolder, int modifSpecificationType, boolean coevolution, boolean GUI) throws IOException {
+		String refactoredMetamodelPath = null;
+
 		// Copie d'UML avec Ecore local
 		EPackage sourceMetamodel = EcoreUtil.copy(UMLPackage.eINSTANCE);
 
@@ -729,27 +740,31 @@ public class modifService {
 			setFiles(projectSourceFolder, projectSourceFolder+"/metamodel/UML.ecore", modifFileName, null, null);
 		}
 
-		Scanner keyboard = new Scanner(System.in);
-		System.out.println("Modify your modif file in order to indicate de operators to be applied");
-		System.out.println("Did you finish? y/n");
-		String finish = keyboard.nextLine();
+		if(!GUI) {
+			Scanner keyboard = new Scanner(System.in);
+			System.out.println("Modify your modif file in order to indicate de operators to be applied");
+			System.out.println("Did you finish? y/n");
+			String finish = keyboard.nextLine();
 
-		String refactoredMetamodelPath = null;
-		if(finish.equals("y")) {
-			CreateModifUML();
-			// Siplifying the modif specification
-			Minimize(modifFileName);
-			refactoredMetamodelPath = Refactor();
+			if(finish.equals("y")) {
+				CreateModifUML();
+				// Siplifying the modif specification
+				Minimize(modifFileName);
+				refactoredMetamodelPath = Refactor();
+			}else {
+				// TODO finish != y
+			}
+			keyboard.close();
+
+			if(coevolution) {
+				// Delete UUIDs from the refactored metamodel
+				EPackage refactoredMetamodel = UtilEMF.removeUUIDAttribute(refactoredMetamodelPath);
+				UtilEMF.saveMetamodel(refactoredMetamodel, refactoredMetamodelPath.replace("UUID",""));
+			}
 		}else {
-			// TODO finish != y
+			CreateModifUML();
 		}
-		keyboard.close();
-		
-		if(coevolution) {
-			// Delete UUIDs from the refactored metamodel
-			EPackage refactoredMetamodel = UtilEMF.removeUUIDAttribute(refactoredMetamodelPath);
-			UtilEMF.saveMetamodel(refactoredMetamodel, refactoredMetamodelPath.replace("UUID",""));
-		}
+		return refactoredMetamodelPath;
 	}
 
 	/**
@@ -860,99 +875,33 @@ public class modifService {
 		//EPackage refactoredMetamodel = UtilEMF.loadMetamodel(refactoredEcoreFile);
 		return UtilEMF.loadMetamodel(refactoredEcoreFile);
 	}
-	
+
 	/**
 	 * @throws IOException 
 	 * 
 	 */
 	public void Coevolution(String projectSourceFolder, int modifSpecificationType, boolean isUML,
-			String sourceModelPath, boolean withMigrationCodeGeneration) throws IOException {
+			String sourceModelPath, boolean withMigrationCodeGeneration, boolean GUI, String existingMetamodel) throws IOException {
 		if(isUML) {
 			// Refactoring
-			RefactoringUML(projectSourceFolder, modifSpecificationType, true);
+			String refactoredMetamodelPath = RefactoringUML(projectSourceFolder, modifSpecificationType, true, GUI);
 
-			String sourceModelUUIDPath = sourceModelPath.replace("."+theRootEcoreModif.getRoot().getModif().getOldName(), ".umluuid.xmi");
-			String sourceMetamodelUUIDPath = theRootEcoreModif.getRoot().getModif().getOldURIName();
-			String migratedModelPath = sourceModelPath.replace("."+theRootEcoreModif.getRoot().getModif().getOldName(), "_migrated."+theRootEcoreModif.getRoot().getModif().getNewName().toLowerCase()+".xmi");
-			String refactoredMetamodelPath = theRootEcoreModif.getRoot().getModif().getNewURIName();
+			// Deletion of UUIDs from the refactored metamodel
+			EPackage refactoredMetamodelNoUUID = UtilEMF.removeUUIDAttribute(refactoredMetamodelPath);
+			String refactoredMetamodelNoUUIDPath = refactoredMetamodelPath.replace("UUID", "");
+			UtilEMF.saveMetamodel(refactoredMetamodelNoUUID, refactoredMetamodelNoUUIDPath);
 
-			// Adding UUIDs to the source model
-			EObject modelUUID = UtilEMF.changeMetamodel(UtilEMF.loadModel(sourceModelPath, UMLPackage.eINSTANCE), projectSourceFolder+"/metamodel/UMLUUID.ecore");
-			EObject modelUUID2 = UtilEMF.addUUIDValues(modelUUID);
-			UtilEMF.saveModel(modelUUID2, sourceModelUUIDPath);			
-
-			// Migration Specification generation
-			String migrationSpecificationName = GenerateMigrationSpecification(sourceModelUUIDPath, sourceMetamodelUUIDPath, migratedModelPath, refactoredMetamodelPath);
-
-			if(withMigrationCodeGeneration) {
-				// Migration code generation
-				File fout = new File(projectSourceFolder+"/srcgen/code/MigrationCode.java");
-				FileOutputStream fos = new FileOutputStream(fout);
-			 
-				BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
-			 			
-				bw.write("package code;\n");
-				bw.newLine();
-				bw.write("import migration.Migration;");
-				bw.newLine();
-				bw.write("import migration.MigrationPackage;");
-				bw.newLine();
-				bw.write("import migration.tools.MigrationRoundtrip;");
-				bw.newLine();
-				bw.write("import migration.tools.UtilEMF;\n");
-				bw.newLine();
-				bw.write("import org.eclipse.emf.ecore.EObject;");
-				bw.newLine();
-				bw.write("import org.eclipse.emf.ecore.EPackage;\n");
-				bw.newLine();
-				bw.write("public class MigrationCode {");
-				bw.newLine();
-				bw.write("    public static void main(String[] args) {");
-				bw.newLine();
-				bw.write("      try {");
-				bw.newLine();
-				bw.write("          MigrationRoundtrip migrt = null;");
-				bw.newLine();
-				bw.write("          String migrationFile = "+migrationSpecificationName+";");
-				bw.newLine();
-				bw.write("          Migration migration = (Migration) UtilEMF.loadModel(migrationFile, MigrationPackage.eINSTANCE);");
-				bw.newLine();
-				bw.write("          migrt = new MigrationRoundtrip(migration);");
-				bw.newLine();
-				bw.write("          EObject migratedModel = migrt.onwardMigration();");
-				bw.newLine();
-				bw.write("          migrt.serializeMigratedModel();");
-				bw.newLine();
-				bw.write("      }");
-				bw.newLine();
-				bw.write("      catch (Exception ioe) {");
-				bw.newLine();
-				bw.write("          ioe.printStackTrace();");
-				bw.newLine();
-				bw.write("          return;");
-				bw.newLine();
-				bw.write("      }");
-				bw.newLine();
-				bw.newLine();
-				bw.write("    }");
-				bw.newLine();
-				bw.newLine();
-				bw.write("}");
-				bw.newLine();
-			 
-				bw.close();
-
-			}else { 
-				// Migration execution
-				migrt = Migration();
-				migrt.serializeMigratedModel();
-				System.out.println("[saving] migrated file : ok.");	
-				
-				// Deletion of UUIDs
-				EObject migratedModel = UtilEMF.changeMetamodel(UtilEMF.removeUUIDValues(getMigratedModel()), UMLPackage.eINSTANCE);	
-				
-				// Serialisation of the migrated model
-				UtilEMF.saveModel(migratedModel, projectSourceFolder+"/model/test2.uml");
+			// Comparison between refactored metamodel and target metamodel
+			if(existingMetamodel != "") {
+				boolean check = Compare(refactoredMetamodelNoUUIDPath, existingMetamodel);
+				if(check == true){
+					System.out.println("Refactored Metamodel and target metamodel matches");
+					Migrating(projectSourceFolder, sourceModelPath, refactoredMetamodelPath, withMigrationCodeGeneration);
+				}else{
+					System.out.println("Refactored Metamodel and target metamodel does not match");
+				}
+			}else {
+				Migrating(projectSourceFolder, sourceModelPath, refactoredMetamodelPath, withMigrationCodeGeneration);
 			}
 		} else {
 			// TODO Refactoring if not UML
@@ -970,6 +919,26 @@ public class modifService {
 		boolean check;
 		URI uri1 = URI.createFileURI(refactoredEcoreFile);
 		URI uri2 = URI.createFileURI(toolEcoreFile);
+		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("ecore", new XMIResourceFactoryImpl());
+		ResourceSet resourceSet1 = new ResourceSetImpl();
+		ResourceSet resourceSet2 = new ResourceSetImpl();
+		Resource resource = resourceSet1.getResource(uri1, true); 
+		Resource resource2 = resourceSet2.getResource(uri2, true);
+		IComparisonScope scope = new DefaultComparisonScope(resource, resource2, null);
+		org.eclipse.emf.compare.Comparison comparison = EMFCompare.builder().build().compare(scope);
+		List<org.eclipse.emf.compare.Diff> differences = ((org.eclipse.emf.compare.Comparison) comparison).getDifferences();
+		if(differences.size() == 0){ check = true; }
+		else{ check = false; }
+		return check;
+	}
+
+	/**
+	 *  Checks if a metamodel fully matches with an existing metamodel
+	 */
+	public boolean Compare(String metamodelPath, String existingMetamodelPath) {
+		boolean check;
+		URI uri1 = URI.createFileURI(metamodelPath);
+		URI uri2 = URI.createFileURI(existingMetamodelPath);
 		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("ecore", new XMIResourceFactoryImpl());
 		ResourceSet resourceSet1 = new ResourceSetImpl();
 		ResourceSet resourceSet2 = new ResourceSetImpl();
@@ -1029,11 +998,11 @@ public class modifService {
 		newReferenceName = migrationSpecificationGenerator.getNewReferencesName();
 		referencesToClassMap = migrationSpecificationGenerator.getReferencesToClassMap();
 		System.out.println("[saving] migration specification : ok.");
-		
+
 		System.out.println(" migratedModelFile "+ migratedModelFile);
 		return migratedModelFile;
 	}
-	
+
 	/**
 	 * 
 	 * @param sourceModelPath
@@ -1052,6 +1021,109 @@ public class modifService {
 		return migratedModelFile;
 	}
 
+	/** Migration code generation or automatic migration
+	 * @throws IOException 
+	 * 
+	 */
+	public void Migrating(String projectSourceFolder, String sourceModelPath, String refactoredMetamodelPath, boolean withMigrationCodeGeneration) throws IOException {
+		String sourceModelUUIDPath = sourceModelPath.replace("."+theRootEcoreModif.getRoot().getModif().getOldName(), ".umluuid.xmi");
+		String sourceMetamodelUUIDPath = theRootEcoreModif.getRoot().getModif().getOldURIName();
+		String migratedModelPath = sourceModelPath.replace("."+theRootEcoreModif.getRoot().getModif().getOldName(), "_migrated."+theRootEcoreModif.getRoot().getModif().getNewName().toLowerCase()+".xmi");
+		//String refactoredMetamodelPath = theRootEcoreModif.getRoot().getModif().getNewURIName();
+
+		// Adding UUIDs to the source model
+		EObject modelUUID = UtilEMF.changeMetamodel(UtilEMF.loadModel(sourceModelPath, UMLPackage.eINSTANCE), projectSourceFolder+"/metamodel/UMLUUID.ecore");
+		EObject modelUUID2 = UtilEMF.addUUIDValues(modelUUID);
+		UtilEMF.saveModel(modelUUID2, sourceModelUUIDPath);			
+
+		// Migration Specification generation
+		String migrationSpecificationName = GenerateMigrationSpecification(sourceModelUUIDPath, sourceMetamodelUUIDPath, migratedModelPath, refactoredMetamodelPath);
+
+		if(withMigrationCodeGeneration) {
+			// Migration code generation
+			File fout = new File(projectSourceFolder+"/srcgen/code/MigrationCode.java");
+			FileOutputStream fos = new FileOutputStream(fout);
+
+			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
+
+			bw.write("package code;\n");
+			bw.newLine();
+			bw.write("import migration.Migration;");
+			bw.newLine();
+			bw.write("import migration.MigrationPackage;");
+			bw.newLine();
+			bw.write("import migration.tools.MigrationRoundtrip;");
+			bw.newLine();
+			bw.write("import migration.tools.UtilEMF;\n");
+			bw.newLine();
+			bw.write("import org.eclipse.emf.ecore.EObject;");
+			bw.newLine();
+			bw.write("import org.eclipse.emf.ecore.EPackage;\n");
+			bw.newLine();
+			bw.write("import org.eclipse.uml2.uml.UMLPackage; \n");
+			bw.newLine();
+			bw.write("public class MigrationCode {");
+			bw.newLine();
+			bw.write("    public static void main(String[] args) {");
+			bw.newLine();
+			bw.write("      try {");
+			bw.newLine();
+			bw.write("          MigrationRoundtrip migrt = null;");
+			bw.newLine();
+			bw.write("          String migrationFile = "+migrationSpecificationName+";");
+			bw.newLine();
+			bw.write("          Migration migration = (Migration) UtilEMF.loadModel(migrationFile, MigrationPackage.eINSTANCE);");
+			bw.newLine();
+			bw.write("          // Migration execution");
+			bw.newLine();
+			bw.write("          migrt = new MigrationRoundtrip(migration);");
+			bw.newLine();
+			bw.write("          // Migrated model with UUID \n");
+			bw.newLine();
+			bw.write("          EObject migratedModelUUID = migrt.onwardMigration();");
+			bw.newLine();
+			bw.write("			// Serialisation of the migrated model with UUID \n");
+			bw.write("          migrt.serializeMigratedModel();");
+			bw.newLine();
+			bw.write("          // Deletion of UUIDs");
+			bw.newLine();
+			bw.write("			EObject migratedModel = UtilEMF.changeMetamodel(UtilEMF.removeUUIDValues("+getMigratedModel()+"), UMLPackage.eINSTANCE); \n");
+			bw.newLine();
+			bw.write("         // Serialisation of the migrated model \n");
+			bw.newLine();
+			//	bw.write(" 			UtilEMF.saveModel(migratedModel, projectSourceFolder+"/model/test2.uml");
+			bw.write("      } catch (Exception ioe) {");
+			bw.newLine();
+			bw.write("          ioe.printStackTrace();");
+			bw.newLine();
+			bw.write("          return;");
+			bw.newLine();
+			bw.write("      }");
+			bw.newLine();
+			bw.newLine();
+			bw.write("    }");
+			bw.newLine();
+			bw.newLine();
+			bw.write("}");
+			bw.newLine();
+
+			bw.close();
+
+		}else { 
+			// Migration execution
+			migrt = Migration();
+			migrt.serializeMigratedModel();
+			System.out.println("[saving] migrated file : ok.");	
+
+			// Deletion of UUIDs
+			EObject migratedModel = UtilEMF.changeMetamodel(UtilEMF.removeUUIDValues(getMigratedModel()), UMLPackage.eINSTANCE);	
+
+			// Serialisation of the migrated model
+			UtilEMF.saveModel(migratedModel, projectSourceFolder+"/model/test2.uml");
+		}
+	}
+
+
 	/**
 	 * 
 	 * @return
@@ -1059,7 +1131,7 @@ public class modifService {
 	public String getMigratedModelFileName(){
 		return migratedModelFile;
 	}
-	
+
 	/**
 	 * 
 	 * @return
@@ -1178,16 +1250,16 @@ public class modifService {
 		} catch (IOException e) { e.printStackTrace(); }
 		return migrt;
 	}
-	
+
 	/**
 	 * Onward migration of a given input model to a new model
 	 * conforming with the targeted tool's definition domain
 	 */
 	public MigrationRoundtrip Migration() {
 		MigrationRoundtrip migrt = null;
-			Migration migration = (Migration) UtilEMF.loadModel(this.migrationFile, MigrationPackage.eINSTANCE);
-			migrt = new MigrationRoundtrip(migration);
-			migratedModel = migrt.onwardMigration();
+		Migration migration = (Migration) UtilEMF.loadModel(this.migrationFile, MigrationPackage.eINSTANCE);
+		migrt = new MigrationRoundtrip(migration);
+		migratedModel = migrt.onwardMigration();
 		return migrt;
 	}
 

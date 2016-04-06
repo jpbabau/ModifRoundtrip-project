@@ -87,6 +87,10 @@ public class Main {
 
 			// Define the path of the project source folder
 			String projectSourceFolder = "C:/ModifRoundtrip-project/ModifRoundtrip/Test_UML";
+			
+			//Define the path of an existing metamodel, if you want to compare the refactored metamodel with the existing one
+			//String targetMetamodel = "C:/ModifRoundtrip/Test_UML/metamodel/existinguml2.ecore";
+			String targetMetamodel = "C:/ModifRoundtrip-project/ModifRoundtrip/Test_UML/metamodel/existingUML.ecore";
 
 			// Define the type of the by defautl modif specification: 
 			// modifSpecificationType = 1 -> noModif, modifSpecificationType = 2 -> eraseAll
@@ -105,7 +109,7 @@ public class Main {
 			// refactoring
 			case 1: 
 				if(isUML) {
-					theModifService.Refactoring(projectSourceFolder, modifSpecificationType, isUML);
+					theModifService.Refactoring(projectSourceFolder, modifSpecificationType, isUML, GUI, targetMetamodel);
 				}else {
 					if(multiEcore) {
 						// Define the path of the metamodel to be refactored
@@ -155,7 +159,7 @@ public class Main {
 			case 2:
 				// Define the path of the source model
 				String sourceModelPath = "C:/ModifRoundtrip/Test_UML/model/model.uml";
-				theModifService.Coevolution(projectSourceFolder, modifSpecificationType, isUML, sourceModelPath, withMigrationCodeGeneration);
+				theModifService.Coevolution(projectSourceFolder, modifSpecificationType, isUML, sourceModelPath, withMigrationCodeGeneration, GUI, targetMetamodel);
 				break;
 				// reuse
 			case 3:
