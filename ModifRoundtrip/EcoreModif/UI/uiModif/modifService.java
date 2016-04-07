@@ -33,6 +33,9 @@ import java.util.Scanner;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.compare.Diff;
+import org.eclipse.emf.compare.DifferenceKind;
+import org.eclipse.emf.compare.DifferenceSource;
 import org.eclipse.emf.compare.EMFCompare;
 import org.eclipse.emf.compare.scope.DefaultComparisonScope;
 import org.eclipse.emf.compare.scope.IComparisonScope;
@@ -671,11 +674,26 @@ public class modifService {
 				String refactoredMetamodelPath = RefactoringUML(projectSourceFolder, modifSpecificationType, false, GUI);
 				// Compares the refactored metamodel with an existing metamodel
 				if(existingMetamodel != "") {
-					boolean check = Compare(refactoredMetamodelPath, existingMetamodel);
-					if(check == true){
+					List<Diff> differences = Compare(refactoredMetamodelPath, existingMetamodel);
+					if(differences.size() == 0){ 
 						System.out.println("Refactored Metamodel and target metamodel matches");
-					}else{
-						System.out.println("Refactored Metamodel and target metamodel does not match");
+					}else{ 
+						System.out.println("Refactored metamodel and target metamodel does not match. To correct it:");
+						for(org.eclipse.emf.compare.Diff diff : differences) {								
+							String[] split = diff.toString().split(",");
+							if(split[0].contains("ReferenceChangeSpec")) {
+								if(split[0].contains("eClassifiers")) {
+									String className = split[1].substring(split[1].lastIndexOf(" "), split[1].length());
+									DifferenceKind kind = diff.getKind();
+									DifferenceSource source = diff.getSource();
+									if(kind.getName().equals("ADD") && source.getName().equals("LEFT")) {
+										System.out.println("  Remove the"+className+ " EClass");
+									}else if(kind.getName().equals("DELETE") && source.getName().equals("LEFT")) {
+										System.out.println("  Do not remove the"+className+ " EClass");
+									}
+								}
+							}
+						}
 					}
 				}
 			} catch (IOException e) {
@@ -893,12 +911,27 @@ public class modifService {
 
 			// Comparison between refactored metamodel and target metamodel
 			if(existingMetamodel != "") {
-				boolean check = Compare(refactoredMetamodelNoUUIDPath, existingMetamodel);
-				if(check == true){
+				List<Diff> differences = Compare(refactoredMetamodelPath, existingMetamodel);
+				if(differences.size() == 0){ 
 					System.out.println("Refactored Metamodel and target metamodel matches");
 					Migrating(projectSourceFolder, sourceModelPath, refactoredMetamodelPath, withMigrationCodeGeneration);
 				}else{
 					System.out.println("Refactored Metamodel and target metamodel does not match");
+					for(org.eclipse.emf.compare.Diff diff : differences) {								
+						String[] split = diff.toString().split(",");
+						if(split[0].contains("ReferenceChangeSpec")) {
+							if(split[0].contains("eClassifiers")) {
+								String className = split[1].substring(split[1].lastIndexOf(" "), split[1].length());
+								DifferenceKind kind = diff.getKind();
+								DifferenceSource source = diff.getSource();
+								if(kind.getName().equals("ADD") && source.getName().equals("LEFT")) {
+									System.out.println("  Remove the"+className+ " EClass");
+								}else if(kind.getName().equals("DELETE") && source.getName().equals("LEFT")) {
+									System.out.println("  Do not remove the"+className+ " EClass");
+								}
+							}
+						}
+					}
 				}
 			}else {
 				Migrating(projectSourceFolder, sourceModelPath, refactoredMetamodelPath, withMigrationCodeGeneration);
@@ -935,8 +968,7 @@ public class modifService {
 	/**
 	 *  Checks if a metamodel fully matches with an existing metamodel
 	 */
-	public boolean Compare(String metamodelPath, String existingMetamodelPath) {
-		boolean check;
+	public List<org.eclipse.emf.compare.Diff> Compare(String metamodelPath, String existingMetamodelPath) {
 		URI uri1 = URI.createFileURI(metamodelPath);
 		URI uri2 = URI.createFileURI(existingMetamodelPath);
 		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("ecore", new XMIResourceFactoryImpl());
@@ -947,9 +979,7 @@ public class modifService {
 		IComparisonScope scope = new DefaultComparisonScope(resource, resource2, null);
 		org.eclipse.emf.compare.Comparison comparison = EMFCompare.builder().build().compare(scope);
 		List<org.eclipse.emf.compare.Diff> differences = ((org.eclipse.emf.compare.Comparison) comparison).getDifferences();
-		if(differences.size() == 0){ check = true; }
-		else{ check = false; }
-		return check;
+		return differences;
 	}
 
 	public void constructRenameMap(){
