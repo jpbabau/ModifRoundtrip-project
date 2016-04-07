@@ -137,8 +137,10 @@ public class Minimize {
 		if (enm.isRemove()) {
 			//enm.setNewName(null);
 			enm.setNewName("");
-			enm.setOldInstanceTypeName(null);
-			enm.setNewInstanceTypeName(null);
+			//enm.setOldInstanceTypeName(null);
+			enm.setOldInstanceTypeName("");
+			//enm.setNewInstanceTypeName(null);
+			enm.setNewInstanceTypeName("");
 			enm.getEnumLiteralModification().clear();
 			enm.getAnnotationModification().clear();
 			enm.setRemoveEAnnotations(false);			
