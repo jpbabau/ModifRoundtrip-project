@@ -97,6 +97,8 @@ public class modifService {
 	protected String recontextualizedGraphModelFile;
 	protected String recontextualizedFinalModelFile;
 	protected String projectFile;
+	
+	String modifFileName = null;
 
 	protected ArrayList<String> hideClassList;
 	protected ArrayList<String> flattenClassList;
@@ -661,6 +663,24 @@ public class modifService {
 
 		return refactoredPackages;
 	}
+	
+	/**
+	 * 
+	 * @param projectSourceFolder
+	 * @param modifSpecificationType
+	 * @param isUML
+	 */
+	public void Refactoring(String projectSourceFolder, int modifSpecificationType, boolean isUML, boolean GUI) {
+		if(isUML) {
+			try {
+				RefactoringUML(projectSourceFolder, modifSpecificationType, false, GUI);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}else {
+			// TODO Refactoring
+		}
+	}
 
 	/**
 	 * 
@@ -730,7 +750,6 @@ public class modifService {
 		}
 
 		// Create a by default modif specification
-		String modifFileName = null;
 		if(modifSpecificationType == 1) {
 			if(coevolution) {
 				modifFileName = projectSourceFolder+"/modif/NoModifUMLUUID.modif";
@@ -785,6 +804,39 @@ public class modifService {
 		return refactoredMetamodelPath;
 	}
 
+	
+	/**
+	 * 
+	 * @param existingMetamodel
+	 * @return
+	 */
+	public void Refactor(String existingMetamodel) {
+		String refactoredEcoreFile =  Refactor();
+		if(existingMetamodel != "") {
+			List<Diff> differences = Compare(refactoredEcoreFile, existingMetamodel);
+			if(differences.size() == 0){ 
+				System.out.println("Refactored Metamodel and target metamodel matches");
+			}else{ 
+				System.out.println("Refactored metamodel and target metamodel does not match. To correct it:");
+				for(org.eclipse.emf.compare.Diff diff : differences) {								
+					String[] split = diff.toString().split(",");
+					if(split[0].contains("ReferenceChangeSpec")) {
+						if(split[0].contains("eClassifiers")) {
+							String className = split[1].substring(split[1].lastIndexOf(" "), split[1].length());
+							DifferenceKind kind = diff.getKind();
+							DifferenceSource source = diff.getSource();
+							if(kind.getName().equals("ADD") && source.getName().equals("LEFT")) {
+								System.out.println("  Remove the"+className+ " EClass");
+							}else if(kind.getName().equals("DELETE") && source.getName().equals("LEFT")) {
+								System.out.println("  Do not remove the"+className+ " EClass");
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
 	/**
 	 * Transforms the input ecore according to the operators of the modif file
 	 */
@@ -880,6 +932,15 @@ public class modifService {
 		}
 		return refactoredWithoutK;
 	}
+	
+	/**
+	 * Returns the name of the by default modif specification
+	 * @return modifFileName
+	 */
+	public String getModifFileName() {
+		return modifFileName;
+	}
+
 
 	public String getRefactoredWithoutKFileName(){
 		return refactoredWithoutKFileName;

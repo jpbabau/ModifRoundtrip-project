@@ -74,6 +74,7 @@ public class modifUI {
 	private Text txtToolMetamodel;
 	private Text txtModifSpecification;
 	private Text txtModifSpecificationSimpleRefactoring;
+	private Text txtTargetMetamodelSimpleRefactoring;
 	private Text txtModifSpecificationSimpleMigration;
 	private Text txtTool;
 	private Text txtFunction;
@@ -92,6 +93,7 @@ public class modifUI {
 	Button btnMigrationSpecificationEdition;
 	Button btnCheckUML;
 	Button btnDomainMetamodel;
+	Button btnTargetMetamodelSimpleRefactoring;
 
 	protected ArrayList<String> hideClasses;
 	protected ArrayList<String> flattenClasses;
@@ -121,6 +123,7 @@ public class modifUI {
 	protected MigrationRoundtrip migrt;
 	protected boolean isUML;
 	protected String packageWithoutKName;
+	protected String modifFileName;
 
 	protected boolean simpleMigrationInterface;
 	protected boolean reuseInterface;
@@ -345,6 +348,10 @@ public class modifUI {
 					MessageBox messageBox = new MessageBox(shell, SWT.ICON_ERROR);
 					messageBox.setMessage("Select a domain metamodel");
 					messageBox.open();	
+				}else if(txtDomainMetamodelSimpleRefactor.getText().equals("") && isUML) {
+					MessageBox messageBox = new MessageBox(shell, SWT.ICON_ERROR);
+					messageBox.setMessage("Select the project source folder");
+					messageBox.open();	
 				}else{
 					if(!btnNoModifSimpleRefactoring.getSelection() && !btnEraseAllSimpleRefactoring.getSelection()){
 						MessageBox messageBox = new MessageBox(shell, SWT.ICON_ERROR);
@@ -353,12 +360,21 @@ public class modifUI {
 					}else{
 						boolean key = false;
 						if(isUML){
-							theModifService.setFiles(null, txtDomainMetamodelSimpleRefactor.getText(), null, null, null, null, null, null, isUML);
+							int modifSpecificationType = 0;
+							if(btnNoModifSimpleRefactoring.getSelection()){
+								modifSpecificationType = 1;
+							}else if(btnEraseAllSimpleRefactoring.getSelection()) {
+								modifSpecificationType = 2;
+							}	
+							theModifService.Refactoring(txtDomainMetamodelSimpleRefactor.getText(), modifSpecificationType, isUML, true);
+							modifFileName = theModifService.getModifFileName();
+							
+							/*theModifService.setFiles(null, txtDomainMetamodelSimpleRefactor.getText(), null, null, null, null, null, null, isUML);
 							//EPackage domainMM = UtilEMF.loadMetamodel(txtDomainMetamodelSimpleRefactor.getText());
 							//EPackage domainMM = UtilEMF.removeOppositeFeature(UtilEMF.removeAnnotations(UtilEMF.removeOperations(EcoreUtil.copy(UMLPackage.eINSTANCE))));
 							String domainMetamodelPath = txtDomainMetamodelSimpleRefactor.getText(); 
 							File f = new File(domainMetamodelPath);
-							int idx = f.getName().lastIndexOf('.');
+							int idx = f.getName().lastIndexOf('.');*/
 						}else{
 							theModifService.setFiles(null, txtDomainMetamodelSimpleRefactor.getText(), null, null, null, null, null, null, isUML);
 							EPackage domainMM = UtilEMF.loadMetamodel(txtDomainMetamodelSimpleRefactor.getText());
@@ -989,18 +1005,54 @@ public class modifUI {
 					messageBox.setMessage("Select a modif specification");
 					messageBox.open();
 				}else{
-					System.out.println(" ***** " + projectFolder.getAbsolutePath() + " " + txtDomainMetamodelSimpleRefactor.getText() + " " + txtModifSpecificationSimpleRefactoring.getText() +" " +isUML);
-					theModifService.setFiles(projectFolder.getAbsolutePath(), txtDomainMetamodelSimpleRefactor.getText(), txtModifSpecificationSimpleRefactoring.getText(), null, null, null, null, null, isUML);
-					long start = System.nanoTime();
-					theModifService.CreateModif(true, null);
-					theModifService.Refactor();
-					System.out.print("Refactoring   Ok ("+(System.nanoTime()-start)/1000000.0+" ms).");
-					btnMigrateSimpleMigration.setEnabled(true);
+					if(isUML) {
+						theModifService.CreateModifUML();
+						theModifService.Minimize(modifFileName);
+						theModifService.Refactor(txtTargetMetamodelSimpleRefactoring.getText());
+					}else {
+						System.out.println(" ***** " + projectFolder.getAbsolutePath() + " " + txtDomainMetamodelSimpleRefactor.getText() + " " + txtModifSpecificationSimpleRefactoring.getText() +" " +isUML);
+						theModifService.setFiles(projectFolder.getAbsolutePath(), txtDomainMetamodelSimpleRefactor.getText(), txtModifSpecificationSimpleRefactoring.getText(), null, null, null, null, null, isUML);
+						long start = System.nanoTime();
+						theModifService.CreateModif(true, null);
+						theModifService.Refactor();
+						System.out.print("Refactoring   Ok ("+(System.nanoTime()-start)/1000000.0+" ms).");
+						btnMigrateSimpleMigration.setEnabled(true);
+					}
 				}
 			}
 		});
 		btnRefactor.setBounds(530, 5, 75, 25);
 		btnRefactor.setText("Refactor");
+		
+		
+		Label lblTargetMetamodelSimpleRefactoring = new Label(compositeCheckSimpleRefactoring, SWT.NONE);
+		lblTargetMetamodelSimpleRefactoring.setBounds(10, 35, 120, 15);
+		lblTargetMetamodelSimpleRefactoring.setText("Target Metamodel");
+		
+		
+		txtTargetMetamodelSimpleRefactoring = new Text(compositeCheckSimpleRefactoring, SWT.BORDER);
+		txtTargetMetamodelSimpleRefactoring.setBounds(132, 35, 250, 21);
+		
+		
+		btnTargetMetamodelSimpleRefactoring = new Button(compositeCheckSimpleRefactoring, SWT.NONE);
+		btnTargetMetamodelSimpleRefactoring.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				final String[] FILTER_NAMES = {"ecore (*.ecore)", "All Files (*.*)"};
+				final String[] FILTER_EXTS =  { "*.ecore", "*.*"};
+				FileDialog dlg = new FileDialog(shell, SWT.OPEN);
+				dlg.setFilterNames(FILTER_NAMES);
+				dlg.setFilterExtensions(FILTER_EXTS);
+				//dlg.setFilterPath(projectFolder.getAbsolutePath().replace("metamodel", "modif"));
+				String fn = dlg.open();
+				if (fn != null) {
+					txtTargetMetamodelSimpleRefactoring.setText(fn);
+				}
+			}
+		});
+		btnTargetMetamodelSimpleRefactoring.setBounds(385, 35, 75, 25);
+		btnTargetMetamodelSimpleRefactoring.setText("Select");
+		
 
 		// Composite Refactor Simple Migration
 		compositeRefactorSimpleMigration = new Composite(shell,  SWT.BORDER);
@@ -1054,7 +1106,7 @@ public class modifUI {
 					///TEST
 					System.out.println(" !! "+projectFolder.getAbsolutePath()+" "+ txtDomainMetamodelSimpleMigration.getText() +" "+ txtModifSpecificationSimpleMigration.getText() + " "+ isUML);
 					theModifService.setFiles(projectFolder.getAbsolutePath(), txtDomainMetamodelSimpleMigration.getText(), txtModifSpecificationSimpleMigration.getText(), null, null, null, null, null, isUML);
-					
+
 					///TEST
 					long start = System.nanoTime();
 					theModifService.CreateModif(false, txtDomainMetamodelSimpleMigration.getText());
@@ -1479,7 +1531,7 @@ public class modifUI {
 						theModifService.setFiles(projectFolder.getAbsolutePath().replace("metamodel", ""), txtDomainMetamodelSimpleMigration.getText(), txtModifSpecificationSimpleMigration.getText(), null, txtDomainModelSimpleMigration.getText(), null, null, null, isUML);
 						EPackage originalPackage = UtilEMF.loadMetamodel(txtDomainMetamodelSimpleMigration.getText());
 						boolean hasUUID = UtilEMF.hasUUIDAttribute(originalPackage);
-						
+
 						System.out.println(" // hasUUID "+ hasUUID);
 						String keyModelFileName;
 						if(hasUUID){
