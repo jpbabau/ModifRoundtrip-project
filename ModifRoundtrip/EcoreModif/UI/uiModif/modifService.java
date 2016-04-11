@@ -669,13 +669,14 @@ public class modifService {
 	 * @param projectSourceFolder
 	 * @param modifSpecificationType
 	 * @param isUML
+	 * @throws IOException 
 	 */
-	public void Refactoring(String projectSourceFolder, int modifSpecificationType, boolean isUML, boolean GUI) {
+	public void Refactoring(String projectSourceFolder, int modifSpecificationType, boolean isUML, boolean coevolution, boolean GUI) throws IOException {
 		if(isUML) {
-			try {
+			if(coevolution) {
+				RefactoringUML(projectSourceFolder, modifSpecificationType, true, GUI);
+			}else {
 				RefactoringUML(projectSourceFolder, modifSpecificationType, false, GUI);
-			} catch (IOException e) {
-				e.printStackTrace();
 			}
 		}else {
 			// TODO Refactoring

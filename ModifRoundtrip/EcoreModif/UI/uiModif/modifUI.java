@@ -48,6 +48,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Menu;
@@ -75,6 +76,7 @@ public class modifUI {
 	private Text txtModifSpecification;
 	private Text txtModifSpecificationSimpleRefactoring;
 	private Text txtTargetMetamodelSimpleRefactoring;
+	private Text txtTargetMetamodelSimpleMigration;
 	private Text txtModifSpecificationSimpleMigration;
 	private Text txtTool;
 	private Text txtFunction;
@@ -92,8 +94,11 @@ public class modifUI {
 	Button btnMigrationEditionSimpleMigration;
 	Button btnMigrationSpecificationEdition;
 	Button btnCheckUML;
+	Button btnCheckUMLCoevolution;
 	Button btnDomainMetamodel;
 	Button btnTargetMetamodelSimpleRefactoring;
+	Button btnTargetMetamodelSimpleMigration;
+	Button btnProjectSourceFolder;
 
 	protected ArrayList<String> hideClasses;
 	protected ArrayList<String> flattenClasses;
@@ -195,7 +200,7 @@ public class modifUI {
 
 		// Item Simple Refactoring
 		final MenuItem mntmSimpleRefactor = new MenuItem(menu_1, SWT.RADIO);
-		mntmSimpleRefactor.setText("Simple Refactoring");
+		mntmSimpleRefactor.setText("Refactoring");
 		mntmSimpleRefactor.setEnabled(true);
 		mntmSimpleRefactor.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -216,7 +221,7 @@ public class modifUI {
 
 		// Item Simple Migration
 		final MenuItem mntmSimpleMigration = new MenuItem(menu_1, SWT.RADIO);
-		mntmSimpleMigration.setText("Simple Co-evolution");
+		mntmSimpleMigration.setText("Co-evolution");
 		mntmSimpleMigration.setEnabled(true);
 		mntmSimpleMigration.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -298,7 +303,7 @@ public class modifUI {
 					isUML = true;
 					//habilitar pero pedir metamodel folder
 					//lblDomainMetamodelSimpleRefactor.setEnabled(!isUML);
-					lblDomainMetamodelSimpleRefactor.setText("Metamodel folder");
+					lblDomainMetamodelSimpleRefactor.setText("Project source folder");
 					//txtDomainMetamodelSimpleRefactor.setEnabled(!isUML);
 					//btnDomainMetamodel.setEnabled(!isUML);
 				}else if(!btnCheckUML.getSelection()){
@@ -337,8 +342,8 @@ public class modifUI {
 
 		Button btnGenerateModifSimpleRefactor = new Button(compositeModifSimpleRefactoring, SWT.NONE);
 		btnGenerateModifSimpleRefactor.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD));
-		btnGenerateModifSimpleRefactor.setBounds(520, 31, 101, 25);
-		btnGenerateModifSimpleRefactor.setText("Generate Modif");
+		btnGenerateModifSimpleRefactor.setBounds(480, 31, 180, 25);
+		btnGenerateModifSimpleRefactor.setText("Generate Modif Specification");
 
 		btnGenerateModifSimpleRefactor.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -366,9 +371,14 @@ public class modifUI {
 							}else if(btnEraseAllSimpleRefactoring.getSelection()) {
 								modifSpecificationType = 2;
 							}	
-							theModifService.Refactoring(txtDomainMetamodelSimpleRefactor.getText(), modifSpecificationType, isUML, true);
+							try {
+								theModifService.Refactoring(txtDomainMetamodelSimpleRefactor.getText(), modifSpecificationType, isUML, false, true);
+							} catch (IOException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
 							modifFileName = theModifService.getModifFileName();
-							
+
 							/*theModifService.setFiles(null, txtDomainMetamodelSimpleRefactor.getText(), null, null, null, null, null, null, isUML);
 							//EPackage domainMM = UtilEMF.loadMetamodel(txtDomainMetamodelSimpleRefactor.getText());
 							//EPackage domainMM = UtilEMF.removeOppositeFeature(UtilEMF.removeAnnotations(UtilEMF.removeOperations(EcoreUtil.copy(UMLPackage.eINSTANCE))));
@@ -461,18 +471,48 @@ public class modifUI {
 		compositeModifSimpleMigration.setBounds(10, 10, 680, 65);
 		compositeModifSimpleMigration.setVisible(false);
 
-		Label lblDomainMetamodelSimpleMigration = new Label(compositeModifSimpleMigration, SWT.NONE);
+		final Label lblDomainMetamodelSimpleMigration = new Label(compositeModifSimpleMigration, SWT.NONE);
 		lblDomainMetamodelSimpleMigration.setBounds(10, 35, 116, 15);
 		lblDomainMetamodelSimpleMigration.setText("Domain Metamodel");
 
 		txtDomainMetamodelSimpleMigration = new Text(compositeModifSimpleMigration, SWT.BORDER);
 		txtDomainMetamodelSimpleMigration.setBounds(132, 33, 250, 21);
 
-		/// TEST
-		//txtDomainMetamodelSimpleMigration.setText("C:/ModifProject/Test_Vehicles/metamodel/Vehicles.ecore");
-		//File f = new File(txtDomainMetamodelSimpleMigration.getText());
-		//projectFolder = new File(f.getParent());
-		/// TEST
+		btnCheckUMLCoevolution = new Button(compositeModifSimpleMigration, SWT.CHECK);
+		btnCheckUMLCoevolution.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				if(btnCheckUMLCoevolution.getSelection()){
+					isUML = true;
+					lblDomainMetamodelSimpleMigration.setText("Project source folder");
+					//lblDomainMetamodelSimpleMigration.setVisible(false);
+				}else if(!btnCheckUMLCoevolution.getSelection()){
+					isUML = false;
+					lblDomainMetamodelSimpleMigration.setText("Domain metamodel");
+					//btnDomainMetamodel.setVisible(true);
+				}
+			}
+		});
+		btnCheckUMLCoevolution.setBounds(132, 9, 93, 16);
+		btnCheckUMLCoevolution.setText("UML");
+		btnCheckUMLCoevolution.setEnabled(true);
+		btnCheckUMLCoevolution.setVisible(true);
+
+		btnProjectSourceFolder = new Button(compositeModifSimpleMigration, SWT.NONE);
+		btnProjectSourceFolder.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent event) {
+				DirectoryDialog dlg = new DirectoryDialog(shell);
+				dlg.setFilterPath("C:/ModifRoundtrip-project/ModifRoundtrip");	    	  
+				String fn = dlg.open();
+				if (fn != null) {
+					txtDomainMetamodelSimpleMigration.setText(fn);
+				}
+			}
+		});	 
+
+		btnProjectSourceFolder.setBounds(385, 31, 75, 25);
+		btnProjectSourceFolder.setText("Select");
+
 
 		btnDomainMetamodel = new Button(compositeModifSimpleMigration, SWT.NONE);
 		btnDomainMetamodel.addSelectionListener(new SelectionAdapter() {
@@ -521,133 +561,157 @@ public class modifUI {
 
 		Button btnGenerateModifSimpleMigration = new Button(compositeModifSimpleMigration, SWT.NONE);
 		btnGenerateModifSimpleMigration.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD));
-		btnGenerateModifSimpleMigration.setBounds(520, 31, 101, 25);
-		btnGenerateModifSimpleMigration.setText("Generate Modif");
+		btnGenerateModifSimpleMigration.setBounds(480, 31, 180, 25);
+		btnGenerateModifSimpleMigration.setText("Generate Modif Specification");
+
 		btnGenerateModifSimpleMigration.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e){
-				if(txtDomainMetamodelSimpleMigration.getText().equals("")){
+				// no metamodel selected because it is UML
+				if(txtDomainMetamodelSimpleMigration.getText().equals("") && !isUML){
 					MessageBox messageBox = new MessageBox(shell, SWT.ICON_ERROR);
 					messageBox.setMessage("Select a domain metamodel");
 					messageBox.open();	
-
-				}else if(!btnNoModifSimpleMigration.getSelection() && !btnEraseAllSimpleMigration.getSelection()){
+				}else if(txtDomainMetamodelSimpleMigration.getText().equals("") && isUML) {
 					MessageBox messageBox = new MessageBox(shell, SWT.ICON_ERROR);
-					messageBox.setMessage("Select the modif to be generated");
+					messageBox.setMessage("Select the project source folder");
 					messageBox.open();	
 				}else{
-					theModifService.setFiles(null, txtDomainMetamodelSimpleMigration.getText(), null, null, null, null, null, null, isUML);					
-					EPackage domainMM = UtilEMF.loadMetamodel(txtDomainMetamodelSimpleMigration.getText());
-					boolean addKeys = true;
-					boolean key = true;
+					if(!btnNoModifSimpleMigration.getSelection() && !btnEraseAllSimpleMigration.getSelection()){
+						MessageBox messageBox = new MessageBox(shell, SWT.ICON_ERROR);
+						messageBox.setMessage("Select the modif to be generated");
+						messageBox.open();	
+					}else {
+						boolean key = false;
+						if(isUML) {
+							int modifSpecificationType = 0;
+							if(btnNoModifSimpleMigration.getSelection()){
+								modifSpecificationType = 1;
+							}else if(btnEraseAllSimpleMigration.getSelection()) {
+								modifSpecificationType = 2;
+							}
+							try {
+								theModifService.Refactoring(txtDomainMetamodelSimpleMigration.getText(), modifSpecificationType, isUML, true, true);
+							} catch (IOException e1) {
+								e1.printStackTrace();
+							}
+							modifFileName = theModifService.getModifFileName();
 
-					// verifying if keys were already added
-					for(TreeIterator<EObject> it = domainMM.eAllContents(); it.hasNext();){
-						EObject next = it.next();
-						if(next instanceof EClass){
-							EClass c = (EClass) next;
-							for(EAttribute ea : c.getEAllAttributes()){
-								if(ea.getName().equals("UUID")){
-									addKeys = false;
-									break;
+						}else {
+							theModifService.setFiles(null, txtDomainMetamodelSimpleMigration.getText(), null, null, null, null, null, null, isUML);					
+							EPackage domainMM = UtilEMF.loadMetamodel(txtDomainMetamodelSimpleMigration.getText());
+							boolean addKeys = true;
+							key = true;
+
+							// verifying if keys were already added
+							for(TreeIterator<EObject> it = domainMM.eAllContents(); it.hasNext();){
+								EObject next = it.next();
+								if(next instanceof EClass){
+									EClass c = (EClass) next;
+									for(EAttribute ea : c.getEAllAttributes()){
+										if(ea.getName().equals("UUID")){
+											addKeys = false;
+											break;
+										}
+									}
 								}
 							}
-						}
-					}
 
-					// adding keys
-					if(addKeys){ rootkeyPackage = theModifService.addUUIDAttributes(); }
-					else{ rootkeyPackage = domainMM; }
+							// adding keys
+							if(addKeys){ rootkeyPackage = theModifService.addUUIDAttributes(); }
+							else{ rootkeyPackage = domainMM; }
 
-					String domainMetamodelPath = txtDomainMetamodelSimpleMigration.getText();
-					File f = new File(domainMetamodelPath);
-					int idx = f.getName().lastIndexOf('.');
+							String domainMetamodelPath = txtDomainMetamodelSimpleMigration.getText();
+							File f = new File(domainMetamodelPath);
+							int idx = f.getName().lastIndexOf('.');
 
-					String modifNoModif;
-					String modifEraseAll;
+							String modifNoModif;
+							String modifEraseAll;
 
-					File modifFolder = new File(f.getParent().replace("metamodel", "modif"));
+							File modifFolder = new File(f.getParent().replace("metamodel", "modif"));
 
-					// modif folder does not exist
-					if(!modifFolder.exists()){
-						//modif folder creation
-						File dir = new File(f.getParent()+"/../modif");
-						dir.mkdir();
-					}
-					// has to add keys
-					if(addKeys){
-						// metamodel with keys
-						keyEcoreFile = f.getParent()+"/"+f.getName().substring(0,idx)+"K"+f.getName().substring(idx,idx+6);
-
-						// NoModif is selected
-						if(btnNoModifSimpleMigration.getSelection()){
-							modifNoModif = f.getParent()+"/../modif/NoModif"+f.getName().substring(0,idx)+"K.modif";
-							File noModif = new File(modifNoModif);
-							// There is a NoModif file with the same name
-							if(noModif.exists()){
-								MessageBox messageBox = new MessageBox(shell, SWT.ICON_QUESTION | SWT.YES | SWT.NO);
-								messageBox.setMessage("Do you want to rewrite "+ "NoModif"+f.getName().substring(0,idx)+"K.modif ?");
-								int response = messageBox.open();
-								if (response == SWT.YES){
-									try { theModifService.generateModifFile(keyEcoreFile, 1, modifNoModif, key); } 
-									catch (IOException e1) { e1.printStackTrace(); }
-								}
-							}else{
-								try {theModifService.generateModifFile(keyEcoreFile, 1, modifNoModif, key); } 
-								catch (IOException e1) { e1.printStackTrace(); }
+							// modif folder does not exist
+							if(!modifFolder.exists()){
+								//modif folder creation
+								File dir = new File(f.getParent()+"/../modif");
+								dir.mkdir();
 							}
-							// EraseAll is selected
-						}else if(btnEraseAllSimpleMigration.getSelection()){
-							modifEraseAll = f.getParent()+"/../modif/EraseAll"+f.getName().substring(0,idx)+"K.modif";
-							File eraseAll = new File(modifEraseAll);
-							if(eraseAll.exists()){
-								MessageBox messageBox = new MessageBox(shell, SWT.ICON_QUESTION | SWT.YES | SWT.NO);
-								messageBox.setMessage("Do you want to rewrite "+ "EraseAll"+f.getName().substring(0,idx)+"K.modif ?");
-								int response = messageBox.open();
-								if (response == SWT.YES){
-									try { theModifService.generateModifFile(keyEcoreFile, 2, modifEraseAll, key); } 
-									catch (IOException e1) { e1.printStackTrace(); }
+							// has to add keys
+							if(addKeys){
+								// metamodel with keys
+								keyEcoreFile = f.getParent()+"/"+f.getName().substring(0,idx)+"K"+f.getName().substring(idx,idx+6);
+
+								// NoModif is selected
+								if(btnNoModifSimpleMigration.getSelection()){
+									modifNoModif = f.getParent()+"/../modif/NoModif"+f.getName().substring(0,idx)+"K.modif";
+									File noModif = new File(modifNoModif);
+									// There is a NoModif file with the same name
+									if(noModif.exists()){
+										MessageBox messageBox = new MessageBox(shell, SWT.ICON_QUESTION | SWT.YES | SWT.NO);
+										messageBox.setMessage("Do you want to rewrite "+ "NoModif"+f.getName().substring(0,idx)+"K.modif ?");
+										int response = messageBox.open();
+										if (response == SWT.YES){
+											try { theModifService.generateModifFile(keyEcoreFile, 1, modifNoModif, key); } 
+											catch (IOException e1) { e1.printStackTrace(); }
+										}
+									}else{
+										try {theModifService.generateModifFile(keyEcoreFile, 1, modifNoModif, key); } 
+										catch (IOException e1) { e1.printStackTrace(); }
+									}
+									// EraseAll is selected
+								}else if(btnEraseAllSimpleMigration.getSelection()){
+									modifEraseAll = f.getParent()+"/../modif/EraseAll"+f.getName().substring(0,idx)+"K.modif";
+									File eraseAll = new File(modifEraseAll);
+									if(eraseAll.exists()){
+										MessageBox messageBox = new MessageBox(shell, SWT.ICON_QUESTION | SWT.YES | SWT.NO);
+										messageBox.setMessage("Do you want to rewrite "+ "EraseAll"+f.getName().substring(0,idx)+"K.modif ?");
+										int response = messageBox.open();
+										if (response == SWT.YES){
+											try { theModifService.generateModifFile(keyEcoreFile, 2, modifEraseAll, key); } 
+											catch (IOException e1) { e1.printStackTrace(); }
+										}
+									}else{
+										try { theModifService.generateModifFile(keyEcoreFile, 2, modifEraseAll, key); } 
+										catch (IOException e1) { e1.printStackTrace(); }
+									}
 								}
+								// do not need to add keys 
 							}else{
-								try { theModifService.generateModifFile(keyEcoreFile, 2, modifEraseAll, key); } 
-								catch (IOException e1) { e1.printStackTrace(); }
-							}
-						}
-						// do not need to add keys 
-					}else{
-						keyEcoreFile = f.getParent()+"/"+f.getName().substring(0,idx)+f.getName().substring(idx, idx+6);
-						// NoModif is selected
-						if(btnNoModifSimpleMigration.getSelection()){
-							modifNoModif = f.getParent()+"/../modif/NoModif"+f.getName().substring(0,idx)+"K.modif";
-							File noModif = new File(modifNoModif);
-							// There is a NoModif file with the same name
-							if(noModif.exists()){
-								MessageBox messageBox = new MessageBox(shell, SWT.ICON_QUESTION | SWT.YES | SWT.NO);
-								messageBox.setMessage("Do you want to rewrite "+ "NoModif"+f.getName().substring(0,idx)+"K.modif ?");
-								int response = messageBox.open();
-								if (response == SWT.YES){
-									try { theModifService.generateModifFile(keyEcoreFile, 1, modifNoModif, key); } 
-									catch (IOException e1) { e1.printStackTrace(); }
+								keyEcoreFile = f.getParent()+"/"+f.getName().substring(0,idx)+f.getName().substring(idx, idx+6);
+								// NoModif is selected
+								if(btnNoModifSimpleMigration.getSelection()){
+									modifNoModif = f.getParent()+"/../modif/NoModif"+f.getName().substring(0,idx)+"K.modif";
+									File noModif = new File(modifNoModif);
+									// There is a NoModif file with the same name
+									if(noModif.exists()){
+										MessageBox messageBox = new MessageBox(shell, SWT.ICON_QUESTION | SWT.YES | SWT.NO);
+										messageBox.setMessage("Do you want to rewrite "+ "NoModif"+f.getName().substring(0,idx)+"K.modif ?");
+										int response = messageBox.open();
+										if (response == SWT.YES){
+											try { theModifService.generateModifFile(keyEcoreFile, 1, modifNoModif, key); } 
+											catch (IOException e1) { e1.printStackTrace(); }
+										}
+									}else{
+										try { theModifService.generateModifFile(keyEcoreFile, 1, modifNoModif, key); } 
+										catch (IOException e1) { e1.printStackTrace(); }
+									}
+									// EraseAll is selected
+								}else if(btnEraseAllSimpleMigration.getSelection()){
+									modifEraseAll = f.getParent()+"/../modif/EraseAll"+f.getName().substring(0,idx)+"K.modif";
+									File eraseAll = new File(modifEraseAll);
+									if(eraseAll.exists()){
+										MessageBox messageBox = new MessageBox(shell, SWT.ICON_QUESTION | SWT.YES | SWT.NO);
+										messageBox.setMessage("Do you want to rewrite "+ "EraseAll"+f.getName().substring(0,idx)+"K.modif ?");
+										int response = messageBox.open();
+										if (response == SWT.YES){
+											try { theModifService.generateModifFile(keyEcoreFile, 2, modifEraseAll, key); } 
+											catch (IOException e1) { e1.printStackTrace(); }
+										}
+									}else{
+										try { theModifService.generateModifFile(keyEcoreFile, 2, modifEraseAll, key); } 
+										catch (IOException e1) { e1.printStackTrace(); }
+									}
 								}
-							}else{
-								try { theModifService.generateModifFile(keyEcoreFile, 1, modifNoModif, key); } 
-								catch (IOException e1) { e1.printStackTrace(); }
-							}
-							// EraseAll is selected
-						}else if(btnEraseAllSimpleMigration.getSelection()){
-							modifEraseAll = f.getParent()+"/../modif/EraseAll"+f.getName().substring(0,idx)+"K.modif";
-							File eraseAll = new File(modifEraseAll);
-							if(eraseAll.exists()){
-								MessageBox messageBox = new MessageBox(shell, SWT.ICON_QUESTION | SWT.YES | SWT.NO);
-								messageBox.setMessage("Do you want to rewrite "+ "EraseAll"+f.getName().substring(0,idx)+"K.modif ?");
-								int response = messageBox.open();
-								if (response == SWT.YES){
-									try { theModifService.generateModifFile(keyEcoreFile, 2, modifEraseAll, key); } 
-									catch (IOException e1) { e1.printStackTrace(); }
-								}
-							}else{
-								try { theModifService.generateModifFile(keyEcoreFile, 2, modifEraseAll, key); } 
-								catch (IOException e1) { e1.printStackTrace(); }
 							}
 						}
 					}
@@ -726,8 +790,8 @@ public class modifUI {
 
 		Button btnGenerateModif = new Button(compositeModif, SWT.NONE);
 		btnGenerateModif.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD));
-		btnGenerateModif.setBounds(520, 31, 101, 25);
-		btnGenerateModif.setText("Generate Modif");
+		btnGenerateModif.setBounds(480, 31, 180, 25);
+		btnGenerateModif.setText("Generate Modif Specification");
 		btnGenerateModif.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e){
@@ -991,6 +1055,33 @@ public class modifUI {
 		btnModifSpecificationSimpleRefactoring.setBounds(385, 5, 75, 25);
 		btnModifSpecificationSimpleRefactoring.setText("Select");
 
+		Button btnMinimize = new Button(compositeCheckSimpleRefactoring, SWT.NONE);
+		btnMinimize.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD));
+		btnMinimize.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				if (txtDomainMetamodelSimpleRefactor.getText().equals("")) {
+					MessageBox messageBox = new MessageBox(shell, SWT.ICON_ERROR);
+					messageBox.setMessage("Select the project source folder");
+					messageBox.open();
+				}else if(txtModifSpecificationSimpleRefactoring.getText().equals("")){
+					MessageBox messageBox = new MessageBox(shell, SWT.ICON_ERROR);
+					messageBox.setMessage("Select a modif specification");
+					messageBox.open();
+				}else{
+					theModifService.Minimize(modifFileName);
+				}
+			}
+		});
+		btnMinimize.setBounds(480, 5, 75, 25);
+		btnMinimize.setText("Minimize");
+		if(isUML) {
+			btnMinimize.setEnabled(false);
+		}else {
+			btnMinimize.setEnabled(true);
+		}
+
+
 		Button btnRefactor = new Button(compositeCheckSimpleRefactoring, SWT.NONE);
 		btnRefactor.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD));
 		btnRefactor.addSelectionListener(new SelectionAdapter() {
@@ -1010,7 +1101,6 @@ public class modifUI {
 						theModifService.Minimize(modifFileName);
 						theModifService.Refactor(txtTargetMetamodelSimpleRefactoring.getText());
 					}else {
-						System.out.println(" ***** " + projectFolder.getAbsolutePath() + " " + txtDomainMetamodelSimpleRefactor.getText() + " " + txtModifSpecificationSimpleRefactoring.getText() +" " +isUML);
 						theModifService.setFiles(projectFolder.getAbsolutePath(), txtDomainMetamodelSimpleRefactor.getText(), txtModifSpecificationSimpleRefactoring.getText(), null, null, null, null, null, isUML);
 						long start = System.nanoTime();
 						theModifService.CreateModif(true, null);
@@ -1021,19 +1111,19 @@ public class modifUI {
 				}
 			}
 		});
-		btnRefactor.setBounds(530, 5, 75, 25);
+		btnRefactor.setBounds(580, 5, 75, 25);
 		btnRefactor.setText("Refactor");
-		
-		
+
+
 		Label lblTargetMetamodelSimpleRefactoring = new Label(compositeCheckSimpleRefactoring, SWT.NONE);
 		lblTargetMetamodelSimpleRefactoring.setBounds(10, 35, 120, 15);
 		lblTargetMetamodelSimpleRefactoring.setText("Target Metamodel");
-		
-		
+
+
 		txtTargetMetamodelSimpleRefactoring = new Text(compositeCheckSimpleRefactoring, SWT.BORDER);
 		txtTargetMetamodelSimpleRefactoring.setBounds(132, 35, 250, 21);
-		
-		
+
+
 		btnTargetMetamodelSimpleRefactoring = new Button(compositeCheckSimpleRefactoring, SWT.NONE);
 		btnTargetMetamodelSimpleRefactoring.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -1052,7 +1142,7 @@ public class modifUI {
 		});
 		btnTargetMetamodelSimpleRefactoring.setBounds(385, 35, 75, 25);
 		btnTargetMetamodelSimpleRefactoring.setText("Select");
-		
+
 
 		// Composite Refactor Simple Migration
 		compositeRefactorSimpleMigration = new Composite(shell,  SWT.BORDER);
@@ -1075,7 +1165,9 @@ public class modifUI {
 				FileDialog dlg = new FileDialog(shell, SWT.OPEN);
 				dlg.setFilterNames(FILTER_NAMES);
 				dlg.setFilterExtensions(FILTER_EXTS);
-				dlg.setFilterPath(projectFolder.getAbsolutePath().replace("metamodel", "modif"));
+				if(!isUML) {
+					dlg.setFilterPath(projectFolder.getAbsolutePath().replace("metamodel", "modif"));
+				}
 				String fn = dlg.open();
 				if (fn != null) {
 					txtModifSpecificationSimpleMigration.setText(fn);
@@ -1085,14 +1177,38 @@ public class modifUI {
 		btnModifSpecificationSimpleMigration.setBounds(385, 5, 75, 25);
 		btnModifSpecificationSimpleMigration.setText("Select");
 
+
+		Button btnMinimizeSimpleMigration = new Button(compositeRefactorSimpleMigration, SWT.NONE);
+		btnMinimizeSimpleMigration.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD));
+		btnMinimizeSimpleMigration.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				if (txtDomainMetamodelSimpleMigration.getText().equals("")) {
+					MessageBox messageBox = new MessageBox(shell, SWT.ICON_ERROR);
+					messageBox.setMessage("Select the project source folder");
+					messageBox.open();
+				}else if(txtModifSpecificationSimpleMigration.getText().equals("")){
+					MessageBox messageBox = new MessageBox(shell, SWT.ICON_ERROR);
+					messageBox.setMessage("Select a modif specification");
+					messageBox.open();
+				}else{
+					theModifService.Minimize(modifFileName);
+				}
+			}
+		});
+		btnMinimizeSimpleMigration.setBounds(480, 5, 75, 25);
+		btnMinimizeSimpleMigration.setText("Minimize");
+		if(isUML) {
+			btnMinimizeSimpleMigration.setEnabled(false);
+		}else {
+			btnMinimizeSimpleMigration.setEnabled(true);
+		}
+
 		Button btnRefactorSimpleMigration = new Button(compositeRefactorSimpleMigration, SWT.NONE);
 		btnRefactorSimpleMigration.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD));
 		btnRefactorSimpleMigration.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {	
-				///TEST
-				//txtModifSpecificationSimpleMigration.setText("C:/ModifProject/Test_Vehicles/modif/NoModifVehiclesK2.modif");
-				///TEST
 				if (txtDomainMetamodelSimpleMigration.getText().equals("")) {
 					MessageBox messageBox = new MessageBox(shell, SWT.ICON_ERROR);
 					messageBox.setMessage("Select a domain metamodel");
@@ -1102,25 +1218,55 @@ public class modifUI {
 					messageBox.setMessage("Select a modif specification");
 					messageBox.open();
 				}else{
-					//theModifService.setFiles(projectFolder.getAbsolutePath(), txtDomainMetamodelSimpleMigration.getText(), txtModifSpecificationSimpleMigration.getText(), null, null, null, null, null, isUML);
-					///TEST
-					System.out.println(" !! "+projectFolder.getAbsolutePath()+" "+ txtDomainMetamodelSimpleMigration.getText() +" "+ txtModifSpecificationSimpleMigration.getText() + " "+ isUML);
-					theModifService.setFiles(projectFolder.getAbsolutePath(), txtDomainMetamodelSimpleMigration.getText(), txtModifSpecificationSimpleMigration.getText(), null, null, null, null, null, isUML);
-
-					///TEST
-					long start = System.nanoTime();
-					theModifService.CreateModif(false, txtDomainMetamodelSimpleMigration.getText());
-					hideClasses = theModifService.getHideClassList();
-					flattenClasses = theModifService.getFlattenClassList();
-					EPackage refactoredWithoutK = theModifService.RefactorSimpleMigration();
-					packageWithoutKName = refactoredWithoutK.getName();
-					refactoredWithoutKFileName = theModifService.getRefactoredWithoutKFileName();
-					System.out.print("Refactoring   Ok ("+(System.nanoTime()-start)/1000000.0+" ms).");
+					if(isUML) {
+						theModifService.CreateModifUML();
+						theModifService.Minimize(modifFileName);
+						theModifService.Refactor(txtTargetMetamodelSimpleMigration.getText());
+					}else {
+						theModifService.setFiles(projectFolder.getAbsolutePath(), txtDomainMetamodelSimpleMigration.getText(), txtModifSpecificationSimpleMigration.getText(), null, null, null, null, null, isUML);
+						long start = System.nanoTime();
+						theModifService.CreateModif(false, txtDomainMetamodelSimpleMigration.getText());
+						hideClasses = theModifService.getHideClassList();
+						flattenClasses = theModifService.getFlattenClassList();
+						EPackage refactoredWithoutK = theModifService.RefactorSimpleMigration();
+						packageWithoutKName = refactoredWithoutK.getName();
+						refactoredWithoutKFileName = theModifService.getRefactoredWithoutKFileName();
+						System.out.print("Refactoring   Ok ("+(System.nanoTime()-start)/1000000.0+" ms).");
+					}
 				}
 			}
 		});
-		btnRefactorSimpleMigration.setBounds(530, 5, 75, 25);
+		btnRefactorSimpleMigration.setBounds(580, 5, 75, 25);
 		btnRefactorSimpleMigration.setText("Refactor");
+
+
+		Label lblTargetMetamodelSimpleMigration = new Label(compositeRefactorSimpleMigration, SWT.NONE);
+		lblTargetMetamodelSimpleMigration.setBounds(10, 35, 120, 15);
+		lblTargetMetamodelSimpleMigration.setText("Target Metamodel");
+
+		txtTargetMetamodelSimpleMigration = new Text(compositeRefactorSimpleMigration, SWT.BORDER);
+		txtTargetMetamodelSimpleMigration.setBounds(132, 35, 250, 21);
+
+
+		btnTargetMetamodelSimpleMigration = new Button(compositeRefactorSimpleMigration, SWT.NONE);
+		btnTargetMetamodelSimpleMigration.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				final String[] FILTER_NAMES = {"ecore (*.ecore)", "All Files (*.*)"};
+				final String[] FILTER_EXTS =  { "*.ecore", "*.*"};
+				FileDialog dlg = new FileDialog(shell, SWT.OPEN);
+				dlg.setFilterNames(FILTER_NAMES);
+				dlg.setFilterExtensions(FILTER_EXTS);
+				//dlg.setFilterPath(projectFolder.getAbsolutePath().replace("metamodel", "modif"));
+				String fn = dlg.open();
+				if (fn != null) {
+					txtTargetMetamodelSimpleMigration.setText(fn);
+				}
+			}
+		});
+		btnTargetMetamodelSimpleMigration.setBounds(385, 35, 75, 25);
+		btnTargetMetamodelSimpleMigration.setText("Select");
+
 
 		// composite Check
 
