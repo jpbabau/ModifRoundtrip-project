@@ -1659,8 +1659,8 @@ public class modifUI {
 			}
 		});		
 		btnGenerateMigrationCode.setText("Generate Code");
-		
-		
+
+
 		btnMigrateSimpleMigration = new Button(compositeMigrationSimpleMigration, SWT.NONE);
 		btnMigrateSimpleMigration.setBounds(580, 28, 75, 25);
 		//btnMigrateSimpleMigration.setEnabled(false);
@@ -1677,60 +1677,80 @@ public class modifUI {
 					messageBox.setMessage("Select a domain model");
 					messageBox.open();
 				}else{
-					final Map<String, String> newReferencesNameHide = theModifService.getNewReferencesNameMap();
-					final Map<String, Map<String, Map<String, String>>> renameMap;
-					if(!btnAutomaticSimpleMigration.getSelection() && !btnCustomSimpleMigration.getSelection()){
-						MessageBox messageBox = new MessageBox(shell, SWT.ICON_ERROR);
-						messageBox.setMessage("Select the way to migrate the model");
-						messageBox.open();	
-					}else{
-						String migrationSpecification = null;
-						// Add UUID Value
-						theModifService.setFiles(projectFolder.getAbsolutePath().replace("metamodel", ""), txtDomainMetamodelSimpleMigration.getText(), txtModifSpecificationSimpleMigration.getText(), null, txtDomainModelSimpleMigration.getText(), null, null, null, isUML);
-						EPackage originalPackage = UtilEMF.loadMetamodel(txtDomainMetamodelSimpleMigration.getText());
-						boolean hasUUID = UtilEMF.hasUUIDAttribute(originalPackage);
+					if(isUML) {
+						File migrationCodeFile = new File(txtDomainMetamodelSimpleMigration.getText()+"/srcgen/code/MigrationCode.java");
+						// Verifying if the migration code has been generated
+						if(migrationCodeFile.exists()) {
 
-						System.out.println(" // hasUUID "+ hasUUID);
-						String keyModelFileName;
-						if(hasUUID){
-							keyModelFileName = txtDomainModelSimpleMigration.getText();
-							System.out.println("  ++  keyModelFileName  "+keyModelFileName);
+						}else {
+							// The migration code is generated
+							try {
+								theModifService.Migrating(txtDomainMetamodelSimpleMigration.getText(), txtDomainModelSimpleMigration.getText(), refactoredMetamodelPath, true);
+							} catch (IOException e1) {
+								e1.printStackTrace();
+							}
+							// The migration is executed
+							try {
+								theModifService.Migrating(txtDomainMetamodelSimpleMigration.getText(), txtDomainModelSimpleMigration.getText(), refactoredMetamodelPath, false);
+							} catch (IOException e1) {
+								e1.printStackTrace();
+							}
+						}
+					}else {
+						final Map<String, String> newReferencesNameHide = theModifService.getNewReferencesNameMap();
+						final Map<String, Map<String, Map<String, String>>> renameMap;
+						if(!btnAutomaticSimpleMigration.getSelection() && !btnCustomSimpleMigration.getSelection()){
+							MessageBox messageBox = new MessageBox(shell, SWT.ICON_ERROR);
+							messageBox.setMessage("Select the way to migrate the model");
+							messageBox.open();	
 						}else{
-							if(rootkeyPackage == null){
-								EPackage domainMM = UtilEMF.loadMetamodel(txtDomainMetamodelSimpleMigration.getText());
-								boolean addKeys = true;
-								// verifying if keys were already added
-								for(TreeIterator<EObject> it = domainMM.eAllContents(); it.hasNext();){
-									EObject next = it.next();
-									if(next instanceof EClass){
-										EClass c = (EClass) next;
-										for(EAttribute ea : c.getEAllAttributes()){
-											if(ea.getName().equals("UUID")){
-												addKeys = false;
-												break;
+							String migrationSpecification = null;
+							// Add UUID Value
+							theModifService.setFiles(projectFolder.getAbsolutePath().replace("metamodel", ""), txtDomainMetamodelSimpleMigration.getText(), txtModifSpecificationSimpleMigration.getText(), null, txtDomainModelSimpleMigration.getText(), null, null, null, isUML);
+							EPackage originalPackage = UtilEMF.loadMetamodel(txtDomainMetamodelSimpleMigration.getText());
+							boolean hasUUID = UtilEMF.hasUUIDAttribute(originalPackage);
+
+							System.out.println(" // hasUUID "+ hasUUID);
+							String keyModelFileName;
+							if(hasUUID){
+								keyModelFileName = txtDomainModelSimpleMigration.getText();
+								System.out.println("  ++  keyModelFileName  "+keyModelFileName);
+							}else{
+								if(rootkeyPackage == null){
+									EPackage domainMM = UtilEMF.loadMetamodel(txtDomainMetamodelSimpleMigration.getText());
+									boolean addKeys = true;
+									// verifying if keys were already added
+									for(TreeIterator<EObject> it = domainMM.eAllContents(); it.hasNext();){
+										EObject next = it.next();
+										if(next instanceof EClass){
+											EClass c = (EClass) next;
+											for(EAttribute ea : c.getEAllAttributes()){
+												if(ea.getName().equals("UUID")){
+													addKeys = false;
+													break;
+												}
 											}
 										}
 									}
+									// adding keys
+									if(addKeys){ rootkeyPackage = theModifService.addUUIDAttributes(); }
+									else{ rootkeyPackage = domainMM; }
 								}
-								// adding keys
-								if(addKeys){ rootkeyPackage = theModifService.addUUIDAttributes(); }
-								else{ rootkeyPackage = domainMM; }
+								keyModelFileName = theModifService.addUUIDValues(rootkeyPackage);
+								System.out.println("  -- keyModelFileName  "+keyModelFileName);
 							}
-							keyModelFileName = theModifService.addUUIDValues(rootkeyPackage);
-							System.out.println("  -- keyModelFileName  "+keyModelFileName);
-						}
-						// Generate Migration Specification
-						try {
-							migratedFileName = theModifService.GenerateMigrationSpecification(txtDomainModelSimpleMigration.getText(), keyModelFileName, hideClasses, flattenClasses);
-							Map<String, ArrayList<String>> referencesToInstanceMap = theModifService.buildMapReferencesToInstance(rootkeyPackage);
-							//System.out.println("refToInstance  : "+referencesToInstanceMap);
-						} catch (IOException e2) { e2.printStackTrace(); }
-						migrationSpecification = theModifService.getMigrationFileName();
-						//newReferencesNameHide = theModifService.getNewReferencesNameMap();
-						renameMap = theModifService.getRenameMap();
-						// Migration
+							// Generate Migration Specification
+							try {
+								migratedFileName = theModifService.GenerateMigrationSpecification(txtDomainModelSimpleMigration.getText(), keyModelFileName, hideClasses, flattenClasses);
+								Map<String, ArrayList<String>> referencesToInstanceMap = theModifService.buildMapReferencesToInstance(rootkeyPackage);
+								//System.out.println("refToInstance  : "+referencesToInstanceMap);
+							} catch (IOException e2) { e2.printStackTrace(); }
+							migrationSpecification = theModifService.getMigrationFileName();
+							//newReferencesNameHide = theModifService.getNewReferencesNameMap();
+							renameMap = theModifService.getRenameMap();
+							// Migration
 
-						/*	long start = System.nanoTime();
+							/*	long start = System.nanoTime();
 							migrt = theModifService.Migration(newReferencesNameHide, renameMap);
 							// TODO : Message rewrite migrated file
 							//File migration = new File(theModifService.getMigratedModelFileName());
@@ -1739,117 +1759,118 @@ public class modifUI {
 							// UUID value deletion
 							theModifService.removeUUIDSimpleMigration(migratedFileName, refactoredWithoutKFileName, packageWithoutKName);*/
 
-						if(btnAutomaticSimpleMigration.getSelection()){
-							theModifService.setFiles(projectFolder.getAbsolutePath(), txtDomainMetamodelSimpleMigration.getText(), txtModifSpecificationSimpleMigration.getText(), null, txtDomainModelSimpleMigration.getText(), migrationSpecification, null, null, isUML);
-							//theModifService.setFiles(projectFolder.getAbsolutePath(), txtDomainMetamodelSimpleMigration.getText(), txtModifSpecificationSimpleMigration.getText(), null, txtDomainModelSimpleMigration.getText(), "C:/ModifProject/Test_Vehicles/migration/vehiclestocarsK.migration2.xmi", null, null, isUML);
-							long start = System.nanoTime();
-							migrt = theModifService.Migration(newReferencesNameHide, renameMap);
-							// TODO : Message rewrite migrated file
-							File migration = new File(theModifService.getMigratedModelFileName());
-							System.out.print("Migration   Ok ("+(System.nanoTime()-start)/1000000.0+" ms).");
-							// UUID value deletion
-							try {
-								theModifService.removeUUIDSimpleMigration(migratedFileName, refactoredWithoutKFileName, packageWithoutKName);
-							} catch (IOException e1) {
-								e1.printStackTrace();
-								MessageBox messageBox = new MessageBox(shell, SWT.ICON_ERROR);
-								messageBox.setMessage("Fatal error (see console for details)");
-								messageBox.open();
-							}
-						}else if (btnCustomSimpleMigration.getSelection()){
-							final String migrationSpecificationName;
-							final Migration migration;
-
-							final ArrayList<String> strs = new ArrayList<String>();
-							//migrationSpecificationName = "C:/ModifProject/Test_Vehicles/migration/vehiclestocarsK.migration.xmi";
-							migrationSpecificationName = migrationSpecification;
-							migration = (Migration) UtilEMF.loadModel(migrationSpecificationName, MigrationPackage.eINSTANCE);
-							for(EObject instance : migration.eContents()){
-								String instanceuuid = (String) instance.eGet(instance.eClass().getEStructuralFeature("UUID"));
-								for(EObject deletion : instance.eContents()){
-									boolean deleteinstance = (boolean) deletion.eGet(deletion.eClass().getEStructuralFeature("deleteInstance"));
-									if(!deleteinstance){ strs.add(instanceuuid); }
+							if(btnAutomaticSimpleMigration.getSelection()){
+								theModifService.setFiles(projectFolder.getAbsolutePath(), txtDomainMetamodelSimpleMigration.getText(), txtModifSpecificationSimpleMigration.getText(), null, txtDomainModelSimpleMigration.getText(), migrationSpecification, null, null, isUML);
+								//theModifService.setFiles(projectFolder.getAbsolutePath(), txtDomainMetamodelSimpleMigration.getText(), txtModifSpecificationSimpleMigration.getText(), null, txtDomainModelSimpleMigration.getText(), "C:/ModifProject/Test_Vehicles/migration/vehiclestocarsK.migration2.xmi", null, null, isUML);
+								long start = System.nanoTime();
+								migrt = theModifService.Migration(newReferencesNameHide, renameMap);
+								// TODO : Message rewrite migrated file
+								File migration = new File(theModifService.getMigratedModelFileName());
+								System.out.print("Migration   Ok ("+(System.nanoTime()-start)/1000000.0+" ms).");
+								// UUID value deletion
+								try {
+									theModifService.removeUUIDSimpleMigration(migratedFileName, refactoredWithoutKFileName, packageWithoutKName);
+								} catch (IOException e1) {
+									e1.printStackTrace();
+									MessageBox messageBox = new MessageBox(shell, SWT.ICON_ERROR);
+									messageBox.setMessage("Fatal error (see console for details)");
+									messageBox.open();
 								}
-							}
+							}else if (btnCustomSimpleMigration.getSelection()){
+								final String migrationSpecificationName;
+								final Migration migration;
 
-							final CheckableItem[] data = createData(strs);
-							final JList list = new JList(data);
-
-							list.setCellRenderer(new CheckListRenderer());
-							list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-							list.setBorder(new EmptyBorder(0, 4, 0, 0));
-							list.addMouseListener(new MouseAdapter() {
-								public void mouseClicked(MouseEvent e) {
-									int index = list.locationToIndex(e.getPoint());
-									CheckableItem item = (CheckableItem) list.getModel()
-											.getElementAt(index);
-									item.setSelected(!item.isSelected());
-									Rectangle rect = list.getCellBounds(index, index);
-									list.repaint(rect);
+								final ArrayList<String> strs = new ArrayList<String>();
+								//migrationSpecificationName = "C:/ModifProject/Test_Vehicles/migration/vehiclestocarsK.migration.xmi";
+								migrationSpecificationName = migrationSpecification;
+								migration = (Migration) UtilEMF.loadModel(migrationSpecificationName, MigrationPackage.eINSTANCE);
+								for(EObject instance : migration.eContents()){
+									String instanceuuid = (String) instance.eGet(instance.eClass().getEStructuralFeature("UUID"));
+									for(EObject deletion : instance.eContents()){
+										boolean deleteinstance = (boolean) deletion.eGet(deletion.eClass().getEStructuralFeature("deleteInstance"));
+										if(!deleteinstance){ strs.add(instanceuuid); }
+									}
 								}
-							});
-							JScrollPane sp = new JScrollPane(list);
-							JButton validateButton = new JButton("Validate");
-							validateButton.addActionListener(new ActionListener() {
-								public void actionPerformed(ActionEvent e) {
-									ListModel model = list.getModel();
-									int n = model.getSize();
-									for (int i = 0; i < n; i++) {
-										CheckableItem item = (CheckableItem) model.getElementAt(i);
-										// modify the migration specification
-										Migration newMigration = theModifService.modifyInstance(strs.get(i), item.isSelected, migration);
-										theModifService.addDeletedReferences(newMigration);
-										theModifService.cleanMigrationSpecification(migration);
-										// Save a new migration specification (the custom one)
-										String customMigrationSpecificationName = migrationSpecificationName.replace(".migration", "Customized.migration");
-										try {
-											UtilEMF.saveModel((EObject)migration,customMigrationSpecificationName);
-										} catch (IOException e1) {
-											e1.printStackTrace();
-										}
-										// validate the result by applying the new migration specification
-										//TODO
-										if(isValidMigration()){
-											migrt = theModifService.Migration(newReferencesNameHide, renameMap, customMigrationSpecificationName);
+
+								final CheckableItem[] data = createData(strs);
+								final JList list = new JList(data);
+
+								list.setCellRenderer(new CheckListRenderer());
+								list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+								list.setBorder(new EmptyBorder(0, 4, 0, 0));
+								list.addMouseListener(new MouseAdapter() {
+									public void mouseClicked(MouseEvent e) {
+										int index = list.locationToIndex(e.getPoint());
+										CheckableItem item = (CheckableItem) list.getModel()
+												.getElementAt(index);
+										item.setSelected(!item.isSelected());
+										Rectangle rect = list.getCellBounds(index, index);
+										list.repaint(rect);
+									}
+								});
+								JScrollPane sp = new JScrollPane(list);
+								JButton validateButton = new JButton("Validate");
+								validateButton.addActionListener(new ActionListener() {
+									public void actionPerformed(ActionEvent e) {
+										ListModel model = list.getModel();
+										int n = model.getSize();
+										for (int i = 0; i < n; i++) {
+											CheckableItem item = (CheckableItem) model.getElementAt(i);
+											// modify the migration specification
+											Migration newMigration = theModifService.modifyInstance(strs.get(i), item.isSelected, migration);
+											theModifService.addDeletedReferences(newMigration);
+											theModifService.cleanMigrationSpecification(migration);
+											// Save a new migration specification (the custom one)
+											String customMigrationSpecificationName = migrationSpecificationName.replace(".migration", "Customized.migration");
 											try {
-												theModifService.removeUUIDSimpleMigration(migratedFileName, refactoredWithoutKFileName, packageWithoutKName);
+												UtilEMF.saveModel((EObject)migration,customMigrationSpecificationName);
 											} catch (IOException e1) {
-												// TODO Auto-generated catch block
 												e1.printStackTrace();
+											}
+											// validate the result by applying the new migration specification
+											//TODO
+											if(isValidMigration()){
+												migrt = theModifService.Migration(newReferencesNameHide, renameMap, customMigrationSpecificationName);
+												try {
+													theModifService.removeUUIDSimpleMigration(migratedFileName, refactoredWithoutKFileName, packageWithoutKName);
+												} catch (IOException e1) {
+													// TODO Auto-generated catch block
+													e1.printStackTrace();
+												}
 											}
 										}
 									}
-								}
-							});
-							JButton resetButton = new JButton("Reset");
-							resetButton.setSize(20, 40);
-							resetButton.addActionListener(new ActionListener() {
-								public void actionPerformed(ActionEvent e) {
-									//textArea.setText("");
-									resetData(strs.size(), data);
-									Rectangle rect = list.getCellBounds(0, strs.size()-1);
-									list.repaint(rect);
-								}
-							});
+								});
+								JButton resetButton = new JButton("Reset");
+								resetButton.setSize(20, 40);
+								resetButton.addActionListener(new ActionListener() {
+									public void actionPerformed(ActionEvent e) {
+										//textArea.setText("");
+										resetData(strs.size(), data);
+										Rectangle rect = list.getCellBounds(0, strs.size()-1);
+										list.repaint(rect);
+									}
+								});
 
-							JPanel panelButton = new JPanel(new GridLayout(1, 2));
-							//panel.add(panel0);
-							panelButton.add(validateButton);
-							panelButton.add(resetButton);
-							JDialog dialog = new JDialog();
-							dialog.setTitle("Check to delete instance");
-							JPanel contentPanel = new JPanel(new GridLayout(2, 1));
-							contentPanel.add(sp);
-							JPanel emptypanel1 = new JPanel();
-							contentPanel.add(emptypanel1);
-							emptypanel1.setLayout(new GridLayout(2, 1));
-							JPanel emptypanel2 = new JPanel();
-							emptypanel1.add(emptypanel2);
-							emptypanel1.add(panelButton);
-							contentPanel.add(emptypanel1);
-							dialog.add(contentPanel);
-							dialog.pack();
-							dialog.setVisible(true);
+								JPanel panelButton = new JPanel(new GridLayout(1, 2));
+								//panel.add(panel0);
+								panelButton.add(validateButton);
+								panelButton.add(resetButton);
+								JDialog dialog = new JDialog();
+								dialog.setTitle("Check to delete instance");
+								JPanel contentPanel = new JPanel(new GridLayout(2, 1));
+								contentPanel.add(sp);
+								JPanel emptypanel1 = new JPanel();
+								contentPanel.add(emptypanel1);
+								emptypanel1.setLayout(new GridLayout(2, 1));
+								JPanel emptypanel2 = new JPanel();
+								emptypanel1.add(emptypanel2);
+								emptypanel1.add(panelButton);
+								contentPanel.add(emptypanel1);
+								dialog.add(contentPanel);
+								dialog.pack();
+								dialog.setVisible(true);
+							}
 						}
 					}
 				}
