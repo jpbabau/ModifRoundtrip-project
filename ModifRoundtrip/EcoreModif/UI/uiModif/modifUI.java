@@ -129,6 +129,7 @@ public class modifUI {
 	protected boolean isUML;
 	protected String packageWithoutKName;
 	protected String modifFileName;
+	protected String refactoredMetamodelPath;
 
 	protected boolean simpleMigrationInterface;
 	protected boolean reuseInterface;
@@ -1221,7 +1222,7 @@ public class modifUI {
 					if(isUML) {
 						theModifService.CreateModifUML();
 						theModifService.Minimize(modifFileName);
-						theModifService.Refactor(txtTargetMetamodelSimpleMigration.getText());
+						refactoredMetamodelPath = theModifService.Refactor(txtTargetMetamodelSimpleMigration.getText());
 					}else {
 						theModifService.setFiles(projectFolder.getAbsolutePath(), txtDomainMetamodelSimpleMigration.getText(), txtModifSpecificationSimpleMigration.getText(), null, null, null, null, null, isUML);
 						long start = System.nanoTime();
@@ -1644,18 +1645,29 @@ public class modifUI {
 		btnCustomSimpleMigration.setBounds(580, 9, 90, 16);
 		btnCustomSimpleMigration.setText("Custom");
 
+		Button btnGenerateMigrationCode = new Button(compositeMigrationSimpleMigration, SWT.NONE);
+		btnGenerateMigrationCode.setBounds(470, 28, 100, 25);
+		btnGenerateMigrationCode.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD));
+		btnGenerateMigrationCode.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				try {
+					theModifService.Migrating(txtDomainMetamodelSimpleMigration.getText(), txtDomainModelSimpleMigration.getText(), refactoredMetamodelPath, true);
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});		
+		btnGenerateMigrationCode.setText("Generate Code");
+		
+		
 		btnMigrateSimpleMigration = new Button(compositeMigrationSimpleMigration, SWT.NONE);
-		btnMigrateSimpleMigration.setBounds(530, 28, 80, 25);
+		btnMigrateSimpleMigration.setBounds(580, 28, 75, 25);
 		//btnMigrateSimpleMigration.setEnabled(false);
 		btnMigrateSimpleMigration.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD));
 		btnMigrateSimpleMigration.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-
-				///TEST
-				//txtDomainModelSimpleMigration.setText("C:/ModifProject/Test_Vehicles/model/vehiclesModel.vehicles.xmi");
-				///TEST
-
 				if(txtDomainMetamodelSimpleMigration.getText().equals("")){
 					MessageBox messageBox = new MessageBox(shell, SWT.ICON_ERROR);
 					messageBox.setMessage("Select a domain metamodel");
@@ -1748,13 +1760,10 @@ public class modifUI {
 							final String migrationSpecificationName;
 							final Migration migration;
 
-							///TEST
 							final ArrayList<String> strs = new ArrayList<String>();
 							//migrationSpecificationName = "C:/ModifProject/Test_Vehicles/migration/vehiclestocarsK.migration.xmi";
 							migrationSpecificationName = migrationSpecification;
 							migration = (Migration) UtilEMF.loadModel(migrationSpecificationName, MigrationPackage.eINSTANCE);
-							///TEST
-
 							for(EObject instance : migration.eContents()){
 								String instanceuuid = (String) instance.eGet(instance.eClass().getEStructuralFeature("UUID"));
 								for(EObject deletion : instance.eContents()){

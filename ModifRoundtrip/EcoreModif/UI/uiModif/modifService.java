@@ -811,7 +811,7 @@ public class modifService {
 	 * @param existingMetamodel
 	 * @return
 	 */
-	public void Refactor(String existingMetamodel) {
+	public String Refactor(String existingMetamodel) {
 		String refactoredEcoreFile =  Refactor();
 		if(existingMetamodel != "") {
 			List<Diff> differences = Compare(refactoredEcoreFile, existingMetamodel);
@@ -836,6 +836,7 @@ public class modifService {
 				}
 			}
 		}
+		return refactoredEcoreFile;
 	}
 	
 	/**
@@ -1121,6 +1122,7 @@ public class modifService {
 		String sourceModelUUIDPath = sourceModelPath.replace("."+theRootEcoreModif.getRoot().getModif().getOldName(), ".umluuid.xmi");
 		String sourceMetamodelUUIDPath = theRootEcoreModif.getRoot().getModif().getOldURIName();
 		String migratedModelPath = sourceModelPath.replace("."+theRootEcoreModif.getRoot().getModif().getOldName(), "_migrated."+theRootEcoreModif.getRoot().getModif().getNewName().toLowerCase()+".xmi");
+		String migratedModelNoUUIDPath = migratedModelPath.replace("uuid", "");
 		//String refactoredMetamodelPath = theRootEcoreModif.getRoot().getModif().getNewURIName();
 
 		// Adding UUIDs to the source model
@@ -1133,74 +1135,7 @@ public class modifService {
 
 		if(withMigrationCodeGeneration) {
 			// Migration code generation
-			File fout = new File(projectSourceFolder+"/srcgen/code/MigrationCode.java");
-			FileOutputStream fos = new FileOutputStream(fout);
-
-			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
-
-			bw.write("package code;\n");
-			bw.newLine();
-			bw.write("import migration.Migration;");
-			bw.newLine();
-			bw.write("import migration.MigrationPackage;");
-			bw.newLine();
-			bw.write("import migration.tools.MigrationRoundtrip;");
-			bw.newLine();
-			bw.write("import migration.tools.UtilEMF;\n");
-			bw.newLine();
-			bw.write("import org.eclipse.emf.ecore.EObject;");
-			bw.newLine();
-			bw.write("import org.eclipse.emf.ecore.EPackage;\n");
-			bw.newLine();
-			bw.write("import org.eclipse.uml2.uml.UMLPackage; \n");
-			bw.newLine();
-			bw.write("public class MigrationCode {");
-			bw.newLine();
-			bw.write("    public static void main(String[] args) {");
-			bw.newLine();
-			bw.write("      try {");
-			bw.newLine();
-			bw.write("          MigrationRoundtrip migrt = null;");
-			bw.newLine();
-			bw.write("          String migrationFile = "+migrationSpecificationName+";");
-			bw.newLine();
-			bw.write("          Migration migration = (Migration) UtilEMF.loadModel(migrationFile, MigrationPackage.eINSTANCE);");
-			bw.newLine();
-			bw.write("          // Migration execution");
-			bw.newLine();
-			bw.write("          migrt = new MigrationRoundtrip(migration);");
-			bw.newLine();
-			bw.write("          // Migrated model with UUID \n");
-			bw.newLine();
-			bw.write("          EObject migratedModelUUID = migrt.onwardMigration();");
-			bw.newLine();
-			bw.write("			// Serialisation of the migrated model with UUID \n");
-			bw.write("          migrt.serializeMigratedModel();");
-			bw.newLine();
-			bw.write("          // Deletion of UUIDs");
-			bw.newLine();
-			bw.write("			EObject migratedModel = UtilEMF.changeMetamodel(UtilEMF.removeUUIDValues("+getMigratedModel()+"), UMLPackage.eINSTANCE); \n");
-			bw.newLine();
-			bw.write("         // Serialisation of the migrated model \n");
-			bw.newLine();
-			//	bw.write(" 			UtilEMF.saveModel(migratedModel, projectSourceFolder+"/model/test2.uml");
-			bw.write("      } catch (Exception ioe) {");
-			bw.newLine();
-			bw.write("          ioe.printStackTrace();");
-			bw.newLine();
-			bw.write("          return;");
-			bw.newLine();
-			bw.write("      }");
-			bw.newLine();
-			bw.newLine();
-			bw.write("    }");
-			bw.newLine();
-			bw.newLine();
-			bw.write("}");
-			bw.newLine();
-
-			bw.close();
-
+			GenerateMigrationCode(projectSourceFolder, migrationSpecificationName.replace("\\", "/"), migratedModelNoUUIDPath.replace("\\", "/"));
 		}else { 
 			// Migration execution
 			migrt = Migration();
@@ -1213,6 +1148,78 @@ public class modifService {
 			// Serialisation of the migrated model
 			UtilEMF.saveModel(migratedModel, projectSourceFolder+"/model/test2.uml");
 		}
+	}
+
+	/**
+	 * Migration code generation
+	 * @param projectSourceFolder
+	 * @param migrationSpecificationName
+	 * @param migratedModelNoUUIDPath
+	 * @throws IOException
+	 */
+	public void GenerateMigrationCode(String projectSourceFolder, String migrationSpecificationName, String migratedModelNoUUIDPath) throws IOException {
+		File fout = new File(projectSourceFolder+"/srcgen/code/MigrationCode.java");
+		FileOutputStream fos = new FileOutputStream(fout);
+
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
+
+		bw.write("package code;\n");
+		bw.newLine();
+		bw.write("import migration.Migration;");
+		bw.newLine();
+		bw.write("import migration.MigrationPackage;");
+		bw.newLine();
+		bw.write("import migration.tools.MigrationRoundtrip;");
+		bw.newLine();
+		bw.write("import migration.tools.UtilEMF;\n");
+		bw.newLine();
+		bw.write("import org.eclipse.emf.ecore.EObject;");
+		bw.newLine();
+		//bw.write("import org.eclipse.emf.ecore.EPackage;\n");
+		bw.newLine();
+		bw.write("import org.eclipse.uml2.uml.UMLPackage; \n");
+		bw.newLine();
+		bw.write("public class MigrationCode { \n");
+		bw.write("    public static void main(String[] args) { \n");
+		bw.write("      try {");
+		bw.newLine();
+		bw.write("          MigrationRoundtrip migrt = null;");
+		bw.newLine();
+		bw.write("          String migrationSpecificationFile = \""+migrationSpecificationName+"\";");
+		bw.newLine();
+		bw.write("          Migration migration = (Migration) UtilEMF.loadModel(migrationSpecificationFile, MigrationPackage.eINSTANCE);");
+		bw.newLine();
+		bw.write("          // Migration execution");
+		bw.newLine();
+		bw.write("          migrt = new MigrationRoundtrip(migration);");
+		bw.newLine();
+		bw.write("          // Migrated model with UUID \n");
+		bw.write("          EObject migratedModelUUID = migrt.onwardMigration();");
+		bw.newLine();
+		bw.write("			// Serialisation of the migrated model with UUID \n");
+		bw.write("          migrt.serializeMigratedModel();");
+		bw.newLine();
+		bw.write("          // Deletion of UUIDs");
+		bw.newLine();
+		bw.write("		    EObject migratedModel = UtilEMF.changeMetamodel(UtilEMF.removeUUIDValues(migratedModelUUID), UMLPackage.eINSTANCE); \n");
+		bw.write("         // Serialisation of the migrated model \n");
+		bw.write(" 			UtilEMF.saveModel(migratedModel, "+"\""+migratedModelNoUUIDPath+"\"); \n");
+		bw.write("      } catch (Exception ioe) {");
+		bw.newLine();
+		bw.write("          ioe.printStackTrace();");
+		bw.newLine();
+		bw.write("          return;");
+		bw.newLine();
+		bw.write("      }");
+		bw.newLine();
+		bw.newLine();
+		bw.write("    }");
+		bw.newLine();
+		bw.newLine();
+		bw.write("}");
+		bw.newLine();
+		bw.close();
+
 	}
 
 
