@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import migration.tools.UtilEMF;
 
@@ -54,6 +55,7 @@ public class Main {
 
 	static boolean multiEcore = false;
 
+	static String sourceMetamodelPath;
 	static String domainMetamodel;
 	static String modifSpecification;
 
@@ -70,8 +72,8 @@ public class Main {
 	public static void main(String[] args) throws IOException {
 
 		// GUI is false by default, change it to true for open the GUI
-		//GUI = true;
-		GUI = false;
+		GUI = true;
+		//GUI = false;
 
 		if(GUI) {
 			System.out.println("Starting ModifRoundtrip with GUI");
@@ -87,7 +89,7 @@ public class Main {
 
 			// Define the path of the project source folder
 			String projectSourceFolder = "C:/ModifRoundtrip-project/ModifRoundtrip/Test_UML";
-			
+
 			//Define the path of an existing metamodel, if you want to compare the refactored metamodel with the existing one
 			//String targetMetamodel = "C:/ModifRoundtrip/Test_UML/metamodel/existinguml2.ecore";
 			String targetMetamodel = "C:/ModifRoundtrip-project/ModifRoundtrip/Test_UML/metamodel/existingUML.ecore";
@@ -111,7 +113,18 @@ public class Main {
 				if(isUML) {
 					theModifService.Refactoring(projectSourceFolder, modifSpecificationType, isUML, GUI, targetMetamodel);
 				}else {
-					if(multiEcore) {
+					// Define the path of the metamodel to be refactored
+					sourceMetamodelPath = "C:/ModifRoundtrip-project/Test_Vehicles/metamodel/SourceMM.ecore";
+
+					// Verifying dependences to external ecores
+					EPackage sourceMetamodel = UtilEMF.loadMetamodel(sourceMetamodelPath);
+					Set<EPackage> externalPackages = UtilEMF.getAllExternalPackages(sourceMetamodel);	
+					boolean dependsOnExternalEcore = theModifService.dependingOnExternalEcore(externalPackages);
+
+					if(!dependsOnExternalEcore) {
+						// The source metamodel does not depend on other ecores
+						theModifService.Refactoring(sourceMetamodelPath, modifSpecificationType, isUML, GUI, targetMetamodel);
+					}else {
 						// Define the path of the metamodel to be refactored
 						domainMetamodel = "path to the root ecore";
 

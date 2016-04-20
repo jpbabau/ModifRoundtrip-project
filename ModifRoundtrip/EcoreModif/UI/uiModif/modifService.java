@@ -25,10 +25,12 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Scanner;
+import java.util.Set;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
@@ -97,7 +99,7 @@ public class modifService {
 	protected String recontextualizedGraphModelFile;
 	protected String recontextualizedFinalModelFile;
 	protected String projectFile;
-	
+
 	String modifFileName = null;
 
 	protected ArrayList<String> hideClassList;
@@ -645,7 +647,6 @@ public class modifService {
 	 */
 	public ArrayList<EPackage> Refactoring(RootEcoreModif theRootEcoreModif) {
 		ArrayList<EPackage> refactoredPackages = new ArrayList<EPackage>();
-		System.out.println("Refactoring");				
 		if (theRootEcoreModif != null) {
 			if (Refactoring.isOk(theRootEcoreModif)) {
 				// launch refactoring operators
@@ -663,7 +664,7 @@ public class modifService {
 
 		return refactoredPackages;
 	}
-	
+
 	/**
 	 * 
 	 * @param projectSourceFolder
@@ -721,7 +722,35 @@ public class modifService {
 				e.printStackTrace();
 			}
 		}else {
-			// TODO Refactoring
+			// not UML
+			try {
+				String refactoredMetamodelPath = RefactoringSimple(projectSourceFolder, modifSpecificationType, false, GUI);
+				if(existingMetamodel != "") {
+					List<Diff> differences = Compare(refactoredMetamodelPath, existingMetamodel);
+					if(differences.size() == 0){ 
+						System.out.println("Refactored Metamodel and target metamodel match");
+					}else{ 
+						System.out.println("Refactored metamodel and target metamodel does not match. To correct it:");
+						for(org.eclipse.emf.compare.Diff diff : differences) {								
+							String[] split = diff.toString().split(",");
+							if(split[0].contains("ReferenceChangeSpec")) {
+								if(split[0].contains("eClassifiers")) {
+									String className = split[1].substring(split[1].lastIndexOf(" "), split[1].length());
+									DifferenceKind kind = diff.getKind();
+									DifferenceSource source = diff.getSource();
+									if(kind.getName().equals("ADD") && source.getName().equals("LEFT")) {
+										System.out.println("  Remove the"+className+ " EClass");
+									}else if(kind.getName().equals("DELETE") && source.getName().equals("LEFT")) {
+										System.out.println("  Do not remove the"+className+ " EClass");
+									}
+								}
+							}
+						}
+					}
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}		
 		}
 	}
 
@@ -805,7 +834,7 @@ public class modifService {
 		return refactoredMetamodelPath;
 	}
 
-	
+
 	/**
 	 * 
 	 * @param existingMetamodel
@@ -838,7 +867,7 @@ public class modifService {
 		}
 		return refactoredEcoreFile;
 	}
-	
+
 	/**
 	 * Transforms the input ecore according to the operators of the modif file
 	 */
@@ -934,7 +963,94 @@ public class modifService {
 		}
 		return refactoredWithoutK;
 	}
-	
+
+
+	/**
+	 * 
+	 * @param projectSourceFolder
+	 * @param modifSpecificationType
+	 * @throws IOException
+	 */
+	public String RefactoringSimple(String sourceMetamodelPath, int modifSpecificationType, boolean coevolution, boolean GUI) throws IOException {
+		String sourceMetamodelUUIDPath = null;
+		String refactoredMetamodelPath = null;
+		File ProjectFolder = null; 
+
+		File f = new File(sourceMetamodelPath);
+		int idx = f.getName().lastIndexOf('.');
+
+		// Create a by default modif specification
+		if(modifSpecificationType == 1) {
+			if(coevolution) {
+				EPackage sourceMetamodel = UtilEMF.loadMetamodel(sourceMetamodelPath);
+				sourceMetamodelUUID = UtilEMF.addUUIDAttribute(sourceMetamodel);
+
+				sourceMetamodelUUIDPath = f.getAbsolutePath().replace(f.getName(), f.getName().substring(0, idx)+"UUID.ecore");
+				UtilEMF.saveMetamodel(sourceMetamodelUUID, sourceMetamodelUUIDPath);
+
+				modifFileName = f.getParent().replace("metamodel", "modif")+"/NoModif"+f.getName().replace(f.getName(), f.getName().substring(0, idx)+"UUID.modif");			
+				generateModifFile(sourceMetamodelUUIDPath, modifSpecificationType, modifFileName, false);
+
+			}else {
+				modifFileName = f.getParent().replace("metamodel", "modif")+"/NoModif"+f.getName().substring(0,idx)+".modif";				
+				generateModifFile(sourceMetamodelPath, modifSpecificationType, modifFileName, false);
+			}
+		}else if(modifSpecificationType == 2){
+			/*if(coevolution) {
+			modifFileName = projectSourceFolder+"/modif/EraseAllUMLUUID.modif";
+			generateModifFile(projectSourceFolder+"/metamodel/UMLUUID.ecore", modifSpecificationType, modifFileName, true);
+		}else {
+			modifFileName = projectSourceFolder+"/modif/EraseAllUML.modif";
+			generateModifFile(projectSourceFolder+"/metamodel/UML.ecore", modifSpecificationType, modifFileName, false);
+		}*/
+		}
+
+		// Refactoring
+
+		ProjectFolder = f.getParentFile();
+		if(coevolution) {
+			setFiles(f.getParentFile().getParent().toString(), sourceMetamodelUUIDPath, modifFileName, null, null);
+
+		}else {
+			setFiles(f.getParentFile().getParent().toString(), sourceMetamodelPath, modifFileName, null, null);
+		}
+
+		if(!GUI) {
+			Scanner keyboard = new Scanner(System.in);
+			System.out.println("Modify your modif file in order to indicate de operators to be applied");
+			System.out.println("Did you finish? y/n");
+			String finish = keyboard.nextLine();
+
+			if(finish.equals("y")) {
+				if(isUML) {
+					CreateModifUML();
+					// Siplifying the modif specification
+					Minimize(modifFileName);
+					refactoredMetamodelPath = Refactor();
+				}else {
+					CreateModif();
+					Minimize(modifFileName);
+					refactoredMetamodelPath = Refactor();
+				}
+			}else {
+				// TODO finish != y
+			}
+			keyboard.close();
+
+
+			if(coevolution) {
+				// Delete UUIDs from the refactored metamodel
+				EPackage refactoredMetamodel = UtilEMF.removeUUIDAttribute(refactoredMetamodelPath);
+				UtilEMF.saveMetamodel(refactoredMetamodel, refactoredMetamodelPath.replace("UUID",""));
+			}
+		}else {
+			CreateModifUML();
+			//refactoredMetamodelPath = Refactor();
+		}
+		return refactoredMetamodelPath;
+	}
+
+
 	/**
 	 * Returns the name of the by default modif specification
 	 * @return modifFileName
@@ -1091,8 +1207,6 @@ public class modifService {
 		newReferenceName = migrationSpecificationGenerator.getNewReferencesName();
 		referencesToClassMap = migrationSpecificationGenerator.getReferencesToClassMap();
 		System.out.println("[saving] migration specification : ok.");
-
-		System.out.println(" migratedModelFile "+ migratedModelFile);
 		return migratedModelFile;
 	}
 
@@ -1146,7 +1260,7 @@ public class modifService {
 			EObject migratedModel = UtilEMF.changeMetamodel(UtilEMF.removeUUIDValues(getMigratedModel()), UMLPackage.eINSTANCE);	
 
 			// Serialisation of the migrated model
-			UtilEMF.saveModel(migratedModel, projectSourceFolder+"/model/test2.uml");
+			UtilEMF.saveModel(migratedModel, migratedModelNoUUIDPath);
 		}
 	}
 
@@ -1656,5 +1770,28 @@ public class modifService {
 	 */
 	public Map<String, Map<String, Map<String, String>>>  getRenameMap(){
 		return renamemap;
+	}
+
+	/**
+	 * Verifying dependences to external ecores
+	 * @return
+	 */
+	public boolean dependingOnExternalEcore(Set<EPackage> externalPackages) {
+		boolean depends = false;
+		if(externalPackages.size() == 0) {
+			// The source metamodel does not depend on other ecores
+			depends = false;
+		}else if(externalPackages.size() == 1) {
+			// The source metamodel depends on one external ecore
+			for (Iterator<EPackage> it = externalPackages.iterator(); it.hasNext(); ) {
+				EPackage rel = it.next();
+				if(rel.getName().equals("ecore")) {
+					depends = false;
+				}
+			}
+		}else {
+			depends = true;
+		}
+		return depends;
 	}
 }
