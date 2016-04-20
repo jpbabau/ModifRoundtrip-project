@@ -91,7 +91,7 @@ public class Main {
 			String projectSourceFolder = "C:/ModifRoundtrip-project/ModifRoundtrip/Test_UML";
 
 			//Define the path of an existing metamodel, if you want to compare the refactored metamodel with the existing one
-			//String targetMetamodel = "C:/ModifRoundtrip/Test_UML/metamodel/existinguml2.ecore";
+			//String targetMetamodel = "C:/ModifRoundtrip-project/Test_UML/metamodel/existinguml2.ecore";
 			String targetMetamodel = "C:/ModifRoundtrip-project/ModifRoundtrip/Test_UML/metamodel/existingUML.ecore";
 
 			// Define the type of the by defautl modif specification: 
@@ -170,9 +170,31 @@ public class Main {
 				break;
 				// coevolution
 			case 2:
-				// Define the path of the source model
-				String sourceModelPath = "C:/ModifRoundtrip/Test_UML/model/model.uml";
-				theModifService.Coevolution(projectSourceFolder, modifSpecificationType, isUML, sourceModelPath, withMigrationCodeGeneration, GUI, targetMetamodel);
+				String sourceModelPath;
+
+				if(isUML) {
+					// Define the path of the source model
+					sourceModelPath = "C:/ModifRoundtrip-project/Test_UML/model/model.uml";
+					theModifService.Coevolution(projectSourceFolder, modifSpecificationType, isUML, sourceModelPath, withMigrationCodeGeneration, GUI, targetMetamodel);
+				}else {
+					// Define the path of the metamodel to be refactored
+					sourceMetamodelPath = "C:/ModifRoundtrip-project/Test_Vehicles/metamodel/SourceMM.ecore";
+					EPackage sourceMetamodel = UtilEMF.loadMetamodel(sourceMetamodelPath);
+
+					Set<EPackage> externalPackages = UtilEMF.getAllExternalPackages(sourceMetamodel);	
+					boolean dependsOnExternalEcore = theModifService.dependingOnExternalEcore(externalPackages);
+
+					// Verifying dependencies to other ecores
+					if(!dependsOnExternalEcore) {
+						// The source metamodel does not depend on other ecores
+						sourceModelPath = "C:/ModifRoundtrip-project/Test_Vehicles/model/SourceModel.sourcemm.xmi";
+						
+						theModifService.Coevolution(sourceMetamodelPath, modifSpecificationType, isUML, sourceModelPath, withMigrationCodeGeneration, GUI, targetMetamodel);
+
+					}else {
+						
+					}
+				}
 				break;
 				// reuse
 			case 3:
