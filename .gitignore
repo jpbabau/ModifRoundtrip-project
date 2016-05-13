@@ -1,0 +1,9 @@
+.metadata
+
+.svn
+runtime-EclipseApplication/*
+eclipseMR/configuration/*
+eclipseMR/features/*
+eclipseMR/jre7/*
+eclipseMR/p2/*
+eclipseMR/artif*
