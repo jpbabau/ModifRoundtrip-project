@@ -4,11 +4,6 @@
   <eAnnotations source="http://www.eclipse.org/OCL/Import">
     <details key="ecore" value="http://www.eclipse.org/emf/2002/Ecore"/>
   </eAnnotations>
-  <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
-    <details key="invocationDelegates" value="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot"/>
-    <details key="settingDelegates" value="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot"/>
-    <details key="validationDelegates" value="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot"/>
-  </eAnnotations>
   <eClassifiers xsi:type="ecore:EClass" name="Modifications">
     <eStructuralFeatures xsi:type="ecore:EReference" name="rootPackageModification"
         eType="#//PackageModification" containment="true"/>
@@ -56,12 +51,6 @@
         eType="#//EnumModification" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ClassModification" eSuperTypes="#//Modification">
-    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
-      <details key="constraints" value="dontRemoveClassWithUUID"/>
-    </eAnnotations>
-    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
-      <details key="dontRemoveClassWithUUID" value="if self.featureModification->select(f: StructuralFeatureModification | f.oldName = 'UUID')->notEmpty() and self.remove then false else true endif"/>
-    </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="changeAbstract" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
         defaultValueLiteral="false"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="hide" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
@@ -82,13 +71,6 @@
   <eClassifiers xsi:type="ecore:EClass" name="StructuralFeatureModification" abstract="true"
       eSuperTypes="#//Modification"/>
   <eClassifiers xsi:type="ecore:EClass" name="AttributeModification" eSuperTypes="#//StructuralFeatureModification">
-    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
-      <details key="constraints" value="notRemoveUUID dontRenameUUID"/>
-    </eAnnotations>
-    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
-      <details key="notRemoveUUID" value="if self.oldName='UUID' and (self.remove=false) then true else if self.oldName='UUID' and (self.remove=true) then false else true endif endif"/>
-      <details key="dontRenameUUID" value="if self.oldName = 'UUID' then if self.newName = '' then true else self.newName = 'UUID' endif else true endif"/>
-    </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="changeType" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
         defaultValueLiteral="false"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="newType" eType="#//PrimitiveType"
@@ -111,12 +93,10 @@
   <eClassifiers xsi:type="ecore:EClass" name="ChangeBounds">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="oldLower" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="newLower" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="newLower" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="oldUpper" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="newUpper" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="newUpper" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="DataTypeModification" eSuperTypes="#//Modification">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="oldInstanceTypeName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"

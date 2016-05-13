@@ -119,7 +119,7 @@ StructuralFeatureModification returns StructuralFeatureModification:
 
 ChangeBounds returns ChangeBounds:
 	{ChangeBounds}
-	'bounds' '(' oldLower=EInt ',' oldUpper=EInt ')' 'to' '(' newLower=EInt ',' newUpper=EInt ')' ;
+	'bounds' '(' oldLower=EInt ',' oldUpper=EInt ')' ('to' '(' newLower=EInt ',' newUpper=EInt ')' )? ;	
 
 AttributeModification returns AttributeModification:
 	(remove?='remove')?
