@@ -58,11 +58,13 @@ public class IORefactor {
 	 * @param metamodelPath Path to save the metamodel.
 	 */
 	public static void saveMetamodel(EPackage matamodel, String metamodelPath) {
-		try {
-			// TODO Warning is not contained in a resource
-			UtilEMF.saveMetamodel(matamodel, metamodelPath);
-		} catch (IOException e) {
-			e.printStackTrace();
+		if(matamodel != null) {
+			try {
+				// TODO Warning is not contained in a resource
+				UtilEMF.saveMetamodel(matamodel, metamodelPath);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 

@@ -110,6 +110,15 @@ public class ModifIO {
 		this.theRootEcoreModif      = null;
 		this.theRootEcoreModif      = new RootEcoreModifImpl(theRootEcore,theRootModif);
 	}
+	
+	/**
+	 * Builds the RootEcoreModif when the ecore package and the modif specification are given
+	 * @param theRootEcore
+	 * @param theRootModif
+	 */
+	public void setModifIO(EPackage theRootEcore, Modifications theRootModif) {
+		this.theRootEcoreModif = new RootEcoreModifImpl(theRootEcore, theRootModif);
+	}
 		
 	/**
 	 * Sauvegarde de l'objet racine du métamodèle d'entrée dans le fichier
