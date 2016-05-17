@@ -32,6 +32,8 @@ public class UtilRefactor {
 	 * @return compatible. True, if the modif specification can be applied to the metamodel. False, otherwise.
 	 */
 	private static boolean checkModifMetamodelCompatibility() {
+		System.out.println("modifSpecification : "+modifSpecification);
+		
 		boolean compatible = false;
 		String URI = sourceMetamodel.getNsURI();
 		String modifURI = modifSpecification.getRootPackageModification().getOldURIName();
@@ -71,6 +73,8 @@ public class UtilRefactor {
 	 */
 	public static void setModifSpecification(Modifications theModifSpecification) {
 		modifSpecification = theModifSpecification;
+		
+		System.out.println(modifSpecification);
 	}
 
 	/**
