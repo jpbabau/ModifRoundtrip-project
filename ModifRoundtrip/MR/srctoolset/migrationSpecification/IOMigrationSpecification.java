@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.rmi.CORBA.Util;
 
 import migration.Migration;
+import migration.MigrationPackage;
 import modif.Modifications;
 import modifspecification.UtilModifSpecification;
 
@@ -17,8 +18,6 @@ import emf.UtilEMF;
 public class IOMigrationSpecification {
 
 	// ATTRIBUTES ************************************************************************
-
-	private static ModifIO modifIO;
 
 
 	// PUBLIC ****************************************************************************
@@ -33,11 +32,21 @@ public class IOMigrationSpecification {
 		return metamodel;
 	}
 
+	/**
+	 * Load a migration specification.
+	 * @param migrationSpecificationPath Path of the migration specification file.
+	 * @return migrationSpecification. Loaded migration specification.
+	 */
+	public static Migration loadMigrationSpecification(String migrationSpecificationPath){
+		Migration migrationSpecification = (Migration) UtilEMF.loadModel(migrationSpecificationPath, MigrationPackage.eINSTANCE);
+		return migrationSpecification;
+	}
 
 	/**
-	 * 
-	 * @param modelPath
-	 * @return
+	 * Load a model located at a given path.
+	 * @param modelPath Path of the model file
+	 * @param metamodel Metamodel to wich the model is conforms.
+	 * @return model Loaded model.
 	 */
 	public static EObject loadModel(String modelPath, EPackage metamodel) {
 		EObject model = UtilEMF.loadModel(modelPath, metamodel);
@@ -45,20 +54,21 @@ public class IOMigrationSpecification {
 	}
 
 	/**
-	 * 
-	 * @param modifSpecificationPath
-	 * @return
+	 * Load a modif specification.
+	 * @param modifSpecificationPath Path of the modif specification to be loaded.
+	 * @return modif Loaded modif specification.
 	 */
 	public static Modifications loadModifSpecification(String modifSpecificationPath) {
 		ModifIO theModifIO = new ModifIO();
 		Modifications modif = theModifIO.LoadModif(modifSpecificationPath);	
 		UtilModifSpecification.setModifSpecification(modif);
-		modifIO = theModifIO;
 		return modif;
 	}
 
 	/**
-	 * 
+	 * Save a migration specification.
+	 * @param migrationSpecification Migration specification to save in a file.
+	 * @param migrationSpecificationPath Path to save the migration specification.
 	 */
 	public static void saveMigrationSpecification(Migration migrationSpecification, String migrationSpecificationPath) {		
 		if(migrationSpecification != null) {

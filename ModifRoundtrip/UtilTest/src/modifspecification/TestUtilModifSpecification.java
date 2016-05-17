@@ -26,9 +26,11 @@ public class TestUtilModifSpecification {
 		// Save the modif specification
 		IOModifSpecification.saveModifSpecification(modifSpecification, "C:/ModifRoundtrip-project/ModifRoundtrip/UtilTest/modif/Test1/CopyMPL.modif");*/
 
-
 		/** TEST 2  - Minimize **/
 
+		Modifications modifSpecification2 = IOModifSpecification.loadModifSpecification("C:/ModifRoundtrip-project/ModifRoundtrip/UtilTest/modif/Test1/CopyMPL.modif");
+		UtilModifSpecification.setModifSpecification(modifSpecification2);
+		
 		UtilModifSpecification.minimizeToUpdate();
 		Modifications modifSpecificationMinUpdate = UtilModifSpecification.getModifSpecification();
 		IOModifSpecification.saveModifSpecification(modifSpecificationMinUpdate, "C:/ModifRoundtrip-project/ModifRoundtrip/UtilTest/modif/Test2/CopyMPLMinUpdate.modif");

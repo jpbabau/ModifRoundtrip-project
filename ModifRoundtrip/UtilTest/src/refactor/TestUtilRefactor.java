@@ -11,13 +11,13 @@ public class TestUtilRefactor {
 		/** TEST 1  - Refactoring **/
 
 		// Load source metamodel (with UUIDs) 	
-		EPackage sourceMetamodel = IORefactor.loadMetamodel("C:/ModifRoundtrip/UtilTest/metamodel/Test2/MPLUUID.ecore");	
+		EPackage sourceMetamodel = IORefactor.loadMetamodel("C:/ModifRoundtrip-project/ModifRoundtrip/UtilTest/metamodel/Test2/MPLUUID.ecore");	
 		
 		// Set source metamodel
 		UtilRefactor.setSourceMetamodel(sourceMetamodel);	
 		
 		// Load modif specification
-		Modifications modifSpecification = IORefactor.loadModifSpecification("C:/ModifRoundtrip/UtilTest/modif/Test1/CopyMPL.modif");
+		Modifications modifSpecification = IORefactor.loadModifSpecification("C:/ModifRoundtrip-project/ModifRoundtrip/UtilTest/modif/Test1/CopyMPL.modif");
 		
 		// Set modif specification
 		UtilRefactor.setModifSpecification(modifSpecification);
@@ -29,7 +29,7 @@ public class TestUtilRefactor {
 		EPackage targetMetamodel = UtilRefactor.getTargetMetamodel();
 		
 		// Save target metamodel
-		IORefactor.saveMetamodel(targetMetamodel, "C:/ModifRoundtrip/UtilTest/metamodel/Test1/MPLUUIDRefactored.ecore");
+		IORefactor.saveMetamodel(targetMetamodel, "C:/ModifRoundtrip-project/ModifRoundtrip/UtilTest/metamodel/Test1/MPLUUIDRefactored.ecore");
 		
 	}
 
