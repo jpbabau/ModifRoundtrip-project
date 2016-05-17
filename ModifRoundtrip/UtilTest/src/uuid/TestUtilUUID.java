@@ -28,13 +28,13 @@ public class TestUtilUUID {
 		EPackage metamodelNoUUID = UtilUUID.removeUUIDMetamodelAttribute(metamodelUUID);
 
 		// Remove UUID from model
-		EObject modelNOUUID = UtilUUID.removeUUIDModelAttribute(modelUUID, metamodelNoUUID);
+		EObject modelNOUUID = UtilUUID.removeUUIDModelAttribute(modelUUID, metamodelNoUUID); 
 
 
 		/** TEST 2  - Metamodel **/
 
 		// Add UUID to metamodel
-	EPackage metamodelUUID2 = UtilUUID.addUUIDMetamodelAttribute(metamodel);
+		EPackage metamodelUUID2 = UtilUUID.addUUIDMetamodelAttribute(metamodel);
 		IOUUID.saveMetamodel(metamodelUUID2, "C:/ModifRoundtrip-project/ModifRoundtrip/UtilTest/metamodel/Test2/MPLUUID.ecore");
 
 		// Remove UUID from metamodel
@@ -46,11 +46,11 @@ public class TestUtilUUID {
 
 		// Add UUID to model
 		EObject model3 = UtilUUID.addUUIDModelAttribute(model, metamodelUUID2);
-		IOUUID.saveModel(model3, "C:/ModifRoundtrip/UtilTest/model/Test3/model.mpluuid.xmi");
+		IOUUID.saveModel(model3, "C:/ModifRoundtrip-project/ModifRoundtrip/UtilTest/model/Test3/model.mpluuid.xmi");
 
 		// Remove UUID from model
 		EObject modelNOUUID3 = UtilUUID.removeUUIDModelAttribute(model3, metamodelNoUUID2);
-		IOUUID.saveModel(modelNOUUID3, "C:/ModifRoundtrip/UtilTest/model/Test3/model.mplnouuid.xmi");
+		IOUUID.saveModel(modelNOUUID3, "C:/ModifRoundtrip-project/ModifRoundtrip/UtilTest/model/Test3/model.mplnouuid.xmi");
 
 	}
 }
