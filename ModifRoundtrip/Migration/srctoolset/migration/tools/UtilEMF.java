@@ -1145,6 +1145,24 @@ public class UtilEMF {
 		return map;
 	}
 
+
+	/**
+	 * Initialisation of a map relating UUIDs to the corresponding EObjects.
+	 * @param root The root instance of the model to scan.
+	 * @return The map relating UUIDs to instances of root (root included).
+	 */
+	public static Map<String, EObject> createUUIDMap(EObject root, String UUIDtimestamp) {
+		Map<String, EObject> map = new HashMap<String, EObject>();
+		List<EObject> fifo = new ArrayList<EObject>();
+		for(fifo.add(root); !fifo.isEmpty(); ) {
+			EObject next = fifo.remove(0);
+			String nextUUID = UtilEMF.getUUID(next, UUIDtimestamp);			
+			if (nextUUID!=null) map.put(nextUUID, next);
+			fifo.addAll(next.eContents());
+		}
+		return map;
+	}
+
 	/**
 	 * Provides the set of external packages definig feature types.
 	 * @param root The root package to scan.
@@ -1189,6 +1207,23 @@ public class UtilEMF {
 	public static String getUUID (Object o) {
 		EObject instance = ( (o==null||!(o instanceof EObject)) ? null : (EObject)o );
 		EStructuralFeature esfUUID = (instance==null ? null : instance.eClass().getEStructuralFeature("UUID"));
+		Object value = (esfUUID==null ? null : instance.eGet(esfUUID));
+		return ( (value==null||!(value instanceof String)) ? null : (String)value );
+	}
+
+	/**
+	 * Get the String value of UUID if it exists.
+	 * @param o Object to scan.
+	 * @return The UUID of o if it exists or null.
+	 */
+	public static String getUUID (Object o, String UUIDtimestamp) {
+		EObject instance = ( (o==null||!(o instanceof EObject)) ? null : (EObject)o );		
+		EStructuralFeature esfUUID;
+		if(UUIDtimestamp != null){
+			esfUUID = (instance==null ? null : instance.eClass().getEStructuralFeature(UUIDtimestamp));
+		}else{
+			esfUUID = (instance==null ? null : instance.eClass().getEStructuralFeature("UUID"));
+		}
 		Object value = (esfUUID==null ? null : instance.eGet(esfUUID));
 		return ( (value==null||!(value instanceof String)) ? null : (String)value );
 	}

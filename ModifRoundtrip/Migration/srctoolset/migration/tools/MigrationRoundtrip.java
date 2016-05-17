@@ -33,6 +33,8 @@ public class MigrationRoundtrip {
 
 	// PRIVATE Attributes************************************************************************
 
+	private String UUIDtimeStamp;
+
 	private EPackage metamodelSource;
 	private EPackage metamodelTarget;
 
@@ -167,10 +169,18 @@ public class MigrationRoundtrip {
 		this.metamodelSource = UtilEMF.loadMetamodel(inputMetamodelFile);
 		this.metamodelTarget = UtilEMF.loadMetamodel(outputMetamodelFile);
 		this.model1SInit     = UtilEMF.loadModel(inputModelFile, this.metamodelSource);
+
+		// Get timestamp for the initial model
+		for(EAttribute attribute : this.model1SInit.eClass().getEAllAttributes()){
+			if(attribute.getName().contains("UUID")){
+				UUIDtimeStamp = attribute.getName();
+				break;
+			}
+		}
 		// Initialisation of migrated model file path (the migrated model is not created here):
 		this.model2TMigratedFilePath = outputFile.path();
 		// Extraction of deleted links:
-		this.deletedLinks = new DeletedLinks(this.model1SInit, migration);
+		this.deletedLinks = new DeletedLinks(this.model1SInit, migration, UUIDtimeStamp);
 		//this.hiddenReferencesMap = this.deletedLinks.buildReferencesMap();
 	}
 
@@ -184,15 +194,17 @@ public class MigrationRoundtrip {
 		// Copy of initial model:
 		EObject model1SInitCopy = EcoreUtil.copy(this.model1SInit);
 		// Instance dictionary from this copy:
-		Map<String, EObject> mapUUIDmodelSInitCopy = UtilEMF.createUUIDMap(model1SInitCopy);
+		Map<String, EObject> mapUUIDmodelSInitCopy = UtilEMF.createUUIDMap(model1SInitCopy, UUIDtimeStamp);
 		// Scan of deleted links:
 		for (String s : this.deletedLinks.getSourceUUIDs()){
 			for (EStructuralFeature esf : this.deletedLinks.getDeletedFeatures(s)){
 				for (Object o : this.deletedLinks.getDeletedFeatureValues(s, esf)) {
 					EObject sourceInstance = mapUUIDmodelSInitCopy.get(s);
-					if (esf instanceof EReference && o instanceof String) o = mapUUIDmodelSInitCopy.get(o);
-					if (esf.isMany()) ((Collection<?>)sourceInstance.eGet(esf)).remove(o);
-					else sourceInstance.eUnset(esf);
+					if(sourceInstance != null){
+						if (esf instanceof EReference && o instanceof String) o = mapUUIDmodelSInitCopy.get(o);
+						if (esf.isMany()) ((Collection<?>)sourceInstance.eGet(esf)).remove(o);
+						else sourceInstance.eUnset(esf);
+					}
 				}
 			}
 		}
@@ -203,7 +215,6 @@ public class MigrationRoundtrip {
 
 
 	public EObject onwardMigrationRename(Map<String, Map<String, Map<String, String>>> renameMap) {
-		System.out.println("  ** *******  * Onward Migration with renameMap "+renameMap);
 		// Copy of initial model:
 		EObject model1SInitCopy = EcoreUtil.copy(this.model1SInit);
 		// Instance dictionary from this copy:

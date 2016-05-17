@@ -134,7 +134,6 @@ class DeletedLinks {
 		// Scan of initial instances with UUIDs:
 		for(String initialInstanceUUID : initModelMap.keySet()) {
 			EObject  initialInstance          = initModelMap.get(initialInstanceUUID);
-			System.out.println("initialInstance  : "+initialInstance.eGet(initialInstance.eClass().getEStructuralFeature("UUID")).toString());
 			Deletion initialInstanceMigration = migrationMap.get(initialInstanceUUID);
 			//Hide initialInstanceMigrationHide = migrationMapHide.get(initialInstanceUUID);
 
@@ -143,7 +142,77 @@ class DeletedLinks {
 					// This instance must be deleted, so we look for its containing link:
 					EObject initialInstanceContainer = initialInstance.eContainer();
 					if (initialInstanceContainer!=null) {
-						String containingInstanceUUID = UtilEMF.getUUID(initialInstanceContainer);
+						String containingInstanceUUID = UtilEMF.getUUID(initialInstanceContainer);						
+						if (containingInstanceUUID==null) System.err.println("Warning: required UUID not found ("+initialInstanceContainer+").");
+						else this.linkMap.put(containingInstanceUUID, initialInstance.eContainmentFeature(), initialInstanceUUID);
+					}
+					else System.err.println("Warning: attempt to delete root object ("+initialInstanceContainer+").");
+				}
+				else {
+					// This instance must be kept, so we scan its features to collect deleted links:
+					Set<String> deletedFeaturesNames = new HashSet<String>();
+					for (DeletedAttribute a : initialInstanceMigration.getDeletedAttributes()) deletedFeaturesNames.add(a.getName());
+					for (DeletedReference r : initialInstanceMigration.getDeletedReferences()) deletedFeaturesNames.add(r.getName());
+					for (String esfn : deletedFeaturesNames) {
+						EStructuralFeature esf = initialInstance.eClass().getEStructuralFeature(esfn);
+						String className       = initialInstance.eClass().getName();
+						if (esf==null) System.err.println( "Warning: feature "+esfn+" is supposed to be deleted but it is not found in class "+className+".");
+						else if (esf instanceof EReference && ((EReference)esf).isContainer()) System.err.println( "Warning: feature "+className+"."+esfn+" is supposed to be deleted but it is a container.");
+						else if (!esf.isChangeable()) System.err.println( "Warning: feature "+className+"."+esfn+" is supposed to be deleted but it is not changeable.");
+						else if (initialInstance.eIsSet(esf)) {
+							if (esf.isMany()) this.linkMap.putAll(initialInstanceUUID, esf, translateFeatureValues(esf, initialInstance)); 
+							else              this.linkMap.put   (initialInstanceUUID, esf, translateFeatureValue(initialInstance.eGet(esf), esf, initialInstance));
+						}
+					}
+				}
+			} // end if (initialInstanceMigration!=null) ; else -> there is nothing to do...
+		} // end of scan.
+		// Some links are redundant because their sources are contained in deleted instances:
+		for (String linkSourceUUID : this.linkMap.key1Set()) { // linkSourceUUID = instance UUID, source of link to be deleted
+			EObject target = initModelMap.get(linkSourceUUID); String targetUUID = linkSourceUUID;          // link target
+			EObject source = target.eContainer()             ; String sourceUUID = UtilEMF.getUUID(source); // source target
+			EStructuralFeature containingFeature = target.eContainingFeature();                             // link feature
+			boolean toRemove = false; // states if links from linkSourceUUID are redundant
+			while (source!=null && !toRemove) {
+				if (sourceUUID!= null && targetUUID!= null && this.linkMap.get(sourceUUID, containingFeature).contains(targetUUID)) toRemove=true;
+				target = source             ; targetUUID = sourceUUID;
+				source = target.eContainer(); sourceUUID = UtilEMF.getUUID(source);
+				containingFeature = target.eContainingFeature();
+			}
+			if (toRemove) this.linkMap.remove(linkSourceUUID);
+		}
+	}
+	
+	public DeletedLinks(EObject model1sInit, Migration migration, String UUIDtimestamp) {
+		this.linkMap      = new Triplet<String, EStructuralFeature, Object>();
+		// map UUID -> instance:
+		Map<String, EObject> initModelMap = UtilEMF.createUUIDMap(model1sInit, UUIDtimestamp);
+		// map UUID -> deletion specification:		
+		Map<String, Deletion> migrationMap = new HashMap<String, Deletion>();
+		//Map<String, Hide> migrationMapHide = new HashMap<String, Hide>();
+		ArrayList<String> uuidList = new ArrayList<String>();
+
+		for (Instance i : migration.getInstances()){
+			if (i.getDeletion()!=null){
+				migrationMap.put(i.getUUID(), i.getDeletion());
+			}
+			//if (i.getHide() != null){
+				//migrationMapHide.put(i.getUUID(), i.getHide());
+			//}
+		}
+		// Scan of initial instances with UUIDs:
+		for(String initialInstanceUUID : initModelMap.keySet()) {
+			EObject  initialInstance          = initModelMap.get(initialInstanceUUID);
+			Deletion initialInstanceMigration = migrationMap.get(initialInstanceUUID);
+			//Hide initialInstanceMigrationHide = migrationMapHide.get(initialInstanceUUID);
+
+			if (initialInstanceMigration!=null) { // this instance must be modified
+				if (initialInstanceMigration.isDeleteInstance()) {
+					// This instance must be deleted, so we look for its containing link:
+					EObject initialInstanceContainer = initialInstance.eContainer();
+					if (initialInstanceContainer!=null) {
+						
+						String containingInstanceUUID = UtilEMF.getUUID(initialInstanceContainer, UUIDtimestamp);						
 						if (containingInstanceUUID==null) System.err.println("Warning: required UUID not found ("+initialInstanceContainer+").");
 						else this.linkMap.put(containingInstanceUUID, initialInstance.eContainmentFeature(), initialInstanceUUID);
 					}
@@ -173,14 +242,12 @@ class DeletedLinks {
 				EList<Instance> source = null;
 				for(IncomingReference incoming : initialInstanceMigrationHide.getIncoming()){
 					source = incoming.getSource();
-					//System.out.println(" source "+source);
 					//deletedFeaturesNames.add(incoming.getIncomingReferenceName());
 					for(NewReference newReference : incoming.getTarget()){
 						deletedFeaturesNames.add(newReference.getOldOutgoingName());
 					}
 				}
 				for (String esfn : deletedFeaturesNames) {
-					System.out.println("esf  "+esfn);
 					EStructuralFeature esf = initialInstance.eClass().getEStructuralFeature(esfn);
 					String className       = initialInstance.eClass().getName();
 					if (esf==null){
@@ -189,20 +256,14 @@ class DeletedLinks {
 						while(it.hasNext()){
 							String key = it.next();
 							for(Instance s : source){
-								System.out.println(" ss "+s.getUUID());
 								if(s.getUUID().equals(key)){
-									System.out.println("   esfn :  "+esfn);
 									esf = initModelMap.get(key).eClass().getEStructuralFeature(esfn);
-									System.out.println(" 같 esf  :  "+esf);
 									className       = initModelMap.get(key).eClass().getName();
-									System.out.println(" 같 className  :  "+className);
 									if (esf.isMany()){
 										this.linkMap.putAll(initialInstanceUUID, esf, translateFeatureValues(esf, initModelMap.get(key))); 
-										//System.out.println(" 같 MANY");
 									}
 									else {
 										this.linkMap.put   (initialInstanceUUID, esf, translateFeatureValue(initModelMap.get(key).eGet(esf), esf, initModelMap.get(key)));
-										//System.out.println(" 같 ONE");
 									}
 								}else{
 									System.err.println( "Warning: feature "+esfn+" is supposed to be deleted but it is not found in class "+className+".");
@@ -232,7 +293,6 @@ class DeletedLinks {
 							}
 						}
 						for (String esfn : deletedFeaturesNames) {
-							System.out.println("esf  "+esfn);
 							EStructuralFeature esf = initialInstance.eClass().getEStructuralFeature(esfn);
 							String className       = initialInstance.eClass().getName();
 							if (esf==null){
@@ -241,20 +301,14 @@ class DeletedLinks {
 								while(it.hasNext()){
 									String key = it.next();
 									for(Instance s : source2){
-										System.out.println(" ss "+s.getUUID());
 										if(s.getUUID().equals(key)){
-											System.out.println("   esfn :  "+esfn);
 											esf = initModelMap.get(key).eClass().getEStructuralFeature(esfn);
-											System.out.println(" 같 esf  :  "+esf);
 											className       = initModelMap.get(key).eClass().getName();
-											System.out.println(" 같 className  :  "+className);
 											if (esf.isMany()){
 												this.linkMap.putAll(initialInstanceUUID, esf, translateFeatureValues(esf, initModelMap.get(key))); 
-												//System.out.println(" 같 MANY");
 											}
 											else {
 												this.linkMap.put   (initialInstanceUUID, esf, translateFeatureValue(initModelMap.get(key).eGet(esf), esf, initModelMap.get(key)));
-												//System.out.println(" 같 ONE");
 											}
 										}else{
 											System.err.println( "Warning: feature "+esfn+" is supposed to be deleted but it is not found in class "+className+".");
