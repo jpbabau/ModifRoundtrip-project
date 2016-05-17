@@ -1,10 +1,13 @@
 package modifspecification;
 
+import modif.ClassModification;
 import modif.Modifications;
+import modif.PackageModification;
 import modif.util.Minimize;
 import modif.util.utilModifFactory;
 
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 
 import ecoremodifutils.ModifIO;
 
@@ -27,7 +30,24 @@ public class UtilModifSpecification {
 
 	// PRIVATE **********************************************************************************
 
-
+	/**
+	 * Remove the class containing UUIDs from the modif specification.
+	 * @return modifSpecificationNoUUID Modif specification without UUIDs.
+	 */
+	private static Modifications removeUUIDFromSpecification(){
+		Modifications modifSpecificationNoUUID = modifSpecification;
+		ClassModification UUIDClass = null;
+		PackageModification pm = modifSpecificationNoUUID.getRootPackageModification();
+		for( ClassModification cm : pm.getClassModification()){
+			if(cm.getOldName().equals("UUIDClass")){
+				UUIDClass = cm;
+			}
+		}
+		if(UUIDClass != null){
+			EcoreUtil.remove(UUIDClass);
+		}
+		return modifSpecificationNoUUID;
+	}
 	// PUBLIC **********************************************************************************
 
 	/**
@@ -51,6 +71,8 @@ public class UtilModifSpecification {
 			theRootModif = anUtilModifFactory.generateEraseAll(theRootEcore);
 		}
 		modifSpecification = theRootModif;
+		
+		modifSpecification = removeUUIDFromSpecification();
 	}
 
 	/**
@@ -81,7 +103,7 @@ public class UtilModifSpecification {
 		Minimize tool = new Minimize();
 		tool.go(modifSpecification, 1);
 	}
-
+	
 	/**
 	 * Set source metamodel.
 	 * @param theSourceMetamodel Source metamodel.
