@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="loc" nsURI="http://fr.ubo.mde.babau.loc" nsPrefix="loc">
+  <eClassifiers xsi:type="ecore:EClass" name="Bateau" eSuperTypes="#//ElementNomme"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Agence" eSuperTypes="#//ElementNomme">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="loue" lowerBound="1" upperBound="-1"
+        eType="#//Bateau" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="clients" lowerBound="1"
+        upperBound="-1" eType="#//Loueur" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ElementNomme" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="nom" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Loueur" eSuperTypes="#//ElementNomme">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="loue" lowerBound="1" eType="#//Bateau"/>
+  </eClassifiers>
+</ecore:EPackage>

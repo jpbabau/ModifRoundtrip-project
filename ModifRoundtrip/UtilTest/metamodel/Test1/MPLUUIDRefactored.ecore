@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="ASCII"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="MPL2" nsURI="file:/C:/ModifRoundtrip-project/ModifRoundtrip/UtilTest/metamodel/Test1/MPLUUIDRefactored.ecore" nsPrefix="fr.marpon.MPL2">
+  <eClassifiers xsi:type="ecore:EClass" name="Command" abstract="true" eSuperTypes="//UUIDClass"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Set" eSuperTypes="//Command">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="variable" lowerBound="1" eType="//Variable" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="comm" eType="//Command" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="val" eType="//Value" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Stop" eSuperTypes="//Command"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Expr" eSuperTypes="//Command">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expression" lowerBound="1" eType="//Expression" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Go" eSuperTypes="//Command">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="coord" lowerBound="1" eType="//Variable"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="block" lowerBound="1" eType="//Block" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Halt" eSuperTypes="//Command"/>
+  <eClassifiers xsi:type="ecore:EClass" name="While" eSuperTypes="//Command">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expression" lowerBound="1" eType="//Expression" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="block" lowerBound="1" eType="//Block" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Extern" eSuperTypes="//Command">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="variable" lowerBound="1" eType="//Variable"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Return" eSuperTypes="//Command">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="value" eType="//Value" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Proc" eSuperTypes="//Command">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="procName" lowerBound="1">
+      <eType xsi:type="ecore:EDataType" href="Ecore.ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="variable" upperBound="-1" eType="//Variable"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="block" lowerBound="1" eType="//Block" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Coordinate" eSuperTypes="//Command">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="values" lowerBound="2" upperBound="2" eType="//Value" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Add" eSuperTypes="//Command">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="coord" lowerBound="1" eType="//Variable"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="values" lowerBound="2" upperBound="2" eType="//Value" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Follow" eSuperTypes="//Command">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="variable" lowerBound="1" eType="//Variable"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="block" eType="//Block" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Station" eSuperTypes="//Command">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="coord" lowerBound="1" eType="//Variable"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="values" lowerBound="1" eType="//Value" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Log" eSuperTypes="//Command">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="text" lowerBound="1">
+      <eType xsi:type="ecore:EDataType" href="Ecore.ecore#//EString"/>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Time" eSuperTypes="//Command">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="mode" lowerBound="1" eType="//Value" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Timer" eSuperTypes="//Command">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expr" lowerBound="1" eType="//Expression"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Run" eSuperTypes="//Command">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="file" lowerBound="1">
+      <eType xsi:type="ecore:EDataType" href="Ecore.ecore#//EString"/>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Operator" abstract="true" eSuperTypes="//UUIDClass"/>
+  <eClassifiers xsi:type="ecore:EClass" name="OperatorSup" eSuperTypes="//Operator"/>
+  <eClassifiers xsi:type="ecore:EClass" name="OperatorInf" eSuperTypes="//Operator"/>
+  <eClassifiers xsi:type="ecore:EClass" name="OperatorPlus" eSuperTypes="//Operator"/>
+  <eClassifiers xsi:type="ecore:EClass" name="OperatorMinus" eSuperTypes="//Operator"/>
+  <eClassifiers xsi:type="ecore:EClass" name="OperatorEqual" eSuperTypes="//Operator"/>
+  <eClassifiers xsi:type="ecore:EClass" name="OperatorMult" eSuperTypes="//Operator"/>
+  <eClassifiers xsi:type="ecore:EClass" name="OperatorDiv" eSuperTypes="//Operator"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Block" eSuperTypes="//UUIDClass">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="commands" lowerBound="1" upperBound="-1" eType="//Command" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Variable" eSuperTypes="//UUIDClass">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1">
+      <eType xsi:type="ecore:EDataType" href="Ecore.ecore#//EString"/>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Expression" eSuperTypes="//UUIDClass">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="variables" upperBound="-1" eType="//Variable"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="values" upperBound="-1" eType="//Value" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="operator" lowerBound="2" upperBound="2" eType="//Operator" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Value" eSuperTypes="//UUIDClass">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1">
+      <eType xsi:type="ecore:EDataType" href="Ecore.ecore#//EString"/>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Coord" eSuperTypes="//UUIDClass">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="values" lowerBound="2" upperBound="2" eType="//Value"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="UUIDClass" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="UUID1305161702" lowerBound="1">
+      <eType xsi:type="ecore:EDataType" href="Ecore.ecore#//EString"/>
+    </eStructuralFeatures>
+  </eClassifiers>
+</ecore:EPackage>
