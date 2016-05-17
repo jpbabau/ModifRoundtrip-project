@@ -63,22 +63,6 @@ public class UtilUUID {
 	}
 
 	/**
-	 * Get the timestamp associated to the UUID attribute.
-	 * @return UUIDtimeStamp Timestamp of the UUID attribute.
-	 */
-	private static String getTimeStampFromModel(EObject model) {
-		String timeStamp = null;
-		for(EAttribute attribute : model.eClass().getEAllAttributes()){
-			if(attribute.getName().contains("UUID")){
-				timeStamp = attribute.getName();
-				break;
-			}
-		}
-		setTimeStamp(timeStamp);
-		return timeStamp;
-	}
-
-	/**
 	 * Get the classes to the top of the hierarchy.
 	 * It means, the classes that do not inherits from other classes.
 	 * @param metamodel Metamodel to be evaludated.
@@ -188,6 +172,22 @@ public class UtilUUID {
 		EObject modelUUIDAttribute = UtilEMF.changeMetamodel(model, metamodelUUID);
 		EObject modelUUID = setUUIDValues(modelUUIDAttribute);
 		return modelUUID;
+	}
+	
+	/**
+	 * Get the timestamp associated to the UUID attribute.
+	 * @return UUIDtimeStamp Timestamp of the UUID attribute.
+	 */
+	public static String getTimeStampFromModel(EObject model) {
+		String timeStamp = null;
+		for(EAttribute attribute : model.eClass().getEAllAttributes()){
+			if(attribute.getName().contains("UUID")){
+				timeStamp = attribute.getName();
+				break;
+			}
+		}
+		setTimeStamp(timeStamp);
+		return timeStamp;
 	}
 
 	/**

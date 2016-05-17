@@ -1,5 +1,7 @@
 package migrationSpecification;
 
+import java.io.File;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +12,8 @@ import migration.impl.MigrationFactoryImpl;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
+
+import uuids.UtilUUID;
 
 
 /**
@@ -28,6 +32,7 @@ public class UtilMigrationSpecification {
 	// ATTRIBUTES ****************************************************************************
 	
 	public static EPackage sourceMetamodel;
+	public static EPackage targetMetamodel;
 	public static Modifications modifSpecification;
 	public static EObject sourceModel;
 	public static Migration migrationSpecification;
@@ -48,17 +53,16 @@ public class UtilMigrationSpecification {
 		Migration migration = factory.createMigration();
 		String sourceMetamodelURI = modifSpecification.getRootPackageModification().getOldURIName();
 		String targetMetamodelURI = modifSpecification.getRootPackageModification().getNewURIName();
-		String sourceModel = "";
+		String sourceModelURI = "";
 		String targetModel = "";
 		
 		migration.setInputMetamodelURI(sourceMetamodelURI);
 		migration.setOutputMetamodelURI(targetMetamodelURI);
-		migration.setInputModelURI(sourceModel);
+		migration.setInputModelURI(sourceModelURI);
 		migration.setOutputModelURI(targetModel);
 		
-		/*
-		migration.setInputModelURI(URI.createFileURI(new File(this.inputModelFile).getAbsolutePath()).toString());
-		migration.setOutputModelURI(URI.createFileURI(new File(this.outputModelFile).getAbsolutePath()).toString());*/
+		/* migration.setInputModelURI(URI.createFileURI(new File(this.inputModelFile).getAbsolutePath()).toString()); */
+		
 		return migration;
 		
 	}
@@ -73,8 +77,13 @@ public class UtilMigrationSpecification {
 		allInstances = new ArrayList<Instance>();
 		Migration result = migrationSpecification;
 		Instance rootinstance = factory.createInstance();
-	//	String rootuuid = (String) sourceModel.eGet(sourceModel.eClass().getEStructuralFeature("UUID"));
-	//	rootinstance.setUUID(rootuuid);
+		
+		String UUIDname = UtilUUID.getTimeStampFromModel(sourceModel);
+		
+		System.out.println("UUIDname :  " + UUIDname);
+		
+		String rootuuid = (String) sourceModel.eGet(sourceModel.eClass().getEStructuralFeature("UUIDname"));
+		rootinstance.setUUID(rootuuid);
 		allInstances.add(rootinstance);
 		if(!sourceModel.eContents().isEmpty()){
 			//for(EObject object : sourceModel.eContents()){ this.createInstance(object); }
@@ -95,7 +104,7 @@ public class UtilMigrationSpecification {
 	public static void generateMigrationSpecification() {
 		Migration theMigrationSpecification = null;
 		
-		
+		// create an empty migration specification
 		theMigrationSpecification = createMigrationSpecification();
 		Migration migrationresult = migrationRoot(theMigrationSpecification, sourceModel);
 		
@@ -132,5 +141,13 @@ public class UtilMigrationSpecification {
 	
 	public static void setSourceModel(EObject model) {
 		sourceModel = model;
+	}
+	
+	/**
+	 * Set the target metamodel
+	 * @param theTargetMetamodel
+	 */
+	public static void setTargetMetamodel(EPackage theTargetMetamodel) {
+		targetMetamodel = theTargetMetamodel;
 	}
 }

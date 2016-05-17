@@ -15,12 +15,12 @@ import ecoremodifutils.ModifIO;
 import emf.UtilEMF;
 
 public class IOMigrationSpecification {
-	
+
 	// ATTRIBUTES ************************************************************************
-	
+
 	private static ModifIO modifIO;
-	
-	
+
+
 	// PUBLIC ****************************************************************************
 
 	/**
@@ -32,8 +32,8 @@ public class IOMigrationSpecification {
 		EPackage metamodel = UtilEMF.loadMetamodel(metamodelPath);
 		return metamodel;
 	}
-	
-	
+
+
 	/**
 	 * 
 	 * @param modelPath
@@ -43,7 +43,7 @@ public class IOMigrationSpecification {
 		EObject model = UtilEMF.loadModel(modelPath, metamodel);
 		return model;
 	}
-	
+
 	/**
 	 * 
 	 * @param modifSpecificationPath
@@ -56,16 +56,18 @@ public class IOMigrationSpecification {
 		modifIO = theModifIO;
 		return modif;
 	}
-	
+
 	/**
 	 * 
 	 */
 	public static void saveMigrationSpecification(Migration migrationSpecification, String migrationSpecificationPath) {		
-		try {
-			UtilEMF.saveModel(migrationSpecification, migrationSpecificationPath);
-		} catch (IOException e) {
-			e.printStackTrace();
+		if(migrationSpecification != null) {
+			try {
+				UtilEMF.saveModel(migrationSpecification, migrationSpecificationPath);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
-	
+
 }
