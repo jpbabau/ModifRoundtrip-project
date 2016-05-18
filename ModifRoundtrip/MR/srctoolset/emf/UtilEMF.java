@@ -109,7 +109,6 @@ public class UtilEMF {
 		@SuppressWarnings("unchecked")
 		public void copyFeatures() {
 			for (EObject sourceInstance : this.map.keySet()) {
-				System.out.println(" sourceInstance :  "+sourceInstance);
 				EObject targetInstance = this.map.get(sourceInstance);
 				// Recreation of changeable features (excluding derived features):
 				for (EStructuralFeature sourceFeature : sourceInstance.eClass().getEAllStructuralFeatures())
@@ -123,7 +122,6 @@ public class UtilEMF {
 									((EList<Object>) targetInstance.eGet(targetFeature)).add(this.createFeatureValueCopy(sourceFeature, sourceFeatureValue));
 							else { // update of single valued reference
 								Object sourceFeatureValue = sourceInstance.eGet(sourceFeature);
-								System.out.println(" sourceFeatureValue  "+sourceFeatureValue);
 								if (sourceFeatureValue!=null) 
 									targetInstance.eSet(targetFeature, this.createFeatureValueCopy(sourceFeature, sourceFeatureValue));
 							}
@@ -134,7 +132,6 @@ public class UtilEMF {
 		@SuppressWarnings("unchecked")
 		public void copyFeatures(Map<String,Map<String,Map<String,String>>> mymap) {
 			for (EObject sourceInstance : this.map.keySet()) {
-				System.out.println("source : "+sourceInstance.eClass().getName());
 
 				/*for (Entry<String, Map<String, Map<String, String>>> e: mymap.entrySet()) {
 					System.out.println("["+e.getKey() + "=" + e.getValue()+"]");
@@ -149,20 +146,11 @@ public class UtilEMF {
 					featuresName = e.getValue();
 				}
 
-				//System.out.println(newClassName);
-
 				EObject targetInstance = this.map.get(sourceInstance);
-
-				System.out.println("target : "+targetInstance.eClass().getName());
 				// Recreation of changeable features (excluding derived features):
 				for (EStructuralFeature sourceFeature : sourceInstance.eClass().getEAllStructuralFeatures()){
-					//	System.out.println("sourcefeature : "+sourceFeature.getName());
-					//	System.out.println("targetFeatureMAP : "+featuresName.get(sourceFeature.getName()));
-
 					if (sourceInstance.eIsSet(sourceFeature)) {
 						EStructuralFeature targetFeature = targetInstance.eClass().getEStructuralFeature(featuresName.get(sourceFeature.getName()));
-						//System.out.println("targetFeature : "+targetFeature.getName());
-
 
 						if (targetFeature==null) throw new IllegalArgumentException("The source feature "+sourceInstance.eClass().getName()+"."+sourceFeature.getName()+" is not found in the target metamodel.");
 						if (targetFeature.isChangeable() // there is someting to set in the target...
@@ -232,11 +220,7 @@ public class UtilEMF {
 			}*/
 
 			EClass sourceClassType = source.eClass();
-			//System.out.println("sourceClassType : "+sourceClassType.getName());
-
 			Map<String, Map<String,String>> value = renameMap.get(sourceClassType.getName());
-			//System.out.println("value : "+value);
-
 			String key = null ;
 			Map<String,String> val = new HashMap<String, String>();
 
@@ -349,17 +333,13 @@ public class UtilEMF {
 			EStructuralFeature uuid_c = null;
 			EStructuralFeature uuid_sc = null;
 			if (next instanceof EClass) { // update of the classes...
-				EClass c = (EClass) next;
-				//System.out.println(" c "+c.getName());
-				
+				EClass c = (EClass) next;	
 				for(EStructuralFeature feature :c.getEStructuralFeatures() ){
 					if(feature.getName().equals("UUID")){ 
 						uuid_c = feature; 
-					//	System.out.println("   id  "+uuid_c);
 						}
 				}
 				for (EClass supClass : c.getESuperTypes()) {// scan of inherited classes
-				//	System.out.println("       supClass  "+supClass.getName());
 					for(EStructuralFeature feature :supClass.getEStructuralFeatures() ){
 						if(feature.getName().equals("UUID")){
 							uuid_sc = feature;
@@ -1272,13 +1252,13 @@ public class UtilEMF {
 	 * @throws IOException Thrown if the output file cannot be created.
 	 * @return The updated root object.
 	 */
-	public static EObject saveModel(EObject modelRootObject, String outputFilePath) throws IOException {
+	public static EObject saveModel(EObject modelRootObject, String outputFilePath) throws IOException {	
 		// Creating the resource set from the metadata of modelRootObject:
 		ResourceSet resourceSet = createResourceSet(modelRootObject.eClass().getEPackage().getNsURI(), modelRootObject.eClass().getEPackage());
 		// Creating a new resource in this resource set:
 		Resource resource = resourceSet.createResource(URI.createFileURI(new File(outputFilePath).getAbsolutePath()));
 		// Adding the object in the new resource and saving:
-		resource.getContents().add(modelRootObject);
+		resource.getContents().add(modelRootObject);	
 		resource.save(Collections.EMPTY_MAP);
 		return modelRootObject;
 	}

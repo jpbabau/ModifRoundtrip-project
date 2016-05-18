@@ -137,7 +137,6 @@ public class UtilMigrationSpecification {
 				EclassModif supecm = searchInModif(eclass.getName());
 				if(supecm != null){
 					for(StructuralFeatureModification feature : supecm.getModif().getFeatureModification()){
-						//System.out.println("Superfeature : "+feature.getNewName());
 						if (feature instanceof AttributeModification && feature.isRemove()){ attributes.add(feature.getOldName()); }
 						else if (feature instanceof ReferenceModification && feature.isRemove()){ references.add(feature.getOldName()); }
 					}
@@ -186,6 +185,7 @@ public class UtilMigrationSpecification {
 		migration.setInputMetamodelURI(sourceMetamodelURI);
 		migration.setOutputMetamodelURI(targetMetamodelURI);
 		migration.setInputModelURI(sourceModelURI);
+		migration.setInputModel(sourceModel);
 		migration.setOutputModelURI(targetModel);
 
 		/* migration.setInputModelURI(URI.createFileURI(new File(this.inputModelFile).getAbsolutePath()).toString()); */

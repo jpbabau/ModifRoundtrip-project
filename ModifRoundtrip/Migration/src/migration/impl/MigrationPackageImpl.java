@@ -162,6 +162,10 @@ public class MigrationPackageImpl extends EPackageImpl implements MigrationPacka
 	public EAttribute getMigration_InputModelURI() {
 		return (EAttribute)migrationEClass.getEStructuralFeatures().get(1);
 	}
+	
+	public EAttribute getMigration_InputModel() {
+		return (EAttribute)migrationEClass.getEStructuralFeatures().get(1);
+	}
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -374,6 +378,7 @@ public class MigrationPackageImpl extends EPackageImpl implements MigrationPacka
 		migrationEClass = createEClass(MIGRATION);
 		createEReference(migrationEClass, MIGRATION__INSTANCES);
 		createEAttribute(migrationEClass, MIGRATION__INPUT_MODEL_URI);
+		createEAttribute(migrationEClass, MIGRATION__INPUT_MODEL);
 		createEAttribute(migrationEClass, MIGRATION__INPUT_METAMODEL_URI);
 		createEAttribute(migrationEClass, MIGRATION__OUTPUT_MODEL_URI);
 		createEAttribute(migrationEClass, MIGRATION__OUTPUT_METAMODEL_URI);
@@ -435,6 +440,7 @@ public class MigrationPackageImpl extends EPackageImpl implements MigrationPacka
 		initEClass(migrationEClass, Migration.class, "Migration", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getMigration_Instances(), this.getInstance(), null, "instances", null, 0, -1, Migration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getMigration_InputModelURI(), ecorePackage.getEString(), "inputModelURI", null, 1, 1, Migration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getMigration_InputModel(), ecorePackage.getEString(), "inputModel", null, 1, 1, Migration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getMigration_InputMetamodelURI(), ecorePackage.getEString(), "inputMetamodelURI", null, 1, 1, Migration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getMigration_OutputModelURI(), ecorePackage.getEString(), "outputModelURI", null, 1, 1, Migration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getMigration_OutputMetamodelURI(), ecorePackage.getEString(), "outputMetamodelURI", null, 1, 1, Migration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

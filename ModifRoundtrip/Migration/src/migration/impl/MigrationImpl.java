@@ -10,15 +10,12 @@ import migration.MigrationPackage;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
@@ -70,6 +67,10 @@ public class MigrationImpl extends MinimalEObjectImpl.Container implements Migra
 	 */
 	protected String inputModelURI = INPUT_MODEL_URI_EDEFAULT;
 
+	protected static final EObject INPUT_MODEL_EDEFAULT = null;
+	
+	protected EObject inputModel = INPUT_MODEL_EDEFAULT;
+	
 	/**
 	 * The default value of the '{@link #getInputMetamodelURI() <em>Input Metamodel URI</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -169,6 +170,10 @@ public class MigrationImpl extends MinimalEObjectImpl.Container implements Migra
 	public String getInputModelURI() {
 		return inputModelURI;
 	}
+	
+	public EObject getInputModel() {
+		return inputModel;
+	}
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -180,6 +185,13 @@ public class MigrationImpl extends MinimalEObjectImpl.Container implements Migra
 		inputModelURI = newInputModelURI;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, MigrationPackage.MIGRATION__INPUT_MODEL_URI, oldInputModelURI, inputModelURI));
+	}
+	
+	public void setInputModel(EObject newInputModel){
+		EObject oldInputModel = inputModel;
+		inputModel = newInputModel;
+		if(eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, MigrationPackage.MIGRATION__INPUT_MODEL, oldInputModel, inputModel));
 	}
 
 	/**
@@ -271,6 +283,8 @@ public class MigrationImpl extends MinimalEObjectImpl.Container implements Migra
 				return getInstances();
 			case MigrationPackage.MIGRATION__INPUT_MODEL_URI:
 				return getInputModelURI();
+			case MigrationPackage.MIGRATION__INPUT_MODEL:
+				return getInputModel();
 			case MigrationPackage.MIGRATION__INPUT_METAMODEL_URI:
 				return getInputMetamodelURI();
 			case MigrationPackage.MIGRATION__OUTPUT_MODEL_URI:
@@ -296,6 +310,9 @@ public class MigrationImpl extends MinimalEObjectImpl.Container implements Migra
 				return;
 			case MigrationPackage.MIGRATION__INPUT_MODEL_URI:
 				setInputModelURI((String)newValue);
+				return;
+			case MigrationPackage.MIGRATION__INPUT_MODEL:
+				setInputModel((EObject)newValue);
 				return;
 			case MigrationPackage.MIGRATION__INPUT_METAMODEL_URI:
 				setInputMetamodelURI((String)newValue);
@@ -324,6 +341,9 @@ public class MigrationImpl extends MinimalEObjectImpl.Container implements Migra
 			case MigrationPackage.MIGRATION__INPUT_MODEL_URI:
 				setInputModelURI(INPUT_MODEL_URI_EDEFAULT);
 				return;
+			case MigrationPackage.MIGRATION__INPUT_MODEL:
+				setInputModel(INPUT_MODEL_EDEFAULT);
+				return;
 			case MigrationPackage.MIGRATION__INPUT_METAMODEL_URI:
 				setInputMetamodelURI(INPUT_METAMODEL_URI_EDEFAULT);
 				return;
@@ -349,6 +369,8 @@ public class MigrationImpl extends MinimalEObjectImpl.Container implements Migra
 				return instances != null && !instances.isEmpty();
 			case MigrationPackage.MIGRATION__INPUT_MODEL_URI:
 				return INPUT_MODEL_URI_EDEFAULT == null ? inputModelURI != null : !INPUT_MODEL_URI_EDEFAULT.equals(inputModelURI);
+			case MigrationPackage.MIGRATION__INPUT_MODEL:
+				return INPUT_MODEL_EDEFAULT == null ? inputModel != null : !INPUT_MODEL_EDEFAULT.equals(inputModel);
 			case MigrationPackage.MIGRATION__INPUT_METAMODEL_URI:
 				return INPUT_METAMODEL_URI_EDEFAULT == null ? inputMetamodelURI != null : !INPUT_METAMODEL_URI_EDEFAULT.equals(inputMetamodelURI);
 			case MigrationPackage.MIGRATION__OUTPUT_MODEL_URI:
@@ -371,6 +393,8 @@ public class MigrationImpl extends MinimalEObjectImpl.Container implements Migra
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (inputModelURI: ");
 		result.append(inputModelURI);
+		result.append(" (inputModel: ");
+		result.append(inputModel);
 		result.append(", inputMetamodelURI: ");
 		result.append(inputMetamodelURI);
 		result.append(", outputModelURI: ");

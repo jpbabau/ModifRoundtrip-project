@@ -168,7 +168,8 @@ public class MigrationRoundtrip {
 		// Initialisation of metamodels and of the input model:
 		this.metamodelSource = UtilEMF.loadMetamodel(inputMetamodelFile);
 		this.metamodelTarget = UtilEMF.loadMetamodel(outputMetamodelFile);
-		this.model1SInit     = UtilEMF.loadModel(inputModelFile, this.metamodelSource);
+		//this.model1SInit     = UtilEMF.loadModel(inputModelFile, this.metamodelSource);
+		this.model1SInit 	= migration.getInputModel();
 
 		// Get timestamp for the initial model
 		for(EAttribute attribute : this.model1SInit.eClass().getEAllAttributes()){

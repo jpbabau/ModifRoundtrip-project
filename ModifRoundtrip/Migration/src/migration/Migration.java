@@ -58,6 +58,8 @@ public interface Migration extends EObject {
 	 * @generated
 	 */
 	String getInputModelURI();
+	
+	EObject getInputModel();
 
 	/**
 	 * Sets the value of the '{@link migration.Migration#getInputModelURI <em>Input Model URI</em>}' attribute.
@@ -68,6 +70,8 @@ public interface Migration extends EObject {
 	 * @generated
 	 */
 	void setInputModelURI(String value);
+	
+	void setInputModel(EObject model);
 
 	/**
 	 * Returns the value of the '<em><b>Input Metamodel URI</b></em>' attribute.

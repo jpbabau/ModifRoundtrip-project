@@ -83,6 +83,8 @@ public interface MigrationPackage extends EPackage {
 	 * @ordered
 	 */
 	int MIGRATION__INPUT_MODEL_URI = 1;
+	
+	int MIGRATION__INPUT_MODEL = 2;
 
 	/**
 	 * The feature id for the '<em><b>Input Metamodel URI</b></em>' attribute.
@@ -91,7 +93,7 @@ public interface MigrationPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MIGRATION__INPUT_METAMODEL_URI = 2;
+	int MIGRATION__INPUT_METAMODEL_URI = 3;
 
 	/**
 	 * The feature id for the '<em><b>Output Model URI</b></em>' attribute.
@@ -100,7 +102,7 @@ public interface MigrationPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MIGRATION__OUTPUT_MODEL_URI = 3;
+	int MIGRATION__OUTPUT_MODEL_URI = 4;
 
 	/**
 	 * The feature id for the '<em><b>Output Metamodel URI</b></em>' attribute.
@@ -109,7 +111,7 @@ public interface MigrationPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MIGRATION__OUTPUT_METAMODEL_URI = 4;
+	int MIGRATION__OUTPUT_METAMODEL_URI = 5;
 
 	/**
 	 * The number of structural features of the '<em>Migration</em>' class.
@@ -118,7 +120,7 @@ public interface MigrationPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MIGRATION_FEATURE_COUNT = 5;
+	int MIGRATION_FEATURE_COUNT = 6;
 
 	/**
 	 * The number of operations of the '<em>Migration</em>' class.

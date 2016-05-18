@@ -64,6 +64,7 @@ public class MigrationSpecificationGenerator {
 	// folder for generated code
 	private String sourceFolder;
 	EObject rootObject;
+	EObject sourceModel;
 
 	MigrationFactoryImpl factory = new MigrationFactoryImpl();
 	List<Instance> allInstances = new ArrayList<Instance>();
@@ -118,7 +119,6 @@ public class MigrationSpecificationGenerator {
 	 * @param outputModel
 	 */
 	public MigrationSpecificationGenerator(RootEcoreModif rootECM, String sourceFolderGen, String inputModel, String outputModel){
-		System.out.println(" MigrationSpecificationGenerator  ");
 		// object rootEcoreModif creation 
 		this.rootEcoreModif = rootECM;
 		this.inputModelFile = inputModel;
@@ -151,9 +151,9 @@ public class MigrationSpecificationGenerator {
 	 */
 	private Migration createMigrationSpecification(){
 		Migration migration = factory.createMigration();
-		//System.out.println("rootEcoreModif  :"+this.rootEcoreModif.getRoot().getModif().getOldURIName());
 		migration.setInputMetamodelURI(this.rootEcoreModif.getRoot().getModif().getOldURIName());
 		migration.setInputModelURI(URI.createFileURI(new File(this.inputModelFile).getAbsolutePath()).toString());
+		migration.setInputModel(sourceModel);
 		migration.setOutputMetamodelURI(this.rootEcoreModif.getRoot().getModif().getNewURIName());
 		migration.setOutputModelURI(URI.createFileURI(new File(this.outputModelFile).getAbsolutePath()).toString());
 		return migration;
@@ -208,11 +208,9 @@ public class MigrationSpecificationGenerator {
 		for(Instance instance : migration.getInstances()){
 			if(root.eGet(root.eClass().getEStructuralFeature("UUID")).toString().equals(instance.getUUID())){
 				if(!hasDeletion(instance)){
-					//System.out.println("  ! NOT DELETED ");
 					Deletion deletion = this.createDeletion(root);
 					instance.setDeletion(deletion);
 				}else{
-					//System.out.println("  !!  DELETED ");
 				}
 			}else{
 				for(EObject object: root.eContents()){
@@ -248,10 +246,8 @@ public class MigrationSpecificationGenerator {
 		if(root.eGet(root.eClass().getEStructuralFeature("UUID")).toString().equals(instance.getUUID())){
 			ArrayList<ReferencePath> referencesPath = new ArrayList<ReferencePath>();
 			for(EObject reference1 : root.eClass().getEAllReferences()){
-				//System.out.println("    °° reference1    "+reference1.eGet(reference1.eClass().getEStructuralFeature("name")));
 				EClassifier eclass2 = ((EStructuralFeature)reference1).getEType();	
 				String eclassName2 = eclass2.eGet(eclass2.eClass().getEStructuralFeature("name")).toString();
-				//System.out.println("        eclassName2    "+ eclassName2);
 				EclassModif ecm2 = searchInModif(eclassName2);
 				if(ecm2.getModif().isHide() && ecm2.getModif().isFlatten()){
 
@@ -261,22 +257,14 @@ public class MigrationSpecificationGenerator {
 						if(hideClass.contains(object2.eClass().getName())){
 							hideInstances.add(object2.eGet(object2.eClass().getEStructuralFeature("UUID")).toString());
 						}
-						//System.out.println("    idObject2    "+ object2.eGet(object2.eClass().getEStructuralFeature("UUID")).toString());
 						String eclassName3 = object2.eClass().getName();
-						//System.out.println("         eclassName3  "+eclassName3);
 						if(eclassName2.equals(eclassName3)){
-							//System.out.println("             ========   "+eclassName3);
 							for(EObject reference2 : object2.eClass().getEAllReferences()){
-								//System.out.println("    reference2    "+ reference2);
-								//System.out.println(reference2.eGet(reference2.eClass().getEStructuralFeature("name")));
 								ReferencePath referencePath = createReferencePath(reference1.eGet(reference1.eClass().getEStructuralFeature("name")).toString());
 								ReferencePath referencePath2 = createReferencePath(reference2.eGet(reference2.eClass().getEStructuralFeature("name")).toString());
 								referencesPath.add(referencePath);
 								referencesPath.add(referencePath2);
-
-								//System.out.println("(((((((  "+referencesPath);
 								DerivedReference derived = createDerivedReference(reference1.eGet(reference1.eClass().getEStructuralFeature("name"))+"_"+reference2.eGet(reference2.eClass().getEStructuralFeature("name"))+"_");
-								//System.out.println("____________derived    "+derived.getNewReferenceName());
 								derived.getPath().addAll(referencesPath);
 								instance.getDerived().add(derived);
 							}
@@ -298,10 +286,8 @@ public class MigrationSpecificationGenerator {
 					if(this.flattenClassesList.contains(supertypeObjectName)){
 					}else{
 						for(EObject reference : object.eClass().getEAllReferences()){
-							//System.out.println(" /// deletedReference "+(reference.eGet(reference.eClass().getEStructuralFeature("name"))).toString());
 							DeletedReference deletedreference = createReference((reference.eGet(reference.eClass().getEStructuralFeature("name"))).toString());
 							Deletion deletion = instance.getDeletion();
-							//System.out.println(" ee "+deletedreference.getName());
 							deletion.getDeletedReferences().add(deletedreference);
 						}
 					}
@@ -318,22 +304,18 @@ public class MigrationSpecificationGenerator {
 	 */
 	public void addHide(EObject root, Instance instance, EObject object){
 		if(object.eGet(object.eClass().getEStructuralFeature("UUID")).toString().equals(instance.getUUID())){	
-			//System.out.println(" °° object    "+object.eGet(object.eClass().getEStructuralFeature("UUID")));
 			for(EObject reference1 : object.eClass().getEAllReferences()){
 				EClassifier eclass2 = ((EStructuralFeature)reference1).getEType();	
 				String eclassName2 = eclass2.eGet(eclass2.eClass().getEStructuralFeature("name")).toString();
 				EclassModif ecm2 = searchInModif(eclassName2);
-				//System.out.println("    °° reference1    "+reference1.eGet(reference1.eClass().getEStructuralFeature("name")));
 				if(ecm2.getModif().isHide()){
 					this.hideClassesList.add(eclassName2);
 					for(EObject object2: root.eContents()){
-						//System.out.println("    °°  --  °° object2    "+object2.eClass().getName() + "   "+object2.eGet(object2.eClass().getEStructuralFeature("UUID")).toString());
 						if(this.hideClassesList.contains(object2.eClass().getName())){
 							hideInstances.add(object2.eGet(object2.eClass().getEStructuralFeature("UUID")).toString());
 							String eclassName3 = object2.eClass().getName();
 							if(eclassName2.equals(eclassName3)){
 								for(EObject reference2 : object2.eClass().getEAllReferences()){
-									//System.out.println(reference2.eGet(reference2.eClass().getEStructuralFeature("name")));
 									ReferencePath referencePath = createReferencePath(reference1.eGet(reference1.eClass().getEStructuralFeature("name")).toString());
 									ReferencePath referencePath2 = createReferencePath(reference2.eGet(reference2.eClass().getEStructuralFeature("name")).toString());
 									DerivedReference derived = createDerivedReference(reference1.eGet(reference1.eClass().getEStructuralFeature("name"))+"_"+reference2.eGet(reference2.eClass().getEStructuralFeature("name"))+"_");
@@ -344,14 +326,11 @@ public class MigrationSpecificationGenerator {
 							ArrayList<String> supertypes = superTypesMap.get(object2.eClass().getName());
 							for(String supertypeName : supertypes){
 								if(this.hideClassesList.contains(supertypeName) && this.flattenClassesList.contains(supertypeName)){
-									//System.out.print("object2.eClass   "+object2.eClass().getName() + "\n");
-									//System.out.print("   supertypeName   "+supertypeName +"\n");
 									newReferenceNameHide.put(reference1.eGet(reference1.eClass().getEStructuralFeature("name")).toString(), reference1.eGet(reference1.eClass().getEStructuralFeature("name"))+"_"+object2.eClass().getName());
 									DerivedReference derived = null; 
 									for(EObject reference2 : object2.eClass().getEAllReferences()){
 										ReferencePath referencePath = createReferencePath(reference1.eGet(reference1.eClass().getEStructuralFeature("name")).toString());
 										ReferencePath referencePath2 = createReferencePath(reference2.eGet(reference2.eClass().getEStructuralFeature("name")).toString());
-										//System.out.println(" ref2Name  "  +reference2.eGet(reference2.eClass().getEStructuralFeature("name")));
 										derived = createDerivedReference(reference1.eGet(reference1.eClass().getEStructuralFeature("name"))+"_"+reference2.eGet(reference2.eClass().getEStructuralFeature("name"))+"_");
 										derived.getPath().add(referencePath);
 										derived.getPath().add(referencePath2);
@@ -371,19 +350,16 @@ public class MigrationSpecificationGenerator {
 									for(EObject reference2 : object2.eClass().getEAllReferences()){
 										ReferencePath referencePath = createReferencePath(reference1.eGet(reference1.eClass().getEStructuralFeature("name")).toString());
 										ReferencePath referencePath2 = createReferencePath(reference2.eGet(reference2.eClass().getEStructuralFeature("name")).toString());
-										//System.out.println(" ref2Name  "  +reference2.eGet(reference2.eClass().getEStructuralFeature("name")));
 										derived = createDerivedReference(reference1.eGet(reference1.eClass().getEStructuralFeature("name"))+"_"+reference2.eGet(reference2.eClass().getEStructuralFeature("name"))+"_");
 										derived.getPath().add(referencePath);
 										derived.getPath().add(referencePath2);
 										DeletedReference reference = createReference((reference1.eGet(reference1.eClass().getEStructuralFeature("name"))).toString());
 										Deletion deletion = instance.getDeletion();
 										if(deletion.getDeletedReferences().isEmpty()){
-											//System.out.println(" ff "+reference.getName());
 											deletion.getDeletedReferences().add(reference);
 										}else{
 											for(DeletedReference delRef : deletion.getDeletedReferences()){
 												if(!delRef.getName().equals(reference.getName())){
-													//System.out.println(" aa "+reference.getName());
 													deletion.getDeletedReferences().add(reference);
 												}
 											}
@@ -438,7 +414,6 @@ public class MigrationSpecificationGenerator {
 				idObject2 = object2.eGet(object2.eClass().getEStructuralFeature("UUID")).toString();
 				for(EObject cl : root.eContents()){
 					for(EObject reference : cl.eClass().getEAllReferences()){
-						//System.out.println("reference "+reference);
 						EClassifier eclass2 = ((EStructuralFeature)reference).getEType();
 						String eclassName2 = eclass2.eGet(eclass2.eClass().getEStructuralFeature("name")).toString();
 						EclassModif ecm2 = searchInModif(eclassName2);
@@ -472,7 +447,6 @@ public class MigrationSpecificationGenerator {
 					if(r3.getModif().isRemove()){
 						DeletedReference ref = createReference(r3.getModif().getNewName());
 						Deletion deletion = instance.getDeletion();
-						//System.out.println(" aa "+ref.getName());
 						deletion.getDeletedReferences().add(ref);
 					}													
 				}
@@ -499,11 +473,9 @@ public class MigrationSpecificationGenerator {
 	public ArrayList<ArrayList<String>> getReferencesPath(EObject object, EclassModif ecm, EObject reference){
 		String secondReferenceName = null;
 		String referenceName = reference.eGet(reference.eClass().getEStructuralFeature("name")).toString();
-		//System.out.println("*** refName   "+referenceName);
 		ArrayList<ArrayList<String>> referencesPath = new ArrayList<ArrayList<String>>();
 		EObject secondInstance = (EObject) object.eGet(object.eClass().getEStructuralFeature(((EStructuralFeature) reference).getName()));
 		String idSecondInstance = (String) secondInstance.eGet(secondInstance.eClass().getEStructuralFeature("UUID"));
-		//System.out.println("*** secondInstanceId   "+idSecondInstance);
 		ArrayList<String> derived = new ArrayList<String>();
 		derived.add(referenceName);
 		derived.add(idSecondInstance);
@@ -511,10 +483,8 @@ public class MigrationSpecificationGenerator {
 
 		for(EObject secondReference : secondInstance.eClass().getEAllReferences()){
 			secondReferenceName = secondReference.eGet(secondReference.eClass().getEStructuralFeature("name")).toString();
-			//System.out.println("*** refName2   "+secondReferenceName);
 			EObject thirdInstance = (EObject) secondInstance.eGet(secondInstance.eClass().getEStructuralFeature(((EStructuralFeature) secondReference).getName()));
 			String idThirdInstance = (String) thirdInstance.eGet(thirdInstance.eClass().getEStructuralFeature("UUID"));
-			//System.out.println("*** thirdInstanceId   "+idThirdInstance);
 			ArrayList<String> derived2 = new ArrayList<String>();
 			derived2.add(secondReferenceName);
 			derived2.add(idThirdInstance);
@@ -523,7 +493,6 @@ public class MigrationSpecificationGenerator {
 			DeletedReference ref = createReference(secondReferenceName);
 			Instance instance = searchInstance(idSecondInstance);
 			Deletion deletion = instance.getDeletion();
-			//System.out.println(" cc "+ref.getName());
 			deletion.getDeletedReferences().add(ref);
 		}
 		return referencesPath;
@@ -575,19 +544,16 @@ public class MigrationSpecificationGenerator {
 
 	/*public void addVal(Map<String, ArrayList<String>> superTypesMap, Instance instance, EObject object){
 		for(EObject ob : object.eContents()){
-			System.out.println("**** ob : "+ob.eGet(ob.eClass().getEStructuralFeature("UUID")));
 			if(ob.eGet(ob.eClass().getEStructuralFeature("UUID")).toString().equals(instance.getUUID())){
 				Deletion deletion = this.createDeletion(object);
 				instance.setDeletion(deletion);
 			}else{
-				System.out.println("**** ob2 : "+ob.eGet(ob.eClass().getEStructuralFeature("UUID")));
 				addVal(superTypesMap, instance, ob);
 			}
 		}
 	}*/
 
 	/*public void addValues(Migration migration, EObject object){
-		System.out.println("objectc : "+object.eGet(object.eClass().getEStructuralFeature("UUID")));
 		for(Instance instance : migration.getInstances()){
 			if(object.eGet(object.eClass().getEStructuralFeature("UUID")).toString().equals(instance.getUUID())){
 				Deletion deletion = this.createDeletion(object);
@@ -638,7 +604,7 @@ public class MigrationSpecificationGenerator {
 			// search for the feature in the superclasses
 			for(EClass supereclass : object.eClass().getEAllSuperTypes()){
 				EclassModif superecm = searchInModif(supereclass.getName());
-				if(superecm.getModif().isRemove()){ System.out.println(" % TODO SUPERisRemove "); }
+				if(superecm.getModif().isRemove()){  }
 				else{
 					for(StructuralFeatureModification  superfeature : superecm.getModif().getFeatureModification()){
 						if (superfeature instanceof AttributeModification && superfeature.isRemove()){ }
@@ -652,7 +618,6 @@ public class MigrationSpecificationGenerator {
 				EclassModif supecm = searchInModif(eclass.getName());
 				if(supecm != null){
 					for(StructuralFeatureModification feature : supecm.getModif().getFeatureModification()){
-						//System.out.println("Superfeature : "+feature.getNewName());
 						if (feature instanceof AttributeModification && feature.isRemove()){ attributes.add(feature.getOldName()); }
 						else if (feature instanceof ReferenceModification && feature.isRemove()){ references.add(feature.getOldName()); }
 					}
@@ -702,27 +667,21 @@ public class MigrationSpecificationGenerator {
 				String referenceName = reference.getName();
 				EClassifier referenceType = reference.getEType();
 				for(EObject test : object.eCrossReferences()){
-					System.out.println("      ->-  "+(String) test.eGet(test.eClass().getEStructuralFeature("UUID")));
 				}
 				//Object test = object.eGet(reference);
 				//Object ref = object.eGet(object.eClass().getEStructuralFeature("referenceName"));
-				// System.out.println("      ->-  "+object.eGet(object.eCrossReferences();));
 			}
 		}
 
 
 		/*for(EObject object : rootObject.eContents()){
 			String idObject = (String) object.eGet(object.eClass().getEStructuralFeature("UUID"));
-			//System.out.println("! ù ! " +idObject);
 			for(EReference reference : object.eClass().getEAllReferences()){
 				ArrayList<String> instances = new ArrayList<String>();
 				String referenceName = reference.getName();
-				//System.out.println("  -  " +referenceName);
 				EClassifier referenceType = reference.getEType();
-				//System.out.println("    --  " +referenceType.getName());
 				for(EObject inObject : rootObject.eContents()){
 					String idInObject = (String) inObject.eGet(inObject.eClass().getEStructuralFeature("UUID"));
-					//System.out.println("     ! ! " +idInObject + "  "+inObject.eClass().getName());
 					if(inObject.eClass().getName().equals(referenceType.getName())){
 						instances.add(idInObject);
 					}else{
@@ -759,16 +718,12 @@ public class MigrationSpecificationGenerator {
 		}
 		for(EObject object : rootObject.eContents()){
 			String idObject = (String) object.eGet(object.eClass().getEStructuralFeature("UUID"));
-			//System.out.println("! ù ! " +idObject);
 			for(EReference reference : object.eClass().getEAllReferences()){
 				ArrayList<String> instances = new ArrayList<String>();
 				String referenceName = reference.getName();
-				//System.out.println("  -  " +referenceName);
 				EClassifier referenceType = reference.getEType();
-				//System.out.println("    --  " +referenceType.getName());
 				for(EObject inObject : rootObject.eContents()){
 					String idInObject = (String) inObject.eGet(inObject.eClass().getEStructuralFeature("UUID"));
-					//System.out.println("     ! ! " +idInObject + "  "+inObject.eClass().getName());
 					if(inObject.eClass().getName().equals(referenceType.getName())){
 						instances.add(idInObject);
 					}else{
@@ -797,7 +752,6 @@ public class MigrationSpecificationGenerator {
 		//references going to the instance
 		/*for(EObject object : rootObject.eContents()){
 			String objectId = object.eGet(object.eClass().getEStructuralFeature("UUID")).toString();
-			System.out.println(" % objectId "+objectId);
 			for(EReference reference : object.eClass().getEAllReferences()){
 				String referenceName = reference.getName();
 				EClassifier referenceType = reference.getEType();
@@ -807,21 +761,16 @@ public class MigrationSpecificationGenerator {
 
 		/*for(EObject object : rootObject.eContents()){
 			Map<EObject, EObject> map = null;
-			//System.out.println("$ object !  "+object.eGet(object.eClass().getEStructuralFeature("UUID")));
 			String objectuuid = (String) object.eGet(object.eClass().getEStructuralFeature("UUID"));
 			if(objectuuid.equals("Person:pv123")){
 				ArrayList<String> supertypes = superTypesMap.get(object.eClass().getName());
 				for (EStructuralFeature reference : object.eClass().getEAllStructuralFeatures()){
 					if(reference.getName().equals("autos")){
-						System.out.println(" $ reference !  "+reference);
 						Object sourceFeatureValue = object.eGet(reference);
-						System.out.println(" *$ sourceFeatureValue !" +sourceFeatureValue);
 						for(EObject object2 : rootObject.eContents()){
 							String objectuuid2 = (String) object2.eGet(object2.eClass().getEStructuralFeature("UUID"));
 							if(objectuuid2.equals("Car:car1")){
-								System.out.println(objectuuid2 +" " +objectuuid2);
 								if(object2 == sourceFeatureValue){
-									System.out.println(  objectuuid2 +" == " +objectuuid2);
 								}
 							}
 						}
@@ -829,19 +778,13 @@ public class MigrationSpecificationGenerator {
 						for(EObject instance : migration.eContents()){
 							String instanceuuid = (String) instance.eGet(instance.eClass().getEStructuralFeature("UUID"));
 							if(sourceFeatureValue.equals(instanceuuid)){
-								//System.out.println(" $ sourceFeatureValue !  "+sourceFeatureValue);
 							}
 						}*/
 
 		/*EstructutalFeature refName = reference.eGet(reference.eClass().getEStructuralFeature("name"));
-				System.out.println("   $ refName !  "+refName);
-
 				Object target = reference.eGet(reference.eClass().getEStructuralFeature(refName));
-				System.out.println("   $ target !  "+target);
-
 				EClassifier eclass = ((EStructuralFeature)reference).getEType();	
 				String eclassName = eclass.eGet(eclass.eClass().getEStructuralFeature("name")).toString();
-				System.out.println("  $ eclassName !  "+eclassName);
 				EclassModif ecm = searchInModif(eclassName);*/
 		/*if(!ecm.getModif().isRemove()){
 
@@ -871,20 +814,16 @@ public class MigrationSpecificationGenerator {
 	public void addDeleteReferences(Migration migration){
 		for(EObject object : rootObject.eContents()){
 			String objectuuid = (String) object.eGet(object.eClass().getEStructuralFeature("UUID"));
-			System.out.println("$ object !  "+objectuuid);
 			for(EReference reference : object.eClass().getEAllReferences()){
 				String referenceName = reference.getName();
-				System.out.println("  -  " +referenceName);
 				for(EObject ref : object.eCrossReferences()){
 					String refId = (String) ref.eGet(ref.eClass().getEStructuralFeature("UUID"));
-					System.out.println("      ->-  "+refId);
 					for(Instance instance: migration.getInstances()){
 						String instanceuuid = instance.getUUID();
 						Deletion deletion = instance.getDeletion();
 						if(deletion.isDeleteInstance()){
 							if(instanceuuid.equals(refId)){
 								Deletion deletion2 = null ;
-								System.out.println(" ¤¤¤ "+ instanceuuid +"     isDeleted  ");
 								ArrayList<DeletedReference> toAdd = null;
 								for(Instance instance2 : migration.getInstances()){
 									String instanceuuid2 = instance2.getUUID();
@@ -1022,7 +961,6 @@ public class MigrationSpecificationGenerator {
 	}
 
 	public Instance searchInstance(String uuid){
-		//System.out.println(uuid);
 		Instance instance = null;
 		for(Instance i : allInstances){
 			if(i.getUUID().equals(uuid)){

@@ -166,6 +166,7 @@ public class UtilModifMigration <SS extends EObject, TT extends EObject, S exten
 		migration.setInputMetamodelURI(sourceMetamodelURI);
 		migration.setOutputMetamodelURI(targetMetamodelURI);
 		migration.setInputModelURI(sourceModel);
+		migration.setInputModel(sourceModelUUID);
 		migration.setOutputModelURI(targetModel);
 		
 		/*
