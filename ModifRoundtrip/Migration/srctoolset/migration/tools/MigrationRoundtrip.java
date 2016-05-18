@@ -165,7 +165,7 @@ public class MigrationRoundtrip {
 		URI inputMetamodelFile  = URI.createURI(migration.getInputMetamodelURI() );
 		URI outputFile          = URI.createURI(migration.getOutputModelURI()    );
 		URI outputMetamodelFile = URI.createURI(migration.getOutputMetamodelURI());
-		// Initialisation of metamodels and of the input model:
+		// Initialisation of metamodels and of the input model:	
 		this.metamodelSource = UtilEMF.loadMetamodel(inputMetamodelFile);
 		this.metamodelTarget = UtilEMF.loadMetamodel(outputMetamodelFile);
 		//this.model1SInit     = UtilEMF.loadModel(inputModelFile, this.metamodelSource);
@@ -209,7 +209,7 @@ public class MigrationRoundtrip {
 				}
 			}
 		}
-		// Metamodel update:
+		// Metamodel update:		
 		this.model2TMigrated = UtilEMF.changeMetamodel(model1SInitCopy, this.metamodelTarget);
 		return this.model2TMigrated;
 	}

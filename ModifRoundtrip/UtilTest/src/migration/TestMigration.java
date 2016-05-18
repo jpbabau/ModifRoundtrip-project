@@ -10,7 +10,7 @@ public class TestMigration {
 		/** TEST 1  - Migrate **/
 
 		// Load migration specification
-		Migration migrationSpecification = IOMigration.loadMigrationSpecification("C:/ModifRoundtrip-project/ModifRoundtrip/UtilTest/migration/Test1/CopyMPL.migration.xmi");
+		Migration migrationSpecification = IOMigration.loadMigrationSpecification("C:/ModifRoundtrip-project/ModifRoundtrip/UtilTest/migration/Test2/CopyMPL.migration.xmi");
 
 		// Set Migration specification
 		UtilMigration.setMigrationSpecification(migrationSpecification);

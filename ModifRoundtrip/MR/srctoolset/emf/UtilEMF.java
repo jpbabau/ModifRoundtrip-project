@@ -957,7 +957,7 @@ public class UtilEMF {
 	 * @param metamodelFilePath File path of the metamodel to load.
 	 * @return Root package of the loaded metamodel.
 	 */
-	public static EPackage loadMetamodel (String metamodelFilePath) {
+	public static EPackage loadMetamodel (String metamodelFilePath) {		
 		// Metamodel loading:				
 		return loadMetamodel(URI.createFileURI(new File(metamodelFilePath).getAbsolutePath()));
 	}
@@ -971,7 +971,7 @@ public class UtilEMF {
 		// Model loading:		
 		return (EPackage)loadModel(metamodelURI, EcorePackage.eINSTANCE);
 	}
-
+	
 	/**
 	 * Model loading.
 	 * @param inputFilePath File name of the model to load.

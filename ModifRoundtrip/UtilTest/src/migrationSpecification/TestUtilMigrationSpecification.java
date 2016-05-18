@@ -41,14 +41,13 @@ public class TestUtilMigrationSpecification {
 		
 		// Get Migration specification
 		Migration migrationSpecification = UtilMigrationSpecification.getMigrationSpecification();
-		
+				
 		// Save migration specification
-		IOMigrationSpecification.saveMigrationSpecification(migrationSpecification, "C:/ModifRoundtrip-project/ModifRoundtrip/UtilTest/migration/Test1/CopyMPL.migration.xmi");
-
+		IOMigrationSpecification.saveMigrationSpecification(migrationSpecification, "C:/ModifRoundtrip-project/ModifRoundtrip/UtilTest/migration/Test1/CopyMPL.migration.xmi");		
 		
 		/** TEST 2  - Loading **/
 		
-		Migration migrationSpecification2 = IOMigrationSpecification.loadMigrationSpecification("C:/ModifRoundtrip-project/ModifRoundtrip/UtilTest/migration/Test1/CopyMPL.migration.xmi");
-		IOMigrationSpecification.saveMigrationSpecification(migrationSpecification2, "C:/ModifRoundtrip-project/ModifRoundtrip/UtilTest/migration/Test2/CopyMPL.migration.xmi");
+	/*	Migration migrationSpecification2 = IOMigrationSpecification.loadMigrationSpecification("C:/ModifRoundtrip-project/ModifRoundtrip/UtilTest/migration/Test1/CopyMPL.migration.xmi");
+		IOMigrationSpecification.saveMigrationSpecification(migrationSpecification2, "C:/ModifRoundtrip-project/ModifRoundtrip/UtilTest/migration/Test2/CopyMPL.migration.xmi");*/
 	}
 }
