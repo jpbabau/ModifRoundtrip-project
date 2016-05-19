@@ -2,10 +2,10 @@ package uuids;
 
 import java.io.IOException;
 
+import migration.tools.UtilEMF;
+
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
-
-import emf.UtilEMF;
 
 /**
  * Utilitary class for load and save models and metamodels.

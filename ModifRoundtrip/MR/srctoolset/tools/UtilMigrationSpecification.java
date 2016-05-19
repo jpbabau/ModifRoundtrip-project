@@ -50,7 +50,7 @@ public class UtilMigrationSpecification <SS extends EPackage, SSI extends EPacka
 	 */
 	public void setSourceModel(EObject sourceModel) {
 		this.sourceModel = (S) sourceModel;
-		this.sourceModelUUID = (SI) UtilEMF.addUUIDValues(this.sourceModel);
+		//this.sourceModelUUID = (SI) UtilEMF.addUUIDValues(this.sourceModel);
 		
 	}
 	

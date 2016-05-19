@@ -4,11 +4,9 @@ import migration.IOMigration;
 import migrationSpecification.IOMigrationSpecification;
 import modif.Modifications;
 
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 
-import emf.UtilEMF;
 import refactor.IORefactor;
 
 public class TestCoevolution {

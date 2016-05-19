@@ -51,7 +51,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
-import org.eclipse.uml2.uml.UMLPackage;
+//import org.eclipse.uml2.uml.UMLPackage;
 
 import dependency.DependencyPackage;
 import dependency.Graph;
@@ -764,16 +764,16 @@ public class modifService {
 		String refactoredMetamodelPath = null;
 
 		// Copie d'UML avec Ecore local
-		EPackage sourceMetamodel = EcoreUtil.copy(UMLPackage.eINSTANCE);
+		//EPackage sourceMetamodel = EcoreUtil.copy(UMLPackage.eINSTANCE);
 
 		// Copie d'UML avec Ecore local sans operations, sans annotations et sans ref opposites. 
-		EPackage sourceMetamodelSimple = UtilEMF.removeOperations(UtilEMF.removeAnnotations(UtilEMF.removeOppositeFeature(sourceMetamodel)));
-		UtilEMF.saveMetamodel(sourceMetamodelSimple, projectSourceFolder+"/metamodel/UML.ecore", true);
+	//	EPackage sourceMetamodelSimple = UtilEMF.removeOperations(UtilEMF.removeAnnotations(UtilEMF.removeOppositeFeature(sourceMetamodel)));
+	//	UtilEMF.saveMetamodel(sourceMetamodelSimple, projectSourceFolder+"/metamodel/UML.ecore", true);
 
 		if(coevolution) {
 			// Copie d'UML avec Ecore local sans operations, sans annotations et sans ref opposites. 
 			// Avec UUID
-			sourceMetamodelUUID = UtilEMF.addUUIDAttribute(sourceMetamodelSimple);
+	//		sourceMetamodelUUID = UtilEMF.addUUIDAttribute(sourceMetamodelSimple);
 			// Deletion of duplicate UUID attribute
 			EPackage sourceMetamodelUUIDunique = UtilEMF.removeDuplicateUUIDAttribute(sourceMetamodelUUID);
 			UtilEMF.saveMetamodel(sourceMetamodelUUIDunique, projectSourceFolder+"/metamodel/UMLUUID.ecore", true);
@@ -1300,9 +1300,9 @@ public class modifService {
 			//String refactoredMetamodelPath = theRootEcoreModif.getRoot().getModif().getNewURIName();
 
 			// Adding UUIDs to the source model
-			modelUUID = UtilEMF.changeMetamodel(UtilEMF.loadModel(sourceModelPath, UMLPackage.eINSTANCE), projectSourceFolder+"/metamodel/UMLUUID.ecore");
-			modelUUID2 = UtilEMF.addUUIDValues(modelUUID);
-			UtilEMF.saveModel(modelUUID2, sourceModelUUIDPath);			
+			//modelUUID = UtilEMF.changeMetamodel(UtilEMF.loadModel(sourceModelPath, UMLPackage.eINSTANCE), projectSourceFolder+"/metamodel/UMLUUID.ecore");
+		//	modelUUID2 = UtilEMF.addUUIDValues(modelUUID);
+		//	UtilEMF.saveModel(modelUUID2, sourceModelUUIDPath);			
 
 			// Migration Specification generation
 			migrationSpecificationName = GenerateMigrationSpecification(sourceModelUUIDPath, sourceMetamodelUUIDPath, migratedModelPath, refactoredMetamodelPath);
@@ -1317,10 +1317,10 @@ public class modifService {
 				System.out.println("[saving] migrated file : ok.");	
 
 				// Deletion of UUIDs
-				migratedModel = UtilEMF.changeMetamodel(UtilEMF.removeUUIDValues(getMigratedModel()), UMLPackage.eINSTANCE);	
+		//		migratedModel = UtilEMF.changeMetamodel(UtilEMF.removeUUIDValues(getMigratedModel()), UMLPackage.eINSTANCE);	
 
 				// Serialisation of the migrated model
-				UtilEMF.saveModel(migratedModel, migratedModelNoUUIDPath);
+			//	UtilEMF.saveModel(migratedModel, migratedModelNoUUIDPath);
 			}
 		}else {
 			// is not UML
@@ -1330,9 +1330,9 @@ public class modifService {
 			migratedModelNoUUIDPath = migratedModelPath.replace("uuid", "");
 
 			// Adding UUIDs to the source model
-			modelUUID = UtilEMF.changeMetamodel(UtilEMF.loadModel(sourceModelPath, UMLPackage.eINSTANCE), projectSourceFolder.replace(".ecore", "UUID.ecore"));
-			modelUUID2 = UtilEMF.addUUIDValues(modelUUID);
-			UtilEMF.saveModel(modelUUID2, sourceModelUUIDPath);	
+	//		modelUUID = UtilEMF.changeMetamodel(UtilEMF.loadModel(sourceModelPath, UMLPackage.eINSTANCE), projectSourceFolder.replace(".ecore", "UUID.ecore"));
+		//	modelUUID2 = UtilEMF.addUUIDValues(modelUUID);
+		//	UtilEMF.saveModel(modelUUID2, sourceModelUUIDPath);	
 
 			// Migration Specification generation
 			migrationSpecificationName = GenerateMigrationSpecification(sourceModelUUIDPath, sourceMetamodelUUIDPath, migratedModelPath, refactoredMetamodelPath);		

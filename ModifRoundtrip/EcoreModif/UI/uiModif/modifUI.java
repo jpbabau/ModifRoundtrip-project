@@ -1472,7 +1472,7 @@ public class modifUI {
 							keyModelFileName = theModifService.addUUIDValues(rootkeyPackage);
 						}
 						// Generate Migration Specification
-						migratedFileName = theModifService.GenerateMigrationSpecification(txtDomainModel.getText(), keyModelFileName, null, null);
+					//	migratedFileName = theModifService.GenerateMigrationSpecification(txtDomainModel.getText(), keyModelFileName, null, null);
 						btnMigrationSpecificationEdition.setEnabled(true);
 					}catch (Exception e1){
 						e1.printStackTrace();
@@ -1651,11 +1651,11 @@ public class modifUI {
 		btnGenerateMigrationCode.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				try {
-					theModifService.Migrating(txtDomainMetamodelSimpleMigration.getText(), txtDomainModelSimpleMigration.getText(), refactoredMetamodelPath, true);
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
+				//try {
+					//theModifService.Migrating(txtDomainMetamodelSimpleMigration.getText(), txtDomainModelSimpleMigration.getText(), refactoredMetamodelPath, true);
+				//} catch (IOException e1) {
+				//	e1.printStackTrace();
+			//	}
 			}
 		});		
 		btnGenerateMigrationCode.setText("Generate Code");
@@ -1684,17 +1684,17 @@ public class modifUI {
 
 						}else {
 							// The migration code is generated
-							try {
-								theModifService.Migrating(txtDomainMetamodelSimpleMigration.getText(), txtDomainModelSimpleMigration.getText(), refactoredMetamodelPath, true);
-							} catch (IOException e1) {
-								e1.printStackTrace();
-							}
+							//try {
+								//theModifService.Migrating(txtDomainMetamodelSimpleMigration.getText(), txtDomainModelSimpleMigration.getText(), refactoredMetamodelPath, true);
+							//} catch (IOException e1) {
+							//	e1.printStackTrace();
+							//}
 							// The migration is executed
-							try {
-								theModifService.Migrating(txtDomainMetamodelSimpleMigration.getText(), txtDomainModelSimpleMigration.getText(), refactoredMetamodelPath, false);
-							} catch (IOException e1) {
-								e1.printStackTrace();
-							}
+							//try {
+								//theModifService.Migrating(txtDomainMetamodelSimpleMigration.getText(), txtDomainModelSimpleMigration.getText(), refactoredMetamodelPath, false);
+							//} catch (IOException e1) {
+							//	e1.printStackTrace();
+							//}
 						}
 					}else {
 						final Map<String, String> newReferencesNameHide = theModifService.getNewReferencesNameMap();

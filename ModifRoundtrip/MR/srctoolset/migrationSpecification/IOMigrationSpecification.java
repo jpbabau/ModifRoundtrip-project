@@ -2,7 +2,7 @@ package migrationSpecification;
 
 import java.io.IOException;
 
-import javax.rmi.CORBA.Util;
+import migration.tools.UtilEMF;
 
 import migration.Migration;
 import migration.MigrationPackage;
@@ -13,7 +13,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 
 import ecoremodifutils.ModifIO;
-import emf.UtilEMF;
 
 public class IOMigrationSpecification {
 

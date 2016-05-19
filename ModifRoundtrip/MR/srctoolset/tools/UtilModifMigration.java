@@ -101,7 +101,7 @@ public class UtilModifMigration <SS extends EObject, TT extends EObject, S exten
 		EPackage sourceMetamodelUUID = UtilEMF.loadMetamodel(this.modifSpecification.getRootPackageModification().getOldURIName());
 		
 		// Add UUID to the source model
-		this.sourceModelUUID = UtilEMF.addUUIDValues(UtilEMF.changeMetamodel(sourceModel, sourceMetamodelUUID));
+		//this.sourceModelUUID = UtilEMF.addUUIDValues(UtilEMF.changeMetamodel(sourceModel, sourceMetamodelUUID));
 		
 		// Generate migration Specification
 		this.migrationSpecification = generateMigrationSpecification();

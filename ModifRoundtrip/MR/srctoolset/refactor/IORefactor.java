@@ -2,13 +2,13 @@ package refactor;
 
 import java.io.IOException;
 
+import migration.tools.UtilEMF;
 import modif.Modifications;
 import modifspecification.UtilModifSpecification;
 
 import org.eclipse.emf.ecore.EPackage;
 
 import ecoremodifutils.ModifIO;
-import emf.UtilEMF;
 
 public class IORefactor {
 

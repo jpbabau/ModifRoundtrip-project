@@ -2,10 +2,10 @@ package migration;
 
 import java.io.IOException;
 
+import migration.tools.UtilEMF;
+
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
-
-import emf.UtilEMF;
 
 public class IOMigration {
 

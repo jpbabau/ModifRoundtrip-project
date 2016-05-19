@@ -9,9 +9,9 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 
 import uiModif.modifService;
+import migration.tools.UtilEMF;
 import modif.Modifications;
 import ecoremodifutils.ModifIO;
-import emf.UtilEMF;
 
 public class IOModifSpecification {
 

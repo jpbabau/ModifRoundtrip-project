@@ -174,28 +174,28 @@ public class UtilModifRefactor <SS extends EPackage, SSI extends EPackage, TT ex
 		EPackage theRootEcore; 
 
 		if(withMigrationSpecification) {
-			theRootEcore = UtilEMF.removeOperations(UtilEMF.removeOppositeFeature(UtilEMF.removeAnnotations(UtilEMF.addUUIDAttribute(this.sourceMetamodel))));
-			try {
-				UtilEMF.saveMetamodel(theRootEcore, projectSourceFolder+"/metamodel/myUMLUUID.ecore", false);
+			//theRootEcore = UtilEMF.removeOperations(UtilEMF.removeOppositeFeature(UtilEMF.removeAnnotations(UtilEMF.addUUIDAttribute(this.sourceMetamodel))));
+			/*try {
+				//UtilEMF.saveMetamodel(theRootEcore, projectSourceFolder+"/metamodel/myUMLUUID.ecore", false);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
-			this.sourceMetamodelUUID = (SSI) theRootEcore;
+			}*/
+			//this.sourceMetamodelUUID = (SSI) theRootEcore;
 		}else {
 			theRootEcore = UtilEMF.removeOperations(UtilEMF.removeOppositeFeature(UtilEMF.removeAnnotations(this.sourceMetamodel)));
 		}
 
 		Modifications theRootModif = null;
 		if (atlModif==1) {
-			theRootModif = anUtilModifFactory.generateNoModif(theRootEcore, UUID); 
+			//theRootModif = anUtilModifFactory.generateNoModif(theRootEcore, UUID); 
 			this.modifType = 1;
 		}else if (atlModif==2) {
-			theRootModif = anUtilModifFactory.generateEraseAll(theRootEcore, UUID);
+			//theRootModif = anUtilModifFactory.generateEraseAll(theRootEcore, UUID);
 			this.modifType = 2;
 		}
 		this.modifSpecification = theRootModif;
-		return this.modifSpecification;
+		//return this.modifSpecification;
 	}
 
 	/**
