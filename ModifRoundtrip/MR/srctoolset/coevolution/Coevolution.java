@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import migration.Migration;
 import migration.UtilMigration;
+import migration.tools.UtilEMF;
 import migrationSpecification.UtilMigrationSpecification;
 import modif.Modifications;
 import modifspecification.IOModifSpecification;
@@ -12,7 +13,6 @@ import modifspecification.UtilModifSpecification;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 
-import emf.UtilEMF;
 import refactor.UtilRefactor;
 import uuids.UtilUUID;
 
