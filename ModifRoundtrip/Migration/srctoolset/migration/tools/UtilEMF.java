@@ -35,9 +35,9 @@ public class UtilEMF {
 	 */
 	private static class EObjectMap {
 		private Map<EObject, EObject> map;
-	//	private Map<EObject, EObject> temporalmap;
+		private Map<EObject, EObject> temporalmap;
 		private Map<EObject, EObject> initialmap;
-	//	Map<String, Map<String, Map<String, String>>> renameMap;
+		Map<String, Map<String, Map<String, String>>> renameMap;
 		private EObject  modelRootObject;
 		private EObject  auxmodelRootObject;
 		private EPackage oldMetamodelRootPackage;
@@ -102,10 +102,10 @@ public class UtilEMF {
 		}
 
 		/**
-		 * 
-		 * @param modelRootObject
-		 * @param newMetamodelRootPackage
-		 * @param renameMap
+		 * Creates a map between the provided source instances and copies of this instances in the new metamodel.
+		 * @param modelRootObject  root instance of the source model.
+		 * @param newMetamodelRootPackage root package of the new metamodel.
+		 * @param renameMap Map of old name and new name of all model elements.
 		 */
 		public EObjectMap(EObject modelRootObject, EPackage newMetamodelRootPackage, Map<String, Map<String, Map<String, String>>> renamingMap) {
 			this.modelRootObject = modelRootObject;
@@ -116,11 +116,11 @@ public class UtilEMF {
 		}
 
 		/**
-		 * 
-		 * @param modelRootObject
-		 * @param newMetamodelRootPackage
-		 * @param modelRootObjectCopy
-		 * @param renameMap
+		 * Creates a map between the provided source instances and copies of this instances in the new metamodel.
+		 * @param modelRootObject root instance of the source model.
+		 * @param newMetamodelRootPackage root package of the new metamodel.
+		 * @param modelRootObjectCopy A copy of the root instance of the source model.
+		 * @param renameMap Map of old name and new name of all model elements.
 		 */
 		public EObjectMap(EObject modelRootObject, EPackage newMetamodelRootPackage, EObject modelRootObjectCopy, Map<String, Map<String, Map<String, String>>> renameMap) {
 			this.modelRootObject = modelRootObject;
@@ -131,22 +131,6 @@ public class UtilEMF {
 			for (EObject eo : getAllInstances(modelRootObject)){ this.map.put(eo, this.createObjectCopy(eo, renameMap)); }
 			for (EObject eo : getAllInstances(modelRootObjectCopy)){ this.initialmap.put(eo, this.createObjectCopy(eo, renameMap)); }
 		}
-
-		/**
-		 * 
-		 * @param modelRootObject
-		 * @param newMetamodelRootPackage
-		 * @param modelRootObjectCopy
-		 */
-	/*	public EObjectMap(EObject modelRootObject, EPackage newMetamodelRootPackage, EObject modelRootObjectCopy) {
-			this.modelRootObject = modelRootObject;
-			this.oldMetamodelRootPackage = modelRootObject.eClass().getEPackage();
-			this.newMetamodelRootPackage = newMetamodelRootPackage;
-			this.map = new HashMap<EObject, EObject>();
-			this.initialmap = new HashMap<EObject, EObject>();
-			for (EObject eo : getAllInstances(modelRootObject)){ this.map.put(eo, this.createObjectCopy(eo)); }
-			for (EObject eo : getAllInstances(modelRootObjectCopy)){ this.initialmap.put(eo, this.createObjectCopy(eo)); }
-		}*/
 
 		/**
 		 * Creates a map between the provided source instances and copies of
@@ -164,11 +148,11 @@ public class UtilEMF {
 		}
 
 		/**
-		 * 
-		 * @param auxmodelRootObject
-		 * @param modelRootObject
-		 * @param newMetamodelRootPackage
-		 * @param renamingMap
+		 * Creates a map between the provided source instances and copies of this instances in the new metamodel.
+		 * @param auxmodelRootObject A copy of the root instance of the source model.
+		 * @param modelRootObject root instance of the source model.
+		 * @param newMetamodelRootPackage root package of the new metamodel.
+		 * @param renamingMap Map of old name and new name of all model elements.
 		 */
 		public EObjectMap(EObject auxmodelRootObject, EObject modelRootObject, EPackage newMetamodelRootPackage, Map<String, Map<String,Map<String,String>>> renamingMap) {			
 			this.auxmodelRootObject = auxmodelRootObject;
@@ -180,7 +164,7 @@ public class UtilEMF {
 		}
 
 		/**
-		 * Creates in the copy the feature values of the source model.
+		 * Creates the copy the feature values of the source model.
 		 */
 		@SuppressWarnings("unchecked")
 		public void copyFeatures() {
@@ -205,6 +189,10 @@ public class UtilEMF {
 			}
 		}
 
+		/**
+		 * Creates the copy of the feature values of the source model.
+		 * @param renameMap Map relating oldName and newName of all features in the model.
+		 */
 		@SuppressWarnings("unchecked")
 		public void copyFeatures(Map<String, Map<String, Map<String, String>>> renameMap) {
 			for (EObject sourceInstance : this.map.keySet()) {
@@ -234,611 +222,20 @@ public class UtilEMF {
 				}
 			}
 		}
-		
-		/**
-		 * Creates a copy in the new metamodel of a feature value related to a class
-		 * of the source metamodel.
-		 * @param sourceFeature Source feature.
-		 * @param sourceFeatureValue Source feature value to copy.
-		 * @return copy of the source feature value.
-		 */
-		private Object createFeatureValueCopy(EStructuralFeature sourceFeature, Object sourceFeatureValue) {
-			EClassifier sourceAttributeType = sourceFeature.getEType();
-			List<EPackage> sourceAttributeTypePackagePath = getEPackagePath(sourceAttributeType.getEPackage(), this.oldMetamodelRootPackage);
-			if (!sourceAttributeTypePackagePath.get(0).equals(this.oldMetamodelRootPackage))
-				// The type of the feature is not defined within the new package, so we try to keep the current value:
-				return sourceFeatureValue;
-			EPackage targetPackage = getEndOfEPackagePath(sourceAttributeTypePackagePath, this.newMetamodelRootPackage);
-			if (targetPackage==null) throw new IllegalArgumentException("The target EPackage matching with the source EPackage "+sourceAttributeType.getEPackage()+" is not found.");
-			if (sourceAttributeType instanceof EDataType) { // the feature is an attribute: data type (including enum)
-				EClassifier targetAttributeType = targetPackage.getEClassifier(sourceAttributeType.getName());
-				if (targetAttributeType==null) throw new IllegalArgumentException("The target EPackage "+targetPackage.getName()+" does not contain the required data type "+sourceAttributeType.getName());
-				if (!(targetAttributeType instanceof EDataType)) throw new IllegalArgumentException("The target EPackage "+targetPackage.getName()+" contains a classifier "+sourceAttributeType.getName()+" which is not a data type (and which sould be)");
-				return targetPackage.getEFactoryInstance().createFromString(((EDataType)targetAttributeType), sourceFeatureValue.toString());
-			}
-			// the feature is a local reference:
-			return this.map.get(sourceFeatureValue);
-		}
 
 		/**
-		 * 
-		 * @param uuid
-		 * @return
+		 * Creates the copy of the feature values of the source model.
+		 * @param migration Migration specification.
+		 * @param mapDerived Map relating the name and the object of derived references 
+		 * @param mapHidden Map relating the name and the object of hidden elements of the model.
+		 * @param modelRootObject2 A copy of the model.
+		 * @param newReferenceNameMap Map relating old name and new name of references in the model.
+		 * @param renameMap Map relating oldName and newName of all classes of the metamodel to which the model conforms.
 		 */
-	/*	public EObject getObjectWithUUID(String uuid){
-			EObject object = null;
-			for (EObject sourceInstance : this.map.keySet()) {
-				if((sourceInstance.eGet(sourceInstance.eClass().getEStructuralFeature("UUID")).toString()).equals(uuid)){
-					object = sourceInstance;
-					break;
-				}
-			}
-			return object;
-		}*/
-		
-		/**
-		 * Creates a copy in the new metamodel of an instance conforming to the class
-		 * of the source metamodel.
-		 * @param source Object to copy.
-		 * @return copy of the source object.
-		 */
-		private EObject createObjectCopy(EObject source) {
-			EClass sourceClassType = source.eClass();
-			List<EPackage> sourceClassTypePackagePath = getEPackagePath(sourceClassType.getEPackage(), this.oldMetamodelRootPackage);
-			if (!sourceClassTypePackagePath.get(0).equals(this.oldMetamodelRootPackage))
-				// The type of the object is not defined within the new package, so we try to create a new instance from this object's class:
-				return EcoreUtil.create(sourceClassType);
-			EPackage targetPackage = getEndOfEPackagePath(sourceClassTypePackagePath, this.newMetamodelRootPackage);
-			if (targetPackage==null) throw new IllegalArgumentException("The target EPackage matching with the source EPackage "+sourceClassType.getEPackage()+" is not found.");
-			EClassifier copyClass = targetPackage.getEClassifier(sourceClassType.getName());
-			if (copyClass==null) throw new IllegalArgumentException("The target EPackage "+targetPackage.getName()+" does not contain the required class "+sourceClassType.getName());
-			if (!(copyClass instanceof EClass)) throw new IllegalArgumentException("The target EPackage "+targetPackage.getName()+" contains a classifier "+sourceClassType.getName()+" which is not an EClass (and which sould be)");
-			return EcoreUtil.create((EClass)copyClass);
-		}
-		
-		private EObject createObjectCopy(EObject source, Map<String, Map<String,Map<String,String>>> renameMap) {
-			//private EObject createObjectCopy(EObject source, Map<String, String> renameMap) {	
-
-			/*for (Entry<String, Map<String, Map<String, String>>> e: renameMap.entrySet()) {
-				System.out.println("["+e.getKey() + "=" + e.getValue()+"]");
-			}*/
-
-			EClass sourceClassType = source.eClass();
-			Map<String, Map<String,String>> value = renameMap.get(sourceClassType.getName());
-			String key = null ;
-			Map<String,String> val = new HashMap<String, String>();
-
-			for (Entry<String, Map<String,String>> e: value.entrySet()) {
-				key = e.getKey();
-				val = e.getValue();
-			}
-
-			List<EPackage> sourceClassTypePackagePath = getEPackagePath(sourceClassType.getEPackage(), this.oldMetamodelRootPackage);
-			if (!sourceClassTypePackagePath.get(0).equals(this.oldMetamodelRootPackage))
-				// The type of the object is not defined within the new package, so we try to create a new instance from this object's class:
-				return EcoreUtil.create(sourceClassType);
-			EPackage targetPackage = getEndOfEPackagePath(sourceClassTypePackagePath, this.newMetamodelRootPackage);
-			if (targetPackage==null) throw new IllegalArgumentException("The target EPackage matching with the source EPackage "+sourceClassType.getEPackage()+" is not found.");
-
-			EClassifier searched = null;
-
-			for(EClassifier tp : targetPackage.getEClassifiers()){
-
-				if(tp.getName().equals(key)){
-					searched = tp;
-					break;
-				}	
-			}
-
-			//EClassifier copyClass = targetPackage.getEClassifier(sourceClassType.getName());
-			EClassifier copyClass = searched;
-			if (copyClass==null) throw new IllegalArgumentException("The target EPackage "+targetPackage.getName()+" does not contain the required class "+sourceClassType.getName());
-			if (!(copyClass instanceof EClass)) throw new IllegalArgumentException("The target EPackage "+targetPackage.getName()+" contains a classifier "+sourceClassType.getName()+" which is not an EClass (and which sould be)");
-			return EcoreUtil.create((EClass)copyClass);
-		}
-		
-		/**
-		 * Provides the source model copy.
-		 * @return the copy of the root instance of the source model.
-		 */
-		public EObject getRootCopy() {
-			return this.map.get(this.modelRootObject);
-		}
-
-
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		/**
-		 * Creating an ecore composed of subpackages. Each subpackage correspond to an external ecore
-		 * @param rootPackage
-		 * @param externalEcoreMap
-		 */
-		public static EPackage createExtendedEcore(Map<EPackage, ArrayList<EPackage>> relatedPackages, String originalEcoreFilePath, EPackage rootPackage){
-			String name =  rootPackage.getName()+"Extended";
-			EPackage newRootPackage;
-
-			EcoreFactory theCoreFactory = EcoreFactory.eINSTANCE;
-			newRootPackage = theCoreFactory.createEPackage();
-			newRootPackage.setName(name);
-			newRootPackage.setNsPrefix(name);
-			newRootPackage.setNsURI("http://"+name+".ecore");
-
-			for (Entry<EPackage, ArrayList<EPackage>> e: relatedPackages.entrySet()) {
-				EPackage ep = e.getKey();
-				EPackage pack = theCoreFactory.createEPackage();
-				if(!isContainedInEcore(newRootPackage, ep)){
-					if(!ep.getName().equals("ecore")){
-						pack = EcoreUtil.copy(ep);
-						pack.setName(pack.getName());
-						pack.setNsPrefix(pack.getNsPrefix());
-						pack.setNsURI(pack.getNsURI());
-
-						for(EClassifier ec : pack.getEClassifiers()){
-							ArrayList<EClass> toAdd = new ArrayList<EClass>();
-							ArrayList<EClass> toRemove = new ArrayList<EClass>();
-							if(ec instanceof EClass){
-								for(EClass sc : ((EClass) ec).getESuperTypes()){ 
-									toRemove.add(sc); 
-								}
-								if(!toRemove.isEmpty()){ 
-									((EClass) ec).getESuperTypes().removeAll(toRemove); }
-								//fake references
-								for(EReference er : ((EClass) ec).getEAllReferences()){ 
-									er.setEType(ec); 
-								}
-							}
-
-						}
-						newRootPackage.getESubpackages().add(pack);
-					}
-				}
-			}
-			// reestablish super classes
-			newRootPackage = reestablishSuperClass(newRootPackage, relatedPackages);
-			// reestablish references
-			newRootPackage = reestablishReference(newRootPackage, relatedPackages);
-			// remove annotations
-			newRootPackage = removeAnnotation(newRootPackage, relatedPackages);
-			return newRootPackage;
-		}
-
-		public static EPackage reestablishSuperClasses(EPackage rootPackage, Map<EPackage, EPackage> packageKeyPackageMap){
-			// recuperer chaque subpackage
-			Map <String, ArrayList<EClass>> mapToAdd = new HashMap<String, ArrayList<EClass>>();
-			for(EPackage subp : rootPackage.getESubpackages()){
-				// recherche du package initial de chaque subpackage
-				for (Entry<EPackage, EPackage> e: packageKeyPackageMap.entrySet()) {
-					EPackage epackagek = e.getValue();
-					if(subp.getNsURI().equals(epackagek.getNsURI())){
-						// parcours des classes
-						for(EClassifier eclassk : epackagek.getEClassifiers()){
-							// class du rootPackage a modifier
-							ArrayList<EClass> toAdd = new ArrayList<EClass>();
-							EClass c = null;
-							for(EClassifier eclass : subp.getEClassifiers()){
-
-								if(eclass instanceof EClass){
-									//if(eclass.getName().equals("TransactionpartType")){
-									c = (EClass) eclass;
-									if(eclass.getName().equals(eclassk.getName())){
-										// verifier si la class a des superclasses
-										if(!((EClass) eclassk).getESuperTypes().isEmpty()){
-
-											// recupperer les superclasses
-											for(EClassifier esuperclassk : ((EClass) eclassk).getESuperTypes()){
-												// recuperer le package qui contient la superclass
-												EPackage containerPackage = null;
-												for(EPackage subpp : rootPackage.getESubpackages()){
-													for(EClassifier eclasskk : subpp.getEClassifiers()){
-														if(eclasskk.getName().equals(esuperclassk.getName())){
-															containerPackage = subpp;
-															break;
-														}
-													}
-												}
-												// recuperer le package (du ecore extended) dans lequel se trouve la classe
-												EClassifier newClass = getClass(containerPackage, (EClass) esuperclassk);
-												if(newClass != null){
-													toAdd.add((EClass) newClass); 
-													mapToAdd.put(eclass.getName(), toAdd);
-												}
-											}
-										}
-									}
-								}
-							}
-							/*
-							if(!toAdd.isEmpty()){
-								((EClass) c).getESuperTypes().addAll(toAdd); 
-							}
-
-							/*
-							for( EClass s : c.getEAllSuperTypes()){
-							}*/
-
-							rootPackage = addSuperTypes(rootPackage, packageKeyPackageMap, mapToAdd);
-						}
-					}
-				}
-			}
-			return rootPackage;
-		}
-		
-		
-		public static EPackage reestablishReferences(EPackage rootPackage, Map<EPackage, EPackage> packageKeyPackageMap){
-			// recuperer chaque subpackage
-			for(EPackage subp : rootPackage.getESubpackages()){
-				// recherche du package initial de chaque subpackage
-				for (Entry<EPackage, EPackage> e: packageKeyPackageMap.entrySet()) {
-					//EPackage epackage = (EPackage) e.getValue();
-					EPackage epackagek = e.getValue();
-					if(subp.getNsURI().equals(epackagek.getNsURI())){
-						// parcours des classes
-						for(EClassifier eclassk : epackagek.getEClassifiers()){
-							// class du rootPackage a modifier
-							EClass c = null;
-							for(EClassifier eclass : subp.getEClassifiers()){
-								if(eclass instanceof EClass){
-									c = (EClass) eclass;
-									if(eclass.getName().equals(eclassk.getName())){
-										// verifier si la class a de references vers d'autres packages
-										for(EReference er : ((EClass) eclassk).getEAllReferences()){
-											// recupperer er du ecore extended
-											for(EReference err :  c.getEAllReferences()){
-												if(er.getName().equals(err.getName())){
-													EClass type = (EClass) er.getEType();
-													// recuperer le package qui contient la superclass
-													EPackage containerPackage = null;
-													for(EPackage subpp : rootPackage.getESubpackages()){
-														for(EClassifier eclasskk : subpp.getEClassifiers()){
-															if(eclasskk.getName().equals(type.getName())){
-																containerPackage = subpp;
-																if(containerPackage.getNsURI().equals(((EPackage)type.eContainer()).getNsURI())){
-																	EClass relatedClass = UtilEMF.getClass(containerPackage, (EClass)er.getEType());
-																	err.setEType(relatedClass);
-																}
-															}
-														}
-													}
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-			return rootPackage;
-		}
-		
-		
-		/**
-		 * 
-		 */
-		public static EPackage reestablishReference(EPackage rootPackage, Map<EPackage, ArrayList<EPackage>> relatedPackages){
-			// recuperer chaque subpackage
-			for(EPackage subp : rootPackage.getESubpackages()){
-				// recherche du package initial de chaque subpackage
-				for (Entry<EPackage, ArrayList<EPackage>> e: relatedPackages.entrySet()) {
-					EPackage epackage = e.getKey();
-					if(subp.getNsURI().equals(epackage.getNsURI())){
-						// parcours des classes
-						for(EClassifier eclass : epackage.getEClassifiers()){
-							// class du rootPackage a modifier
-							EClass csub = null;
-							for(EClassifier eclasssub : subp.getEClassifiers()){
-								if(eclasssub instanceof EClass){
-									csub = (EClass) eclasssub;
-									if(eclasssub.getName().equals(eclass.getName())){
-										// verifier si la class a de references vers d'autres packages
-										for(EReference er : ((EClass) eclass).getEAllReferences()){
-											// recupperer er du ecore extended
-											for(EReference ersub :  csub.getEAllReferences()){
-												if(er.getName().equals(ersub.getName())){
-													EClass type = (EClass) er.getEType();
-													// recuperer le package qui contient la superclass
-													EPackage containerPackagesub = null;
-													for(EPackage subpp : rootPackage.getESubpackages()){
-														for(EClassifier subcc : subpp.getEClassifiers()){
-															if(subcc.getName().equals(type.getName())){
-																containerPackagesub = subpp;
-																if(containerPackagesub.getNsURI().equals(((EPackage)type.eContainer()).getNsURI())){
-																	EClass relatedClass = UtilEMF.getClass(containerPackagesub, (EClass)er.getEType());
-																	ersub.setEType(relatedClass);
-																}
-															}
-														}
-													}
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-			return rootPackage;
-		}
-		
-		
-		/**
-		 * 
-		 * @param rootPackage
-		 * @return
-		 */
-		public static EPackage reestablishSuperClass(EPackage rootPackage, Map<EPackage, ArrayList<EPackage>> relatedPackages) {
-			// recuperer chaque subpackage
-			Map <String, ArrayList<EClass>> mapToAdd = new HashMap<String, ArrayList<EClass>>();
-			for(EPackage subp : rootPackage.getESubpackages()){
-				// recherche du package initial de chaque subpackage
-				for (Entry<EPackage, ArrayList<EPackage>> e: relatedPackages.entrySet()) {
-					EPackage epackage = e.getKey();
-					if(subp.getNsURI().equals(epackage.getNsURI())){
-						// parcours des classes
-						for(EClassifier eclassk : epackage.getEClassifiers()){
-							// class du rootPackage a modifier
-							ArrayList<EClass> toAdd = new ArrayList<EClass>();
-							EClass c = null;
-							for(EClassifier eclass : subp.getEClassifiers()){
-
-								if(eclass instanceof EClass){
-									c = (EClass) eclass;
-									if(eclass.getName().equals(eclassk.getName())){
-										// verifier si la class a des superclasses
-										if(!((EClass) eclassk).getESuperTypes().isEmpty()){
-
-											// recupperer les superclasses
-											for(EClassifier esuperclassk : ((EClass) eclassk).getESuperTypes()){
-												// recuperer le package qui contient la superclass
-												EPackage containerPackage = null;
-												for(EPackage subpp : rootPackage.getESubpackages()){
-													for(EClassifier eclasskk : subpp.getEClassifiers()){
-														if(eclasskk.getName().equals(esuperclassk.getName())){
-															containerPackage = subpp;
-															break;
-														}
-													}
-												}
-												// recuperer le package (du ecore extended) dans lequel se trouve la classe
-												EClassifier newClass = getClass(containerPackage, (EClass) esuperclassk);
-												if(newClass != null){
-													toAdd.add((EClass) newClass); 
-													mapToAdd.put(eclass.getName(), toAdd);
-												}
-											}
-										}
-									}
-								}
-							}
-							rootPackage = addSuperClasses(rootPackage, relatedPackages, mapToAdd);
-						}
-					}
-				}
-			}
-			return rootPackage;
-		}
-
-		/**
-		 * Metamodel processor: removes annotations. 
-		 * @param metaModelRootObject Root object of the metamodel to be processed.
-		 * @return Root object of the updated metamodel (without annotations).
-		 */
-		public static EPackage removeAnnotation(EPackage rootPackage, Map<EPackage, ArrayList<EPackage>> relatedPackages){
-			for(EPackage subp : rootPackage.getESubpackages()){
-				removeAnnotations(subp);
-			}
-			return rootPackage;
-		}
-		
-		public static boolean isContainedInEcore(EPackage pack, EPackage subPack){
-			boolean result = false;
-			for(EPackage p : pack.getESubpackages()){
-				if(p.getName().equals(subPack.getName())){
-					result= true;
-					break;
-				}
-			}
-			return result;
-		}
-		
-		/**
-		 * 
-		 * @param mapHidden
-		 * @param uuid
-		 * @return
-		 */
-		public String getReferenceName(Map<String, Map<String, ArrayList<Object>>> mapHidden, String uuid){
-			String result = null;
-			for (Entry<String, Map<String, ArrayList<Object>>> e: mapHidden.entrySet()) {
-				String key = e.getKey();
-				if(key.equals(uuid)){
-					Map<String, ArrayList<Object>> val2 = e.getValue();
-					for(Entry<String, ArrayList<Object>> e2: val2.entrySet()){
-						result = e2.getKey();
-						break;
-					}
-				}
-			}
-			return result;		
-		}
-
 		@SuppressWarnings("unchecked")
 		public void copyFeatures2(Migration migration, Map<String, Map<String, ArrayList<Object>>> mapDerived, 
 				Map<String, Map<String, ArrayList<Object>>> mapHidden, EObject modelRootObject2, 
 				Map<String,String> newReferenceNameMap, Map<String, Map<String, Map<String, String>>> renameMap) {
-			this.renameMap = renameMap;
 			for (EObject sourceInstance : this.map.keySet()) {
 				for(Instance instance: migration.getInstances()){
 					if(instance.getUUID().equals(sourceInstance.eGet(sourceInstance.eClass().getEStructuralFeature("UUID")).toString())){
@@ -851,7 +248,7 @@ public class UtilEMF {
 									// Recreation of changeable features (excluding derived features):
 									for (EStructuralFeature sourceFeature : sourceInstance.eClass().getEAllStructuralFeatures()){
 										if(sourceFeature.getName().equals(path.getReferenceName())){
-											buildMap(migration);
+											//buildMap(migration);
 											Map<String, ArrayList<Object>> mapList = mapDerived.get(instance.getUUID());
 											if (sourceInstance.eIsSet(sourceFeature)) {
 												EStructuralFeature targetFeature = targetInstance.eClass().getEStructuralFeature(sourceFeature.getName());
@@ -881,9 +278,7 @@ public class UtilEMF {
 																									if(sourceFeature2.getName().equals(oldRefName)){
 																										Object sourceFeatureValue = sourceInstance2.eGet(sourceFeature2);
 																										if (sourceFeatureValue!=null){
-																											for(Object search : searched){ 
-																												((EList<Object>) targetInstance.eGet(targetFeature)).add(this.createFeatureValueCopy2(sourceFeature2, sourceFeatureValue, search.toString()));
-																											}
+																											for(Object search : searched){ ((EList<Object>) targetInstance.eGet(targetFeature)).add(this.createFeatureValueCopy2(sourceFeature2, sourceFeatureValue, search.toString()));}
 																										}
 																									}
 																								}
@@ -927,9 +322,7 @@ public class UtilEMF {
 																									if(sourceFeature2.getName().equals(oldRefName)){
 																										Object sourceFeatureValue = sourceInstance2.eGet(sourceFeature2);
 																										if (sourceFeatureValue!=null){
-																											for(Object search : searched){ 
-																												((EList<Object>) targetInstance.eGet(targetFeature)).add(this.createFeatureValueCopy2(sourceFeature2, sourceFeatureValue, search.toString()));
-																											}
+																											for(Object search : searched){ ((EList<Object>) targetInstance.eGet(targetFeature)).add(this.createFeatureValueCopy2(sourceFeature2, sourceFeatureValue, search.toString()));}
 																										}
 																									}
 																								}
@@ -952,17 +345,13 @@ public class UtilEMF {
 												EStructuralFeature targetFeature2 = null;
 												if (targetFeature==null){
 													targetFeature2 = targetInstance.eClass().getEStructuralFeature(newReferenceNameMap.get(sourceFeature.getName())); // ****
-													if(targetFeature2 == null){
-														throw new IllegalArgumentException("The source feature "+sourceInstance.eClass().getName()+"."+sourceFeature.getName()+" is not found in the target metamodel.");
-													}
+													if(targetFeature2 == null){ throw new IllegalArgumentException("The source feature "+sourceInstance.eClass().getName()+"."+sourceFeature.getName()+" is not found in the target metamodel."); }
 												}
 												if(targetInstance.eClass().getEStructuralFeature(newReferenceNameMap.get(sourceFeature.getName())) != null){
 													if (targetFeature2.isChangeable() // there is something to set in the target...
 															&& (!(targetFeature2 instanceof EReference) || !((EReference)targetFeature2).isContainer())){ // ...which is not a container
 														if (sourceFeature.isMany()){ // update of many valued feature
-															for (Object sourceFeatureValue : (EList<?>)sourceInstance.eGet(sourceFeature)){
-																((EList<Object>) targetInstance.eGet(targetFeature2)).add(this.createFeatureValueCopy2(sourceFeature, sourceFeatureValue, "5"));
-															}
+															for (Object sourceFeatureValue : (EList<?>)sourceInstance.eGet(sourceFeature)){ ((EList<Object>) targetInstance.eGet(targetFeature2)).add(this.createFeatureValueCopy2(sourceFeature, sourceFeatureValue, "5"));}
 														}else { // update of single valued reference
 															Object sourceFeatureValue = sourceInstance.eGet(sourceFeature);
 															if (sourceFeatureValue!=null) targetInstance.eSet(targetFeature2, this.createFeatureValueCopy2(sourceFeature, sourceFeatureValue,"5"));
@@ -972,9 +361,7 @@ public class UtilEMF {
 													if (targetFeature.isChangeable() // there is something to set in the target...
 															&& (!(targetFeature instanceof EReference) || !((EReference)targetFeature).isContainer())){ // ...which is not a container
 														if (sourceFeature.isMany()){ // update of many valued feature
-															for (Object sourceFeatureValue : (EList<?>)sourceInstance.eGet(sourceFeature)){
-																((EList<Object>) targetInstance.eGet(targetFeature)).add(this.createFeatureValueCopy(sourceFeature, sourceFeatureValue));
-															}
+															for (Object sourceFeatureValue : (EList<?>)sourceInstance.eGet(sourceFeature)){ ((EList<Object>) targetInstance.eGet(targetFeature)).add(this.createFeatureValueCopy(sourceFeature, sourceFeatureValue));}
 														}else { // update of single valued reference
 															Object sourceFeatureValue = sourceInstance.eGet(sourceFeature);
 															if (sourceFeatureValue!=null) targetInstance.eSet(targetFeature, this.createFeatureValueCopy(sourceFeature, sourceFeatureValue));
@@ -1010,79 +397,6 @@ public class UtilEMF {
 			}
 		}	
 
-		public static EObject changeMetamodel(EObject modelRootObject, EPackage newMetamodelRootPackage, Migration migrationHide){
-			EObjectMap eObjectMap = new EObjectMap(modelRootObject, newMetamodelRootPackage);
-			return eObjectMap.getRootCopy();
-		}
-
-		public void buildMap(Migration migration){
-			for (Entry<EObject, EObject> e: this.map.entrySet()) {
-				EObject key = e.getKey();
-				String keyid = key.eGet(key.eClass().getEStructuralFeature("UUID")).toString();
-				EObject value = e.getValue();
-				String valueid = value.eGet(value.eClass().getEStructuralFeature("UUID")).toString();
-			}
-			for (EObject sourceInstance : this.map.keySet()) {
-				for (EStructuralFeature sourceFeature : sourceInstance.eClass().getEAllStructuralFeatures()){
-					if (sourceInstance.eIsSet(sourceFeature)) {
-						if (sourceFeature.isChangeable() // there is something to set in the target...
-								&& (!(sourceFeature instanceof EReference) || !((EReference)sourceFeature).isContainer())){
-							if (sourceFeature.isMany()){
-								for (Object sourceFeatureValue : (EList<?>)sourceInstance.eGet(sourceFeature)){
-								}
-							}else{
-								Object r = sourceInstance.eGet(sourceFeature);
-								Object sourceFeatureValue = sourceInstance.eGet(sourceFeature);
-							}
-						}
-					}
-				}
-			}
-		}
-
-		@SuppressWarnings("unchecked")
-		public void copyFeatures(Migration migrationHide) {
-			for (EObject sourceInstance : this.map.keySet()) {
-				EObject targetInstance = this.map.get(sourceInstance);
-				// Recreation of changeable features (excluding derived features):
-				for (EStructuralFeature sourceFeature : sourceInstance.eClass().getEAllStructuralFeatures()){
-					if (sourceInstance.eIsSet(sourceFeature)) {
-						EStructuralFeature targetFeature = targetInstance.eClass().getEStructuralFeature(sourceFeature.getName());
-						if (targetFeature==null) throw new IllegalArgumentException("The source feature "+sourceInstance.eClass().getName()+"."+sourceFeature.getName()+" is not found in the target metamodel.");
-						if (targetFeature.isChangeable() // there is something to set in the target...
-								&& (!(targetFeature instanceof EReference) || !((EReference)targetFeature).isContainer())) // ...which is not a container
-							if (sourceFeature.isMany()) // update of many valued feature
-								for (Object sourceFeatureValue : (EList<?>)sourceInstance.eGet(sourceFeature)){
-									((EList<Object>) targetInstance.eGet(targetFeature)).add(this.createFeatureValueCopy(sourceFeature, sourceFeatureValue));
-								}
-							else { // update of single valued reference
-								Object sourceFeatureValue = sourceInstance.eGet(sourceFeature);
-								if (sourceFeatureValue!=null) targetInstance.eSet(targetFeature, this.createFeatureValueCopy(sourceFeature, sourceFeatureValue));
-							}
-					}else{
-						EStructuralFeature targetFeature = targetInstance.eClass().getEStructuralFeature(sourceFeature.getName());
-						for (EObject sourceInstance2 : this.map.keySet()) {
-							String sourceInstanceId2 = sourceInstance2.eGet(sourceInstance2.eClass().getEStructuralFeature("UUID")).toString();
-							for(EObject c:sourceInstance2.eContents()){
-							}
-
-							/*EObject targetInstance2 = this.map.get(sourceInstance2);
-								for (EStructuralFeature sourceFeature2 : sourceInstance2.eClass().getEAllStructuralFeatures()){
-									if(sourceFeature2.getName().equals("neighborhoods")){
-										EStructuralFeature targetFeature2 = sourceInstance2.eClass().getEStructuralFeature(sourceFeature2.getName());
-									if (sourceFeature2.isMany()){ // update of many valued feature
-										for (Object sourceFeatureValue : (EList<?>)sourceInstance2.eGet(sourceFeature2)){
-											//((EList<Object>) targetInstance.eGet(targetFeature)).add(this.createFeatureValueCopy(sourceFeature, sourceFeatureValue));
-										}
-									}
-									}
-								}*/
-						}
-					}
-				}
-			}
-		}
-
 		/**
 		 * Creates a copy in the new metamodel of a feature value related to a class
 		 * of the source metamodel.
@@ -1090,38 +404,14 @@ public class UtilEMF {
 		 * @param sourceFeatureValue Source feature value to copy.
 		 * @return copy of the source feature value.
 		 */
-		/*private Object createFeatureValueCopy(EStructuralFeature sourceFeature, Object sourceFeatureValue) {
-			EClassifier sourceAttributeType = sourceFeature.getEType();
-			List<EPackage> sourceAttributeTypePackagePath = getEPackagePath(sourceAttributeType.getEPackage(), this.oldMetamodelRootPackage);
-			if (!sourceAttributeTypePackagePath.get(0).equals(this.oldMetamodelRootPackage)){
-				// The type of the feature is not defined within the new package, so we try to keep the current value:
-				return sourceFeatureValue;
-			}
-			EPackage targetPackage = getEndOfEPackagePath(sourceAttributeTypePackagePath, this.newMetamodelRootPackage);
-			if (targetPackage==null){
-				throw new IllegalArgumentException("The target EPackage matching with the source EPackage "+sourceAttributeType.getEPackage()+" is not found.");
-			}
-			if (sourceAttributeType instanceof EDataType) { // the feature is an attribute: data type (including enum)
-				EClassifier targetAttributeType = targetPackage.getEClassifier(sourceAttributeType.getName());
-				if (targetAttributeType==null) throw new IllegalArgumentException("The target EPackage "+targetPackage.getName()+" does not contain the required data type "+sourceAttributeType.getName());
-				if (!(targetAttributeType instanceof EDataType)) throw new IllegalArgumentException("The target EPackage "+targetPackage.getName()+" contains a classifier "+sourceAttributeType.getName()+" which is not a data type (and which sould be)");
-				return targetPackage.getEFactoryInstance().createFromString(((EDataType)targetAttributeType), sourceFeatureValue.toString());
-			}
-			// the feature is a local reference:
-			return this.map.get(sourceFeatureValue);
-		}*/
-
 		private Object createFeatureValueCopy(EStructuralFeature sourceFeature, Object sourceFeatureValue) {
 			EClassifier sourceAttributeType = sourceFeature.getEType();
 			List<EPackage> sourceAttributeTypePackagePath = getEPackagePath(sourceAttributeType.getEPackage(), this.oldMetamodelRootPackage);
-			if (!sourceAttributeTypePackagePath.get(0).equals(this.oldMetamodelRootPackage)){
+			if (!sourceAttributeTypePackagePath.get(0).equals(this.oldMetamodelRootPackage))
 				// The type of the feature is not defined within the new package, so we try to keep the current value:
 				return sourceFeatureValue;
-			}
 			EPackage targetPackage = getEndOfEPackagePath(sourceAttributeTypePackagePath, this.newMetamodelRootPackage);
-			if (targetPackage==null){
-				throw new IllegalArgumentException("The target EPackage matching with the source EPackage "+sourceAttributeType.getEPackage()+" is not found.");
-			}
+			if (targetPackage==null) throw new IllegalArgumentException("The target EPackage matching with the source EPackage "+sourceAttributeType.getEPackage()+" is not found.");
 			if (sourceAttributeType instanceof EDataType) { // the feature is an attribute: data type (including enum)
 				EClassifier targetAttributeType = targetPackage.getEClassifier(sourceAttributeType.getName());
 				if (targetAttributeType==null) throw new IllegalArgumentException("The target EPackage "+targetPackage.getName()+" does not contain the required data type "+sourceAttributeType.getName());
@@ -1132,6 +422,13 @@ public class UtilEMF {
 			return this.map.get(sourceFeatureValue);
 		}
 
+		/**
+		 * Creates a copy in the new metamodel of a feature value related to a class of the source metamodel.
+		 * @param sourceFeature Source feature.
+		 * @param sourceFeatureValue Source feature value to copy.
+		 * @param search
+		 * @return copy of the source feature value.
+		 */
 		private Object createFeatureValueCopy2(EStructuralFeature sourceFeature, Object sourceFeatureValue, String search) {
 			EClassifier sourceAttributeType = sourceFeature.getEType();
 			List<EPackage> sourceAttributeTypePackagePath = getEPackagePath(sourceAttributeType.getEPackage(), this.oldMetamodelRootPackage);
@@ -1157,26 +454,94 @@ public class UtilEMF {
 			}
 		}
 
-		private Object createFeatureValueCopy3(EStructuralFeature sourceFeature, Object sourceFeatureValue, String search) {
-			EClassifier sourceAttributeType = sourceFeature.getEType();
-			List<EPackage> sourceAttributeTypePackagePath = getEPackagePath(sourceAttributeType.getEPackage(), this.oldMetamodelRootPackage);
-			if (!sourceAttributeTypePackagePath.get(0).equals(this.oldMetamodelRootPackage)){
-				// The type of the feature is not defined within the new package, so we try to keep the current value:
-				return sourceFeatureValue;
-			}
-			EPackage targetPackage = getEndOfEPackagePath(sourceAttributeTypePackagePath, this.newMetamodelRootPackage);
-			if (targetPackage==null){
-				throw new IllegalArgumentException("The target EPackage matching with the source EPackage "+sourceAttributeType.getEPackage()+" is not found.");
-			}
-			if (sourceAttributeType instanceof EDataType) { // the feature is an attribute: data type (including enum)
-				EClassifier targetAttributeType = targetPackage.getEClassifier(sourceAttributeType.getName());
-				if (targetAttributeType==null) throw new IllegalArgumentException("The target EPackage "+targetPackage.getName()+" does not contain the required data type "+sourceAttributeType.getName());
-				if (!(targetAttributeType instanceof EDataType)) throw new IllegalArgumentException("The target EPackage "+targetPackage.getName()+" contains a classifier "+sourceAttributeType.getName()+" which is not a data type (and which sould be)");
-				return targetPackage.getEFactoryInstance().createFromString(((EDataType)targetAttributeType), sourceFeatureValue.toString());
-			}
-			return (Object)getValue(search);
+		/**
+		 * Creates a copy in the new metamodel of an instance conforming to the class
+		 * of the source metamodel.
+		 * @param source Object to copy.
+		 * @return copy of the source object.
+		 */
+		private EObject createObjectCopy(EObject source) {
+			EClass sourceClassType = source.eClass();
+			List<EPackage> sourceClassTypePackagePath = getEPackagePath(sourceClassType.getEPackage(), this.oldMetamodelRootPackage);
+			if (!sourceClassTypePackagePath.get(0).equals(this.oldMetamodelRootPackage))
+				// The type of the object is not defined within the new package, so we try to create a new instance from this object's class:
+				return EcoreUtil.create(sourceClassType);
+			EPackage targetPackage = getEndOfEPackagePath(sourceClassTypePackagePath, this.newMetamodelRootPackage);
+			if (targetPackage==null) throw new IllegalArgumentException("The target EPackage matching with the source EPackage "+sourceClassType.getEPackage()+" is not found.");
+			EClassifier copyClass = targetPackage.getEClassifier(sourceClassType.getName());
+			if (copyClass==null) throw new IllegalArgumentException("The target EPackage "+targetPackage.getName()+" does not contain the required class "+sourceClassType.getName());
+			if (!(copyClass instanceof EClass)) throw new IllegalArgumentException("The target EPackage "+targetPackage.getName()+" contains a classifier "+sourceClassType.getName()+" which is not an EClass (and which sould be)");
+			return EcoreUtil.create((EClass)copyClass);
 		}
 
+		/**
+		 * Creates a copy in the new metamodel of an instance conforming to the class of the source metamodel.
+		 * @param source Object to copy.
+		 * @param renameMap Map relating old name and new name of elements in the model.
+		 * @return copy of the source object.
+		 */
+		private EObject createObjectCopy(EObject source, Map<String, Map<String,Map<String,String>>> renameMap) {
+			EClass sourceClassType = source.eClass();
+			Map<String, Map<String,String>> value = renameMap.get(sourceClassType.getName());
+			String key = null ;
+			Map<String,String> val = new HashMap<String, String>();
+			for (Entry<String, Map<String,String>> e: value.entrySet()) {
+				key = e.getKey();
+				val = e.getValue();
+			}
+			List<EPackage> sourceClassTypePackagePath = getEPackagePath(sourceClassType.getEPackage(), this.oldMetamodelRootPackage);
+			if (!sourceClassTypePackagePath.get(0).equals(this.oldMetamodelRootPackage))
+				// The type of the object is not defined within the new package, so we try to create a new instance from this object's class:
+				return EcoreUtil.create(sourceClassType);
+			EPackage targetPackage = getEndOfEPackagePath(sourceClassTypePackagePath, this.newMetamodelRootPackage);
+			if (targetPackage==null) throw new IllegalArgumentException("The target EPackage matching with the source EPackage "+sourceClassType.getEPackage()+" is not found.");
+			EClassifier searched = null;
+			for(EClassifier tp : targetPackage.getEClassifiers()){
+				if(tp.getName().equals(key)){
+					searched = tp;
+					break;
+				}	
+			}
+			EClassifier copyClass = searched;
+			if (copyClass==null) throw new IllegalArgumentException("The target EPackage "+targetPackage.getName()+" does not contain the required class "+sourceClassType.getName());
+			if (!(copyClass instanceof EClass)) throw new IllegalArgumentException("The target EPackage "+targetPackage.getName()+" contains a classifier "+sourceClassType.getName()+" which is not an EClass (and which sould be)");
+			return EcoreUtil.create((EClass)copyClass);
+		}
+
+		/**
+		 * Provides the source model copy.
+		 * @return the copy of the root instance of the source model.
+		 */
+		public EObject getRootCopy() {
+			return this.map.get(this.modelRootObject);
+		}
+
+		/**
+		 * Get the name of a reference of the model.
+		 * @param mapHidden Map relating name and object of hidden elements.
+		 * @param uuid Identifier of the instance containing the reference.
+		 * @return result Name of the reference.
+		 */
+		public String getReferenceName(Map<String, Map<String, ArrayList<Object>>> mapHidden, String uuid){
+			String result = null;
+			for (Entry<String, Map<String, ArrayList<Object>>> e: mapHidden.entrySet()) {
+				String key = e.getKey();
+				if(key.equals(uuid)){
+					Map<String, ArrayList<Object>> val2 = e.getValue();
+					for(Entry<String, ArrayList<Object>> e2: val2.entrySet()){
+						result = e2.getKey();
+						break;
+					}
+				}
+			}
+			return result;		
+		}
+
+		/**
+		 * Get the instance with the UUID given in parameter.
+		 * @param search UUID of the searched instance.
+		 * @return result. Instance of the model
+		 */
 		public EObject getValue(String search){
 			EObject result = null;
 			for (Entry<EObject, EObject> e: this.map.entrySet()) {
@@ -1190,308 +555,592 @@ public class UtilEMF {
 			return result;
 		}
 
-		/*public String getId(Object sourceFeatureValue){
-			String result = null;
+		/**
+		 * Build a map of migration.
+		 * @param migration Migration specification.
+		 */
+		/*public void buildMap(Migration migration){
 			for (Entry<EObject, EObject> e: this.map.entrySet()) {
 				EObject key = e.getKey();
 				String keyid = key.eGet(key.eClass().getEStructuralFeature("UUID")).toString();
 				EObject value = e.getValue();
-				if(value.toString().equals(sourceFeatureValue.toString())){
-					result = keyid;
-					break;
-				}
+				String valueid = value.eGet(value.eClass().getEStructuralFeature("UUID")).toString();
 			}
-			return result;
-		}*/
-
-
-		/**
-		 * Creates a copy in the new metamodel of an instance conforming to the class
-		 * of the source metamodel.
-		 * @param source Object to copy.
-		 * @return copy of the source object.
-		 */
-		/*	private EObject createObjectCopy(EObject source) {
-			EClass sourceClassType = source.eClass();
-			List<EPackage> sourceClassTypePackagePath = getEPackagePath(sourceClassType.getEPackage(), this.oldMetamodelRootPackage);
-			if (!sourceClassTypePackagePath.get(0).equals(this.oldMetamodelRootPackage)){
-				// The type of the object is not defined within the new package, so we try to create a new instance from this object's class:
-				return EcoreUtil.create(sourceClassType);
-			}else{
-			}
-			EPackage targetPackage = getEndOfEPackagePath(sourceClassTypePackagePath, this.newMetamodelRootPackage);
-			if (targetPackage==null) throw new IllegalArgumentException("The target EPackage matching with the source EPackage "+sourceClassType.getEPackage()+" is not found.");
-			EClassifier copyClass = null;
-			 EList<EPackage> listsp = targetPackage.getESubpackages();
-			 for(EPackage subpackage : listsp){
-				for(EClassifier classifiers : subpackage.getEClassifiers()){
-					 if(classifiers.getName().equals(sourceClassType.getName())){
-						 copyClass = classifiers;
-					 }
-
-				}
-			 }
-
-			//EClassifier copyClass = targetPackage.getEClassifier(sourceClassType.getName());
-			if (copyClass==null){	
-				throw new IllegalArgumentException("The target EPackage "+targetPackage.getName()+" does not contain the required class "+sourceClassType.getName());
-			}
-			if (!(copyClass instanceof EClass)) throw new IllegalArgumentException("The target EPackage "+targetPackage.getName()+" contains a classifier "+sourceClassType.getName()+" which is not an EClass (and which sould be)");
-			return EcoreUtil.create((EClass)copyClass);
-		}*/
-
-		private EObject createObjectCopy(EObject source) {
-			EClass sourceClassType = source.eClass();
-			List<EPackage> sourceClassTypePackagePath = getEPackagePath(sourceClassType.getEPackage(), this.oldMetamodelRootPackage);
-			if (!sourceClassTypePackagePath.get(0).equals(this.oldMetamodelRootPackage))
-				// The type of the object is not defined within the new package, so we try to create a new instance from this object's class:
-				return EcoreUtil.create(sourceClassType);
-			EPackage targetPackage = getEndOfEPackagePath(sourceClassTypePackagePath, this.newMetamodelRootPackage);
-			if (targetPackage==null) throw new IllegalArgumentException("The target EPackage matching with the source EPackage "+sourceClassType.getEPackage()+" is not found.");
-			EClassifier copyClass = targetPackage.getEClassifier(sourceClassType.getName());
-			if (copyClass==null){	
-				throw new IllegalArgumentException("The target EPackage "+targetPackage.getName()+" does not contain the required class "+sourceClassType.getName());
-			}
-			if (!(copyClass instanceof EClass)) throw new IllegalArgumentException("The target EPackage "+targetPackage.getName()+" contains a classifier "+sourceClassType.getName()+" which is not an EClass (and which sould be)");
-			return EcoreUtil.create((EClass)copyClass);
-		}
-
-		/*private EObject createObjectCopyMultiEcore(EObject source) {
-			EClass sourceClassType = source.eClass();
-			List<EPackage> sourceClassTypePackagePath = getEPackagePath(sourceClassType.getEPackage(), this.oldMetamodelRootPackage);
-			if (!sourceClassTypePackagePath.get(0).equals(this.oldMetamodelRootPackage)){
-				// The type of the object is not defined within the new package, so we try to create a new instance from this object's class:
-				return EcoreUtil.create(sourceClassType);
-			}
-			EPackage targetPackage = getEndOfEPackagePath(sourceClassTypePackagePath, this.newMetamodelRootPackage);
-			if (targetPackage==null) throw new IllegalArgumentException("The target EPackage matching with the source EPackage "+sourceClassType.getEPackage()+" is not found.");
-			EClassifier copyClass = targetPackage.getEClassifier(sourceClassType.getName());
-			if (copyClass==null){	
-				throw new IllegalArgumentException("The target EPackage "+targetPackage.getName()+" does not contain the required class "+sourceClassType.getName());
-			}
-			if (!(copyClass instanceof EClass)) throw new IllegalArgumentException("The target EPackage "+targetPackage.getName()+" contains a classifier "+sourceClassType.getName()+" which is not an EClass (and which sould be)");
-			return EcoreUtil.create((EClass)copyClass);
-		}*/
-
-		/*private EObject createObjectCopyMultiEcore(EObject source){
-			EClass sourceClassType = source.eClass();
-			List<EPackage> sourceClassTypePackagePath = getEPackagePath(sourceClassType.getEPackage(), this.newMetamodelRootPackage);
-
-			if (!sourceClassTypePackagePath.get(0).equals(this.oldMetamodelRootPackage)){
-				// The type of the object is not defined within the new package, so we try to create a new instance from this object's class:
-				return EcoreUtil.create(sourceClassType);
-			}
-			EPackage targetPackage = getEndOfEPackagePath(sourceClassTypePackagePath, this.newMetamodelRootPackage);
-			if (targetPackage==null) throw new IllegalArgumentException("The target EPackage matching with the source EPackage "+sourceClassType.getEPackage()+" is not found.");
-			EClassifier copyClass = targetPackage.getEClassifier(sourceClassType.getName());
-			if (copyClass==null){	
-				EClassifier copyClass2 = null;
-				for(EPackage sub : sourceClassTypePackagePath){
-					if(sub.getName().equals(oldMetamodelRootPackage.getName())){
-						targetPackage = getEndOfEPackagePath(sourceClassTypePackagePath, sub);
-						if (targetPackage==null) throw new IllegalArgumentException("The target EPackage matching with the source EPackage "+sourceClassType.getEPackage()+" is not found.");
-						copyClass2 = targetPackage.getEClassifier(sourceClassType.getName());
-						return EcoreUtil.create((EClass)copyClass2);
+			for (EObject sourceInstance : this.map.keySet()) {
+				for (EStructuralFeature sourceFeature : sourceInstance.eClass().getEAllStructuralFeatures()){
+					if (sourceInstance.eIsSet(sourceFeature)) {
+						if (sourceFeature.isChangeable() // there is something to set in the target...
+								&& (!(sourceFeature instanceof EReference) || !((EReference)sourceFeature).isContainer())){
+							if (sourceFeature.isMany()){
+								for (Object sourceFeatureValue : (EList<?>)sourceInstance.eGet(sourceFeature)){
+								}
+							}else{
+								Object r = sourceInstance.eGet(sourceFeature);
+								Object sourceFeatureValue = sourceInstance.eGet(sourceFeature);
+							}
+						}
 					}
 				}
-
-				if(copyClass2 == null){
-					throw new IllegalArgumentException("The target EPackage "+targetPackage.getName()+" does not contain the required class "+sourceClassType.getName());
-				}
-				throw new IllegalArgumentException("The target EPackage "+targetPackage.getName()+" does not contain the required class "+sourceClassType.getName());
 			}
-
-			return EcoreUtil.create((EClass)copyClass);
 		}*/
-
-		/*	private EObject createObjectCopyMultiEcore(EObject source) {
-			EClass sourceClassType = source.eClass();
-			if(sourceClassType.getName().equals("RootClass")){
-				List<EPackage> sourceClassTypePackagePath = getEPackagePath(sourceClassType.getEPackage(), this.oldMetamodelRootPackage);
-				EPackage p1 = null;
-				for(EPackage p : sourceClassTypePackagePath){
-					p1 = p;
-				}
-				if (!sourceClassTypePackagePath.get(0).equals(this.oldMetamodelRootPackage)){
-					// The type of the object is not defined within the new package, so we try to create a new instance from this object's class:
-					return EcoreUtil.create(sourceClassType);
-				}
-				EPackage targetPackage = getEndOfEPackagePath(sourceClassTypePackagePath, this.newMetamodelRootPackage);
-				if (targetPackage==null) throw new IllegalArgumentException("The target EPackage matching with the source EPackage "+sourceClassType.getEPackage()+" is not found.");
-				EClassifier copyClass = targetPackage.getEClassifier(sourceClassType.getName());
-
-				EClassifier copyClass2 = null;
-				if (copyClass==null){
-					for(EPackage tp : targetPackage.getESubpackages()){
-						if(tp.getName().equals(p1.getName()+"k")){
-
-							copyClass2 = tp.getEClassifier(sourceClassType.getName());
-							//return EcoreUtil.create((EClass)copyClass2);
-						}
-					}				}
-			}else{
-			}
-			return EcoreUtil.create((EClass)copyClass2);
-		}*/
-
-		public EPackage getContainer(EPackage targetPackage, EClass sourceClassType){
-			EPackage subpack = null;
-			for( EPackage subp : targetPackage.getESubpackages()){
-				EClassifier copyClass2 = subp.getEClassifier(sourceClassType.getName());
-				if(copyClass2!=null)
-					subpack = subp;
-				break;
-			}
-			return subpack;
-		}
-
-		/**
-		 *  Creates a copy in the new metamodel of an instance conforming to the class
-		 * of the source metamodel. 
-		 * 
-		 * @param source
-		 * @param renameMap
-		 * @return
-		 */
-		// Migration
-		private EObject createObjectCopy(EObject source, Map<String, Map<String,Map<String,String>>> renameMap) {
-			EClass sourceClassType = source.eClass();
-			Map<String, Map<String,String>> value = renameMap.get(sourceClassType.getName());
-			String key = null ;
-			if(value != null){
-				for (Entry<String, Map<String,String>> e: value.entrySet()) { key = e.getKey(); }
-			}
-			List<EPackage> sourceClassTypePackagePath = getEPackagePath(sourceClassType.getEPackage(), this.oldMetamodelRootPackage);
-			if (!sourceClassTypePackagePath.get(0).equals(this.oldMetamodelRootPackage))
-				// The type of the object is not defined within the new package, so we try to create a new instance from this object's class:
-				return EcoreUtil.create(sourceClassType);
-			EPackage targetPackage = getEndOfEPackagePath(sourceClassTypePackagePath, this.newMetamodelRootPackage);
-			if (targetPackage==null) throw new IllegalArgumentException("The target EPackage matching with the source EPackage "+sourceClassType.getEPackage()+" is not found.");
-			EClassifier searched = null;
-			if(key != null){
-				for(EClassifier tp : targetPackage.getEClassifiers()){
-					if(tp.getName().equals(key)){
-						searched = tp;
-						break;
-					}	
-				}
-			}
-			EClassifier copyClass = searched;
-			if (copyClass==null) throw new IllegalArgumentException("The target EPackage "+targetPackage.getName()+" does not contain the required class "+sourceClassType.getName());
-			if (!(copyClass instanceof EClass)) throw new IllegalArgumentException("The target EPackage "+targetPackage.getName()+" contains a classifier "+sourceClassType.getName()+" which is not an EClass (and which sould be)");
-			return EcoreUtil.create((EClass)copyClass);
-		}
-
 	}
 
-	// PUBLIC ***********************************************************************************
+	/**
+	 * Buid the map of references of an instance.
+	 * 
+	 * @param modelRoot Root object.
+	 * @param rootPackage Root package.
+	 * @return referencesToInstanceMap Map relating a class and the list of references of the class.
+	 */
+	private Map<String, ArrayList<String>> buildMapReferencesToInstance(EObject modelRoot, EPackage rootPackage){
+		Map<String, ArrayList<String>> referencesToInstanceMap = new HashMap<String, ArrayList<String>>();
+		for(EReference reference : modelRoot.eClass().getEAllReferences()){
+			//String referenceName = reference.getName();
+			//EClassifier referenceType = reference.getEType();
+		}
+		return referencesToInstanceMap;
+	}
 
 	/**
-	 * Addition of UUID attributes.
-	 * @param metamodelFilePath File path of the metamodel to be extended with UUID attibutes.
-	 * @return Loaded and updated root package.
+	 * Relink a package with its external packages.
+	 * 
+	 * @param rootPackage Root package.
+	 * @param relatedPackages List of external packages related to a package.
+	 * @return packageLocationMap Map relating packages and their paths.
 	 */
-	/*public static EPackage addUUIDAttribute(String metamodelFilePath) {
-		// Metamodel loading:		
-		EPackage metamodelRootPackage = loadMetamodel(metamodelFilePath);
-		// Update:
-		return addUUIDAttribute(metamodelRootPackage);
-	}*/
-
-	/**
-	 * Addition of UUID attributes.
-	 * @param metamodelURI URI of the metamodel to be extended with UUID attibutes.
-	 * @return Loaded and updated root package.
-	 */
-	/*public static EPackage addUUIDAttribute(URI metamodelURI) {
-		// Metamodel loading:		
-		EPackage metamodelRootPackage = loadMetamodel(metamodelURI);
-		// Update:
-		return addUUIDAttribute(metamodelRootPackage);
-	}*/
-
-	/**
-	 * Addition of UUID attributes.
-	 * @param metamodelRootPackage Root package of the metamodel to be extended with UUID attibutes.
-	 * @return Updated root package.
-	 */
-	/*public static EPackage addUUIDAttribute(EPackage metamodelRootPackage) {
-		for (TreeIterator<EObject> it = metamodelRootPackage.eAllContents(); it.hasNext();) {
-			EObject next = it.next();
-			if (next instanceof EClass) { // update of the classes...
-				EClass c = (EClass) next;
-				boolean toUpdate = true; //...that are not already updated by inheritance
-				for (EClass supClass : c.getESuperTypes()) // scan of inherited classes
-					if (metamodelRootPackage.equals(supClass.getEPackage())) {
-						// an inherited class is already in the same package
-						toUpdate = false;
-						break;
+	private Map<EPackage, String> relinkMetamodels(Map<EPackage, EPackage> packageKeyPackageMap, Map<EPackage, ArrayList<EPackage>> relatedPackages){
+		ArrayList<EPackage> packageWithUUID = new ArrayList<EPackage>();
+		ArrayList<EPackage> packageWithOutUUID = new ArrayList<EPackage>();
+		for (Entry<EPackage, ArrayList<EPackage>> e: relatedPackages.entrySet()) {
+			EPackage ep = packageKeyPackageMap.get(e.getKey());
+			packageWithUUID.add(ep);
+			for(TreeIterator<EObject> it = ep.eAllContents(); it.hasNext();){
+				EObject next = it.next();
+				ArrayList<EClass> toAdd = new ArrayList<EClass>();
+				ArrayList<EClass> toRemove = new ArrayList<EClass>();
+				if(next instanceof EClass){
+					EClass c = (EClass) next;
+					for(EClass sc : c.getESuperTypes()){
+						EPackage scContainerPackage = (EPackage)(sc.eContainer());
+						if(!scContainerPackage.equals(ep)){
+							for (Entry<EPackage, EPackage> e2: packageKeyPackageMap.entrySet()) {
+								EPackage key = e2.getKey();
+								EPackage newContainer = e2.getValue();
+								if(scContainerPackage.getNsURI().equals(key.getNsURI())){	
+									// get class of package
+									EClass relatedClass = getClass(newContainer, sc);
+									toAdd.add(relatedClass);
+									toRemove.add(sc);
+								}
+							}
+						}
 					}
-				if (toUpdate) {
-					EAttribute uuid = EcoreFactory.eINSTANCE.createEAttribute();
-					uuid.setName("UUID");
-					uuid.setEType(EcorePackage.eINSTANCE.getEString());
-					uuid.setLowerBound(0);
-					uuid.setUpperBound(1);
-					uuid.setUnique(true);
-					c.getEStructuralFeatures().add(uuid);
+					if(!toAdd.isEmpty()){ c.getESuperTypes().addAll(toAdd); }
+					if(!toRemove.isEmpty()){ c.getESuperTypes().removeAll(toRemove); }
+					// references dans ecores externes
+					for(EReference er : c.getEAllReferences()){
+						EPackage containerPackage = (EPackage)(er.getEType().eContainer());
+						if(!containerPackage.equals(ep)){
+							for (Entry<EPackage, EPackage> e2: packageKeyPackageMap.entrySet()) {
+								EPackage key = e2.getKey();
+								EPackage newContainer = e2.getValue();
+								if(containerPackage.getNsURI().equals(key.getNsURI())){	
+									EClass relatedClass = getClass(newContainer, (EClass)er.getEType());
+									er.setEType(relatedClass);
+								}
+							}
+						}
+					}
 				}
 			}
 		}
-		return metamodelRootPackage;
-	}*/
+		for (Entry<EPackage, String> e: packageLocationMap.entrySet()) {
+			if(!packageWithUUID.contains(e.getKey())){ packageWithOutUUID.add(e.getKey()); }	
+		}
+		for(EPackage p : packageWithOutUUID){ packageLocationMap.remove(p); }
+		return packageLocationMap;
+	}
 
-	/*public static EPackage removeUUID(EPackage metamodelRootPackage){
-		for(TreeIterator<EObject> it = metamodelRootPackage.eAllContents(); it.hasNext();){
+	// PRIVATE **********************************************************************************
+
+	private static Map<EPackage, String> packageLocationMap = new HashMap<EPackage, String>();
+
+	/**
+	 * Creating an ecore composed of subpackages. Each subpackage correspond to an external ecore.
+	 * 
+	 * @param relatedPackages Map of the root package and its related metamodels.
+	 * @param originalEcoreFilePath Path of the root object of the metamodel.
+	 * @param rootPackage Root object of the metamodel.
+	 * @return newRootPackage A package containing all external packages.
+	 */
+	private EPackage createExtendedEcore(Map<EPackage, ArrayList<EPackage>> relatedPackages, String originalEcoreFilePath, EPackage rootPackage){
+		String name =  rootPackage.getName()+"Extended";
+		EPackage newRootPackage;
+		EcoreFactory theCoreFactory = EcoreFactory.eINSTANCE;
+		newRootPackage = theCoreFactory.createEPackage();
+		newRootPackage.setName(name);
+		newRootPackage.setNsPrefix(name);
+		newRootPackage.setNsURI("http://"+name+".ecore");
+		for (Entry<EPackage, ArrayList<EPackage>> e: relatedPackages.entrySet()) {
+			EPackage ep = e.getKey();
+			EPackage pack = theCoreFactory.createEPackage();
+			if(!isContainedInEcore(newRootPackage, ep)){
+				if(!ep.getName().equals("ecore")){
+					pack = EcoreUtil.copy(ep);
+					pack.setName(pack.getName());
+					pack.setNsPrefix(pack.getNsPrefix());
+					pack.setNsURI(pack.getNsURI());
+					for(EClassifier ec : pack.getEClassifiers()){
+						ArrayList<EClass> toRemove = new ArrayList<EClass>();
+						if(ec instanceof EClass){
+							for(EClass sc : ((EClass) ec).getESuperTypes()){ toRemove.add(sc); }
+							if(!toRemove.isEmpty()){ ((EClass) ec).getESuperTypes().removeAll(toRemove); }
+							//fake references
+							for(EReference er : ((EClass) ec).getEAllReferences()){ er.setEType(ec); }
+						}
+					}
+					newRootPackage.getESubpackages().add(pack);
+				}
+			}
+		}
+		// reestablish super classes
+		newRootPackage = reestablishSuperClass(newRootPackage, relatedPackages);
+		// reestablish references
+		newRootPackage = reestablishReference(newRootPackage, relatedPackages);
+		// remove annotations
+		newRootPackage = removeAnnotation(newRootPackage, relatedPackages);
+		return newRootPackage;
+	}
+
+	/**
+	 * Reestablish super classes in case they have been modified.
+	 * @param rootPackage Root object of the metamodel.
+	 * @param  relatedPackages
+	 * @return A package with all its superclasses.
+	 */
+	private EPackage reestablishSuperClass(EPackage rootPackage, Map<EPackage, ArrayList<EPackage>> relatedPackages) {
+		// recuperer chaque subpackage
+		Map <String, ArrayList<EClass>> mapToAdd = new HashMap<String, ArrayList<EClass>>();
+		for(EPackage subp : rootPackage.getESubpackages()){
+			// recherche du package initial de chaque subpackage
+			for (Entry<EPackage, ArrayList<EPackage>> e: relatedPackages.entrySet()) {
+				EPackage epackage = e.getKey();
+				if(subp.getNsURI().equals(epackage.getNsURI())){
+					// parcours des classes
+					for(EClassifier eclassk : epackage.getEClassifiers()){
+						// class du rootPackage a modifier
+						ArrayList<EClass> toAdd = new ArrayList<EClass>();
+						EClass c = null;
+						for(EClassifier eclass : subp.getEClassifiers()){
+							if(eclass instanceof EClass){
+								c = (EClass) eclass;
+								if(eclass.getName().equals(eclassk.getName())){
+									// verifier si la class a des superclasses
+									if(!((EClass) eclassk).getESuperTypes().isEmpty()){
+										// recupperer les superclasses
+										for(EClassifier esuperclassk : ((EClass) eclassk).getESuperTypes()){
+											// recuperer le package qui contient la superclass
+											EPackage containerPackage = null;
+											for(EPackage subpp : rootPackage.getESubpackages()){
+												for(EClassifier eclasskk : subpp.getEClassifiers()){
+													if(eclasskk.getName().equals(esuperclassk.getName())){
+														containerPackage = subpp;
+														break;
+													}
+												}
+											}
+											// recuperer le package (du ecore extended) dans lequel se trouve la classe
+											EClassifier newClass = getClass(containerPackage, (EClass) esuperclassk);
+											if(newClass != null){
+												toAdd.add((EClass) newClass); 
+												mapToAdd.put(eclass.getName(), toAdd);
+											}
+										}
+									}
+								}
+							}
+						}
+						rootPackage = addSuperClasses(rootPackage, relatedPackages, mapToAdd);
+					}
+				}
+			}
+		}
+		return rootPackage;
+	}
+
+	/**
+	 * Reestablish super classes in case they have been modified.
+	 * @param rootPackage Root object of the metamodel.
+	 * @param packageKeyPackageMap
+	 * @return A package with all its superclasses.
+	 */
+	private EPackage reestablishSuperClasses(EPackage rootPackage, Map<EPackage, EPackage> packageKeyPackageMap){
+		// recuperer chaque subpackage
+		Map <String, ArrayList<EClass>> mapToAdd = new HashMap<String, ArrayList<EClass>>();
+		for(EPackage subp : rootPackage.getESubpackages()){
+			// recherche du package initial de chaque subpackage
+			for (Entry<EPackage, EPackage> e: packageKeyPackageMap.entrySet()) {
+				EPackage epackagek = e.getValue();
+				if(subp.getNsURI().equals(epackagek.getNsURI())){
+					// parcours des classes
+					for(EClassifier eclassk : epackagek.getEClassifiers()){
+						// class du rootPackage a modifier
+						ArrayList<EClass> toAdd = new ArrayList<EClass>();
+						EClass c = null;
+						for(EClassifier eclass : subp.getEClassifiers()){
+							if(eclass instanceof EClass){
+								c = (EClass) eclass;
+								if(eclass.getName().equals(eclassk.getName())){
+									// verifier si la class a des superclasses
+									if(!((EClass) eclassk).getESuperTypes().isEmpty()){
+										// recupperer les superclasses
+										for(EClassifier esuperclassk : ((EClass) eclassk).getESuperTypes()){
+											// recuperer le package qui contient la superclass
+											EPackage containerPackage = null;
+											for(EPackage subpp : rootPackage.getESubpackages()){
+												for(EClassifier eclasskk : subpp.getEClassifiers()){
+													if(eclasskk.getName().equals(esuperclassk.getName())){
+														containerPackage = subpp;
+														break;
+													}
+												}
+											}
+											// recuperer le package (du ecore extended) dans lequel se trouve la classe
+											EClassifier newClass = getClass(containerPackage, (EClass) esuperclassk);
+											if(newClass != null){
+												toAdd.add((EClass) newClass); 
+												mapToAdd.put(eclass.getName(), toAdd);
+											}
+										}
+									}
+								}
+							}
+						}
+						rootPackage = addSuperTypes(rootPackage, packageKeyPackageMap, mapToAdd);
+					}
+				}
+			}
+		}
+		return rootPackage;
+	}
+
+	/**
+	 * Reestablish references if they have been modified.
+	 * @param rootPackage Root object of the metamodel.
+	 * @param packageKeyPackageMap Map relating a subpackage in the rootPackage and the corresponding external package.
+	 * @return A package with all its references to other packages.
+	 */
+	private EPackage reestablishReferences(EPackage rootPackage, Map<EPackage, EPackage> packageKeyPackageMap){
+		// recuperer chaque subpackage
+		for(EPackage subp : rootPackage.getESubpackages()){
+			// recherche du package initial de chaque subpackage
+			for (Entry<EPackage, EPackage> e: packageKeyPackageMap.entrySet()) {
+				//EPackage epackage = (EPackage) e.getValue();
+				EPackage epackagek = e.getValue();
+				if(subp.getNsURI().equals(epackagek.getNsURI())){
+					// parcours des classes
+					for(EClassifier eclassk : epackagek.getEClassifiers()){
+						// class du rootPackage a modifier
+						EClass c = null;
+						for(EClassifier eclass : subp.getEClassifiers()){
+							if(eclass instanceof EClass){
+								c = (EClass) eclass;
+								if(eclass.getName().equals(eclassk.getName())){
+									// verifier si la class a de references vers d'autres packages
+									for(EReference er : ((EClass) eclassk).getEAllReferences()){
+										// recupperer er du ecore extended
+										for(EReference err :  c.getEAllReferences()){
+											if(er.getName().equals(err.getName())){
+												EClass type = (EClass) er.getEType();
+												// recuperer le package qui contient la superclass
+												EPackage containerPackage = null;
+												for(EPackage subpp : rootPackage.getESubpackages()){
+													for(EClassifier eclasskk : subpp.getEClassifiers()){
+														if(eclasskk.getName().equals(type.getName())){
+															containerPackage = subpp;
+															if(containerPackage.getNsURI().equals(((EPackage)type.eContainer()).getNsURI())){
+																EClass relatedClass = getClass(containerPackage, (EClass)er.getEType());
+																err.setEType(relatedClass);
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		return rootPackage;
+	}
+
+
+	/**
+	 * Reestablish a reference to an external package.
+	 * @param rootPackage Root object of the metamodel.
+	 * @param relatedPackages Map relating a subpackage in the rootPackage and the corresponding external package.
+	 * @return A package with all its references to other packages.
+	 */
+	private EPackage reestablishReference(EPackage rootPackage, Map<EPackage, ArrayList<EPackage>> relatedPackages){
+		// recuperer chaque subpackage
+		for(EPackage subp : rootPackage.getESubpackages()){
+			// recherche du package initial de chaque subpackage
+			for (Entry<EPackage, ArrayList<EPackage>> e: relatedPackages.entrySet()) {
+				EPackage epackage = e.getKey();
+				if(subp.getNsURI().equals(epackage.getNsURI())){
+					// parcours des classes
+					for(EClassifier eclass : epackage.getEClassifiers()){
+						// class du rootPackage a modifier
+						EClass csub = null;
+						for(EClassifier eclasssub : subp.getEClassifiers()){
+							if(eclasssub instanceof EClass){
+								csub = (EClass) eclasssub;
+								if(eclasssub.getName().equals(eclass.getName())){
+									// verifier si la class a de references vers d'autres packages
+									for(EReference er : ((EClass) eclass).getEAllReferences()){
+										// recupperer er du ecore extended
+										for(EReference ersub :  csub.getEAllReferences()){
+											if(er.getName().equals(ersub.getName())){
+												EClass type = (EClass) er.getEType();
+												// recuperer le package qui contient la superclass
+												EPackage containerPackagesub = null;
+												for(EPackage subpp : rootPackage.getESubpackages()){
+													for(EClassifier subcc : subpp.getEClassifiers()){
+														if(subcc.getName().equals(type.getName())){
+															containerPackagesub = subpp;
+															if(containerPackagesub.getNsURI().equals(((EPackage)type.eContainer()).getNsURI())){
+																EClass relatedClass = getClass(containerPackagesub, (EClass)er.getEType());
+																ersub.setEType(relatedClass);
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		return rootPackage;
+	}
+
+	/**
+	 * Verify if a subpackage is contained in a package.
+	 * @param pack Package.
+	 * @param subPack Subpackage.
+	 * @return True if the subpackage is contained in the package. False otherwise.
+	 */
+	private boolean isContainedInEcore(EPackage pack, EPackage subPack) {
+		boolean result = false;
+		for(EPackage p : pack.getESubpackages()){
+			if(p.getName().equals(subPack.getName())){
+				result= true;
+				break;
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * Return a class contained in a package.
+	 * @param ePackage Package in which the class is searched.
+	 * @param eClass Class to search in the package.
+	 * @return A class of the package.
+	 */
+	private static EClass getClass(EPackage ePackage, EClass eClass){
+		EClass ec = null;
+		for(TreeIterator<EObject> it = ePackage.eAllContents(); it.hasNext();){
 			EObject next = it.next();
 			if(next instanceof EClass){
 				EClass c = (EClass) next;
-				boolean toUpdate = true;
-				for(EClass supClass : c.getESuperTypes())
-					if(metamodelRootPackage.equals(supClass.getEPackage())){
-						toUpdate = false;
-						break;
-					}
-				if(toUpdate){
-					for(EAttribute ea: c.getEAllAttributes()){
-						if(ea.getName().equals("UUID")){
-							c.getEAllAttributes();
-						}
-					}
+				if(c.getName().equals(eClass.getName())){
+					ec = c;
+					break;
 				}
 			}
 		}
-		return metamodelRootPackage;
-	}*/
+		return ec;
+	}
 
 	/**
-	 * Deletion of UUID attributes
-	 * @param metamodelFilePath File path of the metamodel from wich UUID attributes have to me removed.
-	 * @return Updated root package
+	 * Add super to a package. And associate it to existing classes of the package.
+	 * @param rootPackage Root object of the metamodel.
+	 * @param packageKeyPackageMap Map relatinf packages with UUIDs and packages without UUIDs.
+	 * @param toAddMap
+	 * @return rootPackage Root package containing the added super class.
 	 */
-	/*public static EPackage removeUUIDAttribute(String metamodelFilePath){
-		// Metamodel loading
-		EPackage metamodelRootPackage = loadMetamodel(metamodelFilePath);
-		// Update
-		return removeUUIDAttribute(metamodelRootPackage);
-	}*/
+	private EPackage addSuperTypes(EPackage rootPackage, Map<EPackage, EPackage> packageKeyPackageMap, Map<String, ArrayList<EClass>> toAddMap){
+		for(EPackage subp : rootPackage.getESubpackages()){
+			for(EClassifier eclass : subp.getEClassifiers()){
+				ArrayList<EClass> val = toAddMap.get(eclass.getName());
+				if(val != null){ ((EClass) eclass).getESuperTypes().addAll(val); }
+			}
+		}
+		return rootPackage;
+	}
 
 	/**
-	 * Creation of UUID values.
-	 * @param modelRoot Root object of the model to be modified.
-	 * @return Updated root object.
+	 * Add super to a package. And associate it to existing classes of the package.
+	 * @param rootPackage Root object of the metamodel.
+	 * @param packageKeyPackageMap Map relatinf packages with UUIDs and packages without UUIDs.
+	 * @param toAddMap
+	 * @return rootPackage Root package containing the added super class.
 	 */
-	/*public static EObject addUUIDValues(EObject modelRoot) {
-		// UUID feature of root object:
-		EStructuralFeature uuid = null;
-		EList<EAttribute> a = modelRoot.eClass().getEAllAttributes();
-		for(int i=0; i<a.size() && uuid==null; i++) if (a.get(i).getName().equals("UUID")) uuid = a.get(i);
-		// Update of root object :
-		if (uuid!=null) modelRoot.eSet(uuid, EcoreUtil.generateUUID());
-		// Update of children object :
-		for(EObject modelRootChild : modelRoot.eContents()) addUUIDValues(modelRootChild);
-		return modelRoot;
-	}*/
+	private EPackage addSuperClasses(EPackage rootPackage, Map<EPackage, ArrayList<EPackage>> relatedPackagesMap, Map<String, ArrayList<EClass>> toAddMap){
+		for(EPackage subp : rootPackage.getESubpackages()){
+			for(EClassifier eclass : subp.getEClassifiers()){
+				ArrayList<EClass> val = toAddMap.get(eclass.getName());
+				if(val != null){ ((EClass) eclass).getESuperTypes().addAll(val); }
+			}
+		}
+		return rootPackage;
+	}
+
+	/**
+	 * Get the external packages related to a package.
+	 * 
+	 * @param rootPackage Root object of the metamodel.
+	 * @param thePackageLocationMap Maps relating package and its path.
+	 * @param evaluated. True if the package have been already evaluated.
+	 * @return relatedPackagesMap Maps relating package and its path.
+	 */
+	private Map<EPackage, ArrayList<EPackage>> getRelatedPackages(EPackage rootPackage, Map<EPackage, String> thePackageLocationMap, ArrayList<EPackage> evaluated){
+		ArrayList<EPackage> alreadyEvaluated;
+		if(evaluated == null || evaluated.isEmpty()){ alreadyEvaluated = new ArrayList<EPackage>(); }
+		else{ alreadyEvaluated = evaluated; }
+		packageLocationMap = thePackageLocationMap;
+		Map<EPackage, ArrayList<EPackage>> relatedPackagesMap = new HashMap<EPackage, ArrayList<EPackage>>();
+		ArrayList<EPackage> packagesList = new ArrayList<EPackage>();
+		for(TreeIterator<EObject> it = rootPackage.eAllContents(); it.hasNext();){
+			EObject next = it.next();
+			if(next instanceof EClass){
+				EClass c = (EClass) next;
+				// look for references to classes contained in external ecore
+				for(EReference er : c.getEAllReferences()){
+					EPackage containerPackage = (EPackage)(er.getEType().eContainer());
+					if(containerPackage != null){
+						if(!containerPackage.getNsURI().equals(rootPackage.getNsURI())){
+							if(!packagesList.contains(containerPackage)){
+								packagesList.add(containerPackage);
+								String location = lookForLocation(containerPackage, rootPackage, packageLocationMap);
+								packageLocationMap.put(containerPackage, location);
+							}
+						}
+					}
+				}
+				// look for supertypes in external ecore
+				for(EClass supertype : c.getEAllSuperTypes()){
+					EPackage containerPackage = (EPackage)(supertype.eContainer());
+					if(!containerPackage.getNsURI().equals(rootPackage.getNsURI())){
+						if(!packagesList.contains(containerPackage)){
+							packagesList.add(containerPackage);
+							String location = lookForLocation(containerPackage, rootPackage, packageLocationMap);
+							packageLocationMap.put(containerPackage, location);
+						}
+					}
+				}
+				relatedPackagesMap.put(rootPackage, packagesList);
+			}
+		}
+		if(!packagesList.isEmpty()){
+			for(EPackage p : packagesList){
+				if(!alreadyEvaluated.contains(p)){
+					alreadyEvaluated.add(p);
+					Map<EPackage, ArrayList<EPackage>> temporalMap = new HashMap<EPackage, ArrayList<EPackage>>();
+					temporalMap = getRelatedPackages(p, packageLocationMap, alreadyEvaluated);
+					relatedPackagesMap.putAll(temporalMap);
+				}
+			}
+		}
+		return relatedPackagesMap;
+	}
+
+	/**
+	 * Look for the path of a package.
+	 * 
+	 * @param ePackage root package.
+	 * @param rootPackage root package.
+	 * @param packageLocationMap Maps relating package and its path.
+	 * @return Path of a package.
+	 */
+	private String lookForLocation(EPackage ePackage, EPackage rootPackage, Map<EPackage, String> packageLocationMap){
+		String rootLocation = packageLocationMap.get(rootPackage);
+		return rootLocation.replace(rootPackage.getName()+".ecore", ePackage.getName()+".ecore");		
+	}
+
+	/**
+	 * Get container package of a class.
+	 * 
+	 * @param targetPackage 
+	 * @param sourceClassType Class to be searched.
+	 * @return subpack Package containning the class.
+	 */
+	private EPackage getContainer(EPackage targetPackage, EClass sourceClassType){
+		EPackage subpack = null;
+		for( EPackage subp : targetPackage.getESubpackages()){
+			EClassifier copyClass2 = subp.getEClassifier(sourceClassType.getName());
+			if(copyClass2!=null)
+				subpack = subp;
+			break;
+		}
+		return subpack;
+	}
+
+	/**
+	 * Get the Map relating package and its path.
+	 * 
+	 * @return packageLocationMap.
+	 */
+	private Map<EPackage, String> getPackageLocationMap(){
+		return packageLocationMap;
+	}
+
+	/**
+	 * Get subpackages of a package.
+	 * 
+	 * @param ep Root package.
+	 * @param esp Searched subpackage.
+	 * @return subpackage.
+	 */
+	private EPackage getSubpackage(EPackage ep, EPackage esp){
+		EPackage subpackage = null;
+		for(EPackage sub : ep.getESubpackages()){
+			if(sub.getNsURI().equals(esp.getNsURI())){
+				subpackage = sub;
+				break;
+			}
+		}
+		return subpackage;
+	}
+
+	/**
+	 * Get the package with UUIDs associated to a packages without UUIDs
+	 * @param newPackage 
+	 * @param rootPackage Root package.
+	 * @return result Package with UUIDs.
+	 */
+	private EPackage getKeyPackage(EPackage newPackage, EPackage rootPackage) {
+		EPackage result = null;
+		for(EPackage p : newPackage.getESubpackages()){
+			if(p.getName().equals((rootPackage.getName()+"k").toLowerCase())){
+				result = p;
+				break;
+			}
+		}
+		return result;
+	}
+
+
+	// PUBLIC ***********************************************************************************
+
 
 	/**
 	 * Creates a copy of a given model conforming to a new metamodel.
@@ -1509,11 +1158,15 @@ public class UtilEMF {
 	}
 
 	/**
+	 * Creates a copy of a given model conforming to a new metamodel.
+	 * The new metamodel must be able to produce all the instances of the given model
+	 * with all its features. This function is typically used to replace the metamodel
+	 * of a model by a direct copy of its current metamodel. 
 	 * 
-	 * @param modelRootObject
-	 * @param newMetamodelRootPackage
-	 * @param renameMap
-	 * @return
+	 * @param modelRootObject The source model to be recreated with a new metamodel.
+	 * @param newMetamodelRootPackage The new metamodel.
+	 * @param renameMap Map relating old name and new name of elements of the model.
+	 * @return The copy of the source model with the given new metamodel.
 	 */
 	public static EObject changeMetamodel(EObject modelRootObject, EPackage newMetamodelRootPackage, Map<String, Map<String, Map<String, String>>> renameMap) {
 		EObjectMap eObjectMap = new EObjectMap(modelRootObject, newMetamodelRootPackage, renameMap);
@@ -1522,78 +1175,26 @@ public class UtilEMF {
 	}
 
 	/**
+	 * Creates a copy of a given model conforming to a new metamodel.
+	 * The new metamodel must be able to produce all the instances of the given model
+	 * with all its features. This function is typically used to replace the metamodel
+	 * of a model by a direct copy of its current metamodel. 
 	 * 
-	 * @param modelRootObject
-	 * @param modelRootObject2
-	 * @param newMetamodelRootPackage
-	 * @param migrationHide
-	 * @param mapDerivedReferences
-	 * @param mapHiddenReferences
-	 * @param newRefNameMap
-	 * @param renameMap
-	 * @return
+	 * @param modelRootObject The source model to be recreated with a new metamodel.
+	 * @param modelRootObject2 Copy of the source model to be recreated with a new metamodel.
+	 * @param newMetamodelRootPackage The new metamodel.
+	 * @param migrationHide Migration specification.
+	 * @param mapDerivedReferences Map relating name and object of derived references.
+	 * @param mapHiddenReferences Map relating name and object of hidden elements.
+	 * @param newRefNameMap Map relating old name and new name of references of the model.
+	 * @param renameMap Map relating old name and new name of elements of the model.
+	 * @return The copy of the source model with the given new metamodel.
 	 */
 	public static EObject changeMetamodel(EObject modelRootObject, EObject modelRootObject2, EPackage newMetamodelRootPackage, 
 			Migration migrationHide, Map<String, Map<String, ArrayList<Object>>> mapDerivedReferences, Map<String, Map<String, 
 			ArrayList<Object>>> mapHiddenReferences, Map<String,String> newRefNameMap, Map<String, Map<String, Map<String, String>>> renameMap) {
 		EObjectMap eObjectMap = new EObjectMap(modelRootObject, newMetamodelRootPackage, modelRootObject2, renameMap);
 		eObjectMap.copyFeatures2(migrationHide, mapDerivedReferences, mapHiddenReferences, modelRootObject2, newRefNameMap, renameMap);
-		return eObjectMap.getRootCopy();
-	}
-
-	/**
-	 * Creates a copy of a given model conforming to a new metamodel.
-	 * The new metamodel must be able to produce all the instances of the given model
-	 * with all its features. This function is typically used to replace the metamodel
-	 * of a model by a direct copy of its current metamodel. 
-	 * @param modelRootObject The source model to be recreated with a new metamodel.
-	 * @param newMetamodelRootPackage The new metamodel.
-	 * @return The copy of the source model with the given new metamodel.
-	 */
-	public static EObject changeMetamodel(EObject auxmodelRootObject, EObject modelRootObject, EPackage newMetamodelRootPackage) {	
-		EObjectMap eObjectMap = new EObjectMap(auxmodelRootObject, modelRootObject, newMetamodelRootPackage);
-		eObjectMap.copyFeatures();
-		return eObjectMap.getRootCopy();
-	}
-
-	/*public static EObject changeMetamodel(EObject auxmodelRootObject, EObject modelRootObject, EPackage newMetamodelRootPackage, Map<String, Map<String, Map<String, String>>> renameMap) {	
-		EObjectMap eObjectMap = new EObjectMap(auxmodelRootObject, modelRootObject, newMetamodelRootPackage);
-		eObjectMap.copyFeatures();
-		return eObjectMap.getRootCopy();
-	}*/
-
-	/**
-	 * 
-	 * @param modelRootObject
-	 * @param newMetamodelRootPackage
-	 * @param migrationHide
-	 * @return
-	 */
-	public static EObject changeMetamodel(EObject modelRootObject, EPackage newMetamodelRootPackage, Migration migrationHide){
-		EObjectMap eObjectMap = new EObjectMap(modelRootObject, newMetamodelRootPackage);
-		eObjectMap.copyFeatures(migrationHide);
-		return eObjectMap.getRootCopy();
-	}
-
-	/**
-	 * 
-	 * @param auxmodelRootObject
-	 * @param modelRootObject
-	 * @param newMetamodelRootPackage
-	 * @param renameMap
-	 * @param migration
-	 * @param reversed
-	 * @return
-	 */
-	public static EObject changeMetamodel(EObject auxmodelRootObject, EObject modelRootObject, 
-			EPackage newMetamodelRootPackage, Map<String, Map<String, Map<String, String>>> renameMap, Migration migration, boolean reversed) {
-		EObjectMap eObjectMap = new EObjectMap(auxmodelRootObject, modelRootObject, newMetamodelRootPackage, renameMap);
-		if(!reversed){
-			//eObjectMap.copyFeatures(renameMap, migration);
-		}
-		else{
-			//eObjectMap.copyFeaturesReversed(renameMap, migration);
-		}
 		return eObjectMap.getRootCopy();
 	}
 
@@ -1623,6 +1224,60 @@ public class UtilEMF {
 		EPackage newMetamodelRootPackage = loadMetamodel(newMetamodelURI);
 		// Model update
 		return changeMetamodel(modelRootObject, newMetamodelRootPackage);
+	}
+
+	/**
+	 * 
+	 * @param modelRootObject
+	 * @param newMetamodelRootPackage
+	 * @param migrationHide
+	 * @return
+	 */
+	public static EObject changeMetamodel(EObject modelRootObject, 	EPackage newMetamodelRootPackage, Migration migrationHide){
+		EObjectMap eObjectMap = new EObjectMap(modelRootObject, newMetamodelRootPackage);
+		return eObjectMap.getRootCopy();
+	}
+
+	/**
+	 * Creates a copy of a given model conforming to a new metamodel.
+	 * The new metamodel must be able to produce all the instances of the given model
+	 * with all its features. This function is typically used to replace the metamodel
+	 * of a model by a direct copy of its current metamodel. 
+	 * @param modelRootObject The source model to be recreated with a new metamodel.
+	 * @param newMetamodelRootPackage The new metamodel.
+	 * @return The copy of the source model with the given new metamodel.
+	 */
+	public static EObject changeMetamodel(EObject auxmodelRootObject, EObject modelRootObject, EPackage newMetamodelRootPackage) {	
+		EObjectMap eObjectMap = new EObjectMap(auxmodelRootObject, modelRootObject, newMetamodelRootPackage);
+		eObjectMap.copyFeatures();
+		return eObjectMap.getRootCopy();
+	}
+
+	/**
+	 *Creates a copy of a given model conforming to a new metamodel.
+	 * The new metamodel must be able to produce all the instances of the given model
+	 * with all its features. This function is typically used to replace the metamodel
+	 * of a model by a direct copy of its current metamodel. 
+	 * 
+	 * @param auxmodelRootObject
+	 * @param modelRootObject The source model to be recreated with a new metamodel.
+	 * @param newMetamodelRootPackage The new metamodel.
+	 * @param renameMap
+	 * @param migration
+	 * @param reversed
+	 * @return The copy of the source model with the given new metamodel.
+	 */
+	public static EObject changeMetamodel(EObject auxmodelRootObject, EObject modelRootObject, EPackage newMetamodelRootPackage, Map<String, Map<String, Map<String, String>>> renameMap, Migration migration, boolean reversed) {
+		EObjectMap eObjectMap = new EObjectMap(auxmodelRootObject, modelRootObject, newMetamodelRootPackage, renameMap);
+		if(!reversed){
+			//eObjectMap.copyFeatures(renameMap, migration);
+			// TODO
+		}
+		else{
+			//eObjectMap.copyFeaturesReversed(renameMap, migration);
+			// TODO
+		}
+		return eObjectMap.getRootCopy();
 	}
 
 	/**
@@ -1675,6 +1330,193 @@ public class UtilEMF {
 	}
 
 	/**
+	 * Metamodel (Ecore model) loading.
+	 * @param metamodelFilePath File path of the metamodel to load.
+	 * @return Root package of the loaded metamodel.
+	 */
+	public static EPackage loadMetamodel (String metamodelFilePath) {		
+		// Metamodel loading:				
+		return loadMetamodel(URI.createFileURI(new File(metamodelFilePath).getAbsolutePath()));
+	}
+
+	/**
+	 * Metamodel (Ecore model) loading.
+	 * @param metamodelURI URI of the metamodel to load.
+	 * @return Root package of the loaded metamodel.
+	 */
+	public static EPackage loadMetamodel (URI metamodelURI) {
+		// Model loading:		
+		return (EPackage)loadModel(metamodelURI, EcorePackage.eINSTANCE);
+	}
+
+	/**
+	 * Model loading.
+	 * @param inputFilePath File name of the model to load.
+	 * @param metamodelRootPackage EPackage expected to be
+	 * the container of the metaclass of the model root object.
+	 * @return The EObject corresponding to the loaded model root object.
+	 */
+	public static EObject loadModel(String inputFilePath, EPackage metamodelRootPackage) {
+		return loadModel(URI.createFileURI(new File(inputFilePath).getAbsolutePath()), metamodelRootPackage);
+	}
+
+	/**
+	 * Model loading.
+	 * @param modelInputFilePath File name of the model to load.
+	 * @param metamodelInputFilePath File name of the corresponding metamodel.
+	 * @return The EObject corresponding to the loaded model root object.
+	 */
+	public static EObject loadModel(String modelInputFilePath, String metamodelInputFilePath) {
+		return loadModel(URI.createFileURI(new File(modelInputFilePath).getAbsolutePath()), metamodelInputFilePath);
+	}
+
+	/**
+	 * Model loading.
+	 * @param modeluri URI of the model to load.
+	 * @param metamodelRootPackage EPackage expected to be
+	 * the container of the metaclass of the model root object.
+	 * @return The EObject corresponding to the loaded model root object.
+	 */
+	public static EObject loadModel (URI modeluri, EPackage metamodelRootPackage) {
+		// Creation of a ResourceSet mapping the package ns uri to the package:
+		ResourceSet resourceSet = createResourceSet(metamodelRootPackage.getNsURI(), metamodelRootPackage);
+		// Creation of a resource linked to the model uri:
+		Resource resource = resourceSet.getResource(modeluri, true);
+		// First element of the model (root object):
+		return resource.getContents().get(0);
+	}
+
+	/**
+	 * Model loading.
+	 * @param modeluri URI of the model to load.
+	 * @param metamodelFilePath File name of the corresponding metamodel.
+	 * @return The EObject corresponding to the loaded model root object.
+	 */
+	public static EObject loadModel (URI modeluri, String metamodelFilePath) {
+		// Model loading:		
+		return loadModel(modeluri, URI.createFileURI(new File(metamodelFilePath).getAbsolutePath()));
+	}
+
+	/**
+	 * Model loading.
+	 * @param modeluri URI of the model to load.
+	 * @param metamodelURI URI of the corresponding metamodel.
+	 * @return The EObject corresponding to the loaded model root object.
+	 */
+	public static EObject loadModel (URI modeluri, URI metamodelURI) {
+		// Metamodel loading:
+		EPackage metamodelRootPackage = loadMetamodel(metamodelURI);
+		// Model loading:				
+		return loadModel(modeluri, metamodelRootPackage);
+	}
+
+	/**
+	 * Model loading.
+	 * @param inputFilePath File name of the model to load.
+	 * @param metamodelURI URI of the corresponding metamodel.
+	 * @return The EObject corresponding to the loaded model root object.
+	 */
+	public static EObject loadModel(String inputFilePath, URI metamodelURI) {
+		return loadModel(URI.createFileURI(new File(inputFilePath).getAbsolutePath()), metamodelURI);
+	}
+
+	/**
+	 * Metamodel saving.
+	 * The ressource and NsURI of the package are updated.
+	 * The packages corresponding to external dependencies 
+	 * can be serialised locally together with the metamodel itself.
+	 * @param metaModelRootObject Root object of the metamodel to be serialized.
+	 * @param outputFilePath Name of the file to be created or updated.
+	 * @param withExternalPackageDependencies States if the external dependencies must but serialized or not.
+	 * @throws IOException Thrown if the output file cannot be created.
+	 * @return The updated root package.
+	 */
+	public static EPackage saveMetamodel(EPackage metaModelRootObject, String outputFilePath, boolean withExternalPackageDependencies) throws IOException {
+		File metamodelFile = new File(outputFilePath);
+		String metamodelFilename  = metamodelFile.getAbsolutePath();
+		// New NsURI matching with the new file path:
+		metaModelRootObject.setNsURI(URI.createFileURI(metamodelFilename).toString());
+		// Request for the serialization of external dependencies:
+		if (withExternalPackageDependencies) {
+			Map<EPackage, Resource> resourcesBackup = new HashMap<EPackage, Resource>();
+			for (EPackage ep : getAllExternalPackages(metaModelRootObject)) {
+				String pname = ep.getName()+".ecore";
+				pname =  Character.toUpperCase(pname.charAt(0)) + pname.substring(1);
+				// backup of current resource before saving (and so update):
+				Resource currentResource = ep.eResource();
+				if (currentResource!=null) resourcesBackup.put(ep, currentResource);
+				saveModel(ep, metamodelFile.getParentFile().getAbsolutePath()+"/"+pname);
+			}
+			// Metamodel serialization:
+			saveModel(metaModelRootObject, metamodelFilename);
+			// Restoring the initial resources:
+			for (EPackage ep : resourcesBackup.keySet()) resourcesBackup.get(ep).getContents().add(ep);
+		}
+		else saveModel(metaModelRootObject, metamodelFilename);
+		return metaModelRootObject;
+	}
+
+	/**
+	 * Metamodel saving.
+	 * The ressource and NsURI of the package are updated.
+	 * The packages corresponding to external dependencies 
+	 * are serialised locally together with the metamodel itself.
+	 * @param metaModelRootObject Root object of the metamodel to be serialized.
+	 * @param outputFilePath Name of the file to be created or updated.
+	 * @throws IOException Thrown if the output file cannot be created.
+	 * @return The updated root package.
+	 */
+	public static EPackage saveMetamodel(EPackage metaModelRootObject, String outputFilePath) throws IOException {
+		return saveMetamodel(metaModelRootObject, outputFilePath, true);
+	}
+
+	/**
+	 *  Metamodel saving.
+	 * The ressource and NsURI of the package are updated.
+	 * The packages corresponding to external dependencies 
+	 * are serialised locally together with the metamodel itself.
+	 * 
+	 * @param metaModelRootObject Root object of the metamodel to be serialized.
+	 * @param outputFilePath Name of the file to be created or updated.
+	 * @param withExternalPackageDependencies If the root object has references to external packages.
+	 * @return The updated root package.
+	 * @throws IOException Thrown if the output file cannot be created.
+	 */
+	public static EPackage saveMetamodel2(EPackage metaModelRootObject, String outputFilePath, boolean withExternalPackageDependencies) throws IOException {
+		return saveMetamodel(metaModelRootObject, outputFilePath, withExternalPackageDependencies);
+	}
+
+	/**
+	 * Model saving.
+	 * @param modelRootObject Root object to be serialized.
+	 * @param outputFilePath Name of the file to be created or updated.
+	 * @throws IOException Thrown if the output file cannot be created.
+	 * @return The updated root object.
+	 */
+	public static EObject saveModel(EObject modelRootObject, String outputFilePath) throws IOException {	
+		// Creating the resource set from the metadata of modelRootObject:
+		ResourceSet resourceSet = createResourceSet(modelRootObject.eClass().getEPackage().getNsURI(), modelRootObject.eClass().getEPackage());
+		// Creating a new resource in this resource set:
+		Resource resource = resourceSet.createResource(URI.createFileURI(new File(outputFilePath).getAbsolutePath()));
+		// Adding the object in the new resource and saving:
+		resource.getContents().add(modelRootObject);	
+		resource.save(Collections.EMPTY_MAP);
+		return modelRootObject;
+	}
+
+	/**
+	 * Metamodel processor: removes annotations. 
+	 * @param metaModelRootObject Root object of the metamodel to be processed.
+	 * @return Root object of the updated metamodel (without annotations).
+	 */
+	public static EPackage removeAnnotation(EPackage rootPackage, Map<EPackage, ArrayList<EPackage>> relatedPackages){
+		for(EPackage subp : rootPackage.getESubpackages()){
+			removeAnnotations(subp);
+		}
+		return rootPackage;
+	}
+
+	/**
 	 * Initialisation of a map relating UUIDs to the corresponding EObjects.
 	 * @param root The root instance of the model to scan.
 	 * @return The map relating UUIDs to instances of root (root included).
@@ -1685,24 +1527,6 @@ public class UtilEMF {
 		for(fifo.add(root); !fifo.isEmpty(); ) {
 			EObject next = fifo.remove(0);
 			String nextUUID = UtilEMF.getUUID(next);
-			if (nextUUID!=null) map.put(nextUUID, next);
-			fifo.addAll(next.eContents());
-		}
-		return map;
-	}
-
-
-	/**
-	 * Initialisation of a map relating UUIDs to the corresponding EObjects.
-	 * @param root The root instance of the model to scan.
-	 * @return The map relating UUIDs to instances of root (root included).
-	 */
-	public static Map<String, EObject> createUUIDMap(EObject root, String UUIDtimestamp) {
-		Map<String, EObject> map = new HashMap<String, EObject>();
-		List<EObject> fifo = new ArrayList<EObject>();
-		for(fifo.add(root); !fifo.isEmpty(); ) {
-			EObject next = fifo.remove(0);
-			String nextUUID = UtilEMF.getUUID(next, UUIDtimestamp);			
 			if (nextUUID!=null) map.put(nextUUID, next);
 			fifo.addAll(next.eContents());
 		}
@@ -1758,114 +1582,6 @@ public class UtilEMF {
 	}
 
 	/**
-	 * Get the String value of UUID if it exists.
-	 * @param o Object to scan.
-	 * @return The UUID of o if it exists or null.
-	 */
-	public static String getUUID (Object o, String UUIDtimestamp) {
-		EObject instance = ( (o==null||!(o instanceof EObject)) ? null : (EObject)o );		
-		EStructuralFeature esfUUID;
-		if(UUIDtimestamp != null){
-			esfUUID = (instance==null ? null : instance.eClass().getEStructuralFeature(UUIDtimestamp));
-		}else{
-			esfUUID = (instance==null ? null : instance.eClass().getEStructuralFeature("UUID"));
-		}
-		Object value = (esfUUID==null ? null : instance.eGet(esfUUID));
-		return ( (value==null||!(value instanceof String)) ? null : (String)value );
-	}
-
-	/**
-	 * Metamodel (Ecore model) loading.
-	 * @param metamodelFilePath File path of the metamodel to load.
-	 * @return Root package of the loaded metamodel.
-	 */
-	public static EPackage loadMetamodel (String metamodelFilePath) {
-		// Metamodel loading:				
-		return loadMetamodel(URI.createFileURI(new File(metamodelFilePath).getAbsolutePath()));
-	}
-
-	/**
-	 * Metamodel (Ecore model) loading.
-	 * @param metamodelURI URI of the metamodel to load.
-	 * @return Root package of the loaded metamodel.
-	 */
-	public static EPackage loadMetamodel (URI metamodelURI) {
-		// Model loading:		
-		return (EPackage)loadModel(metamodelURI, EcorePackage.eINSTANCE);
-	}
-
-	/**
-	 * Model loading.
-	 * @param inputFilePath File name of the model to load.
-	 * @param metamodelRootPackage EPackage expected to be
-	 * the container of the metaclass of the model root object.
-	 * @return The EObject corresponding to the loaded model root object.
-	 */
-	public static EObject loadModel(String inputFilePath, EPackage metamodelRootPackage) {
-		return loadModel(URI.createFileURI(new File(inputFilePath).getAbsolutePath()), metamodelRootPackage);
-	}
-
-	/**
-	 * Model loading.
-	 * @param modelInputFilePath File name of the model to load.
-	 * @param metamodelInputFilePath File name of the corresponding metamodel.
-	 * @return The EObject corresponding to the loaded model root object.
-	 */
-	public static EObject loadModel(String modelInputFilePath, String metamodelInputFilePath) {
-		return loadModel(URI.createFileURI(new File(modelInputFilePath).getAbsolutePath()), metamodelInputFilePath);
-	}
-
-	/**
-	 * Model loading.
-	 * @param inputFilePath File name of the model to load.
-	 * @param metamodelURI URI of the corresponding metamodel.
-	 * @return The EObject corresponding to the loaded model root object.
-	 */
-	public static EObject loadModel(String inputFilePath, URI metamodelURI) {
-		return loadModel(URI.createFileURI(new File(inputFilePath).getAbsolutePath()), metamodelURI);
-	}
-
-	/**
-	 * Model loading.
-	 * @param modeluri URI of the model to load.
-	 * @param metamodelRootPackage EPackage expected to be
-	 * the container of the metaclass of the model root object.
-	 * @return The EObject corresponding to the loaded model root object.
-	 */
-	public static EObject loadModel (URI modeluri, EPackage metamodelRootPackage) {
-		// Creation of a ResourceSet mapping the package ns uri to the package:
-		ResourceSet resourceSet = createResourceSet(metamodelRootPackage.getNsURI(), metamodelRootPackage);
-		// Creation of a resource linked to the model uri:
-		Resource resource = resourceSet.getResource(modeluri, true);
-		// First element of the model (root object):
-		return resource.getContents().get(0);
-	}
-
-	/**
-	 * Model loading.
-	 * @param modeluri URI of the model to load.
-	 * @param metamodelFilePath File name of the corresponding metamodel.
-	 * @return The EObject corresponding to the loaded model root object.
-	 */
-	public static EObject loadModel (URI modeluri, String metamodelFilePath) {
-		// Model loading:		
-		return loadModel(modeluri, URI.createFileURI(new File(metamodelFilePath).getAbsolutePath()));
-	}
-
-	/**
-	 * Model loading.
-	 * @param modeluri URI of the model to load.
-	 * @param metamodelURI URI of the corresponding metamodel.
-	 * @return The EObject corresponding to the loaded model root object.
-	 */
-	public static EObject loadModel (URI modeluri, URI metamodelURI) {
-		// Metamodel loading:
-		EPackage metamodelRootPackage = loadMetamodel(metamodelURI);
-		// Model loading:				
-		return loadModel(modeluri, metamodelRootPackage);
-	}
-
-	/**
 	 * Metamodel processor: removes annotations. 
 	 * @param metaModelRootObject Root object of the metamodel to be processed.
 	 * @return Root object of the updated metamodel (without annotations).
@@ -1883,10 +1599,18 @@ public class UtilEMF {
 		return metaModelRootObject;
 	}
 
-
-	public static EPackage removeAnnotationsFromRelatedPackages(EPackage metaModelRootObject){
-
-		return metaModelRootObject;
+	/**
+	 * Metamodel processor: removes annotations. 
+	 * 
+	 * @param rootPackage Root object of the metamodel to be processed.
+	 * @param packageKeyPackageMap Map of packages and related packages.
+	 * @return Root object of the updated metamodel (without annotations).
+	 */
+	public static EPackage removeAnnotations(EPackage rootPackage, Map<EPackage, EPackage> packageKeyPackageMap){
+		for(EPackage subp : rootPackage.getESubpackages()){
+			removeAnnotations(subp);
+		}
+		return rootPackage;
 	}
 
 	/**
@@ -1929,673 +1653,51 @@ public class UtilEMF {
 		return metaModelRootObject;
 	}
 
-	/**
-	 * Deletion of UUID values.
-	 * @param modelRoot Root object of the model to be modified.
-	 * @return Updated root object.
-	 */
-	public static EObject removeUUIDValues(EObject modelRoot) {
-		// UUID feature of root object:
-		EStructuralFeature uuid = null;
-		EList<EAttribute> a = modelRoot.eClass().getEAllAttributes();
-		for(int i=0; i<a.size() && uuid==null; i++) if (a.get(i).getName().equals("UUID")) uuid = a.get(i);
-		// Update of root object :
-		if (uuid!=null) modelRoot.eUnset(uuid);
-		// Update of children object :
-		for(EObject modelRootChild : modelRoot.eContents()) removeUUIDValues(modelRootChild);
-		return modelRoot;
-	}
+
+
+
+
 
 	/**
-	 * Metamodel saving.
-	 * The ressource and NsURI of the package are updated.
-	 * The packages corresponding to external dependencies 
-	 * are serialised locally together with the metamodel itself.
-	 * @param metaModelRootObject Root object of the metamodel to be serialized.
-	 * @param outputFilePath Name of the file to be created or updated.
-	 * @throws IOException Thrown if the output file cannot be created.
-	 * @return The updated root package.
+	 * Initialisation of a map relating UUIDs to the corresponding EObjects.
+	 * @param root The root instance of the model to scan.
+	 * @return The map relating UUIDs to instances of root (root included).
 	 */
-	public static EPackage saveMetamodel(EPackage metaModelRootObject, String outputFilePath) throws IOException {
-		return saveMetamodel(metaModelRootObject, outputFilePath, true);
-	}
-
-	public static EPackage saveMetamodel2(EPackage metaModelRootObject, String outputFilePath, boolean withExternalPackageDependencies) throws IOException {
-		return saveMetamodel(metaModelRootObject, outputFilePath, withExternalPackageDependencies);
-	}
-
-	/**
-	 * Metamodel saving.
-	 * The ressource and NsURI of the package are updated.
-	 * The packages corresponding to external dependencies 
-	 * can be serialised locally together with the metamodel itself.
-	 * @param metaModelRootObject Root object of the metamodel to be serialized.
-	 * @param outputFilePath Name of the file to be created or updated.
-	 * @param withExternalPackageDependencies States if the external dependencies must but serialized or not.
-	 * @throws IOException Thrown if the output file cannot be created.
-	 * @return The updated root package.
-	 */
-	public static EPackage saveMetamodel(EPackage metaModelRootObject, String outputFilePath, boolean withExternalPackageDependencies) throws IOException {
-		File metamodelFile = new File(outputFilePath);
-		String metamodelFilename  = metamodelFile.getAbsolutePath();
-		// New NsURI matching with the new file path:
-		metaModelRootObject.setNsURI(URI.createFileURI(metamodelFilename).toString());
-		// Request for the serialization of external dependencies:
-		if (withExternalPackageDependencies) {
-			Map<EPackage, Resource> resourcesBackup = new HashMap<EPackage, Resource>();
-			for (EPackage ep : getAllExternalPackages(metaModelRootObject)) {
-				if(ep!= null){
-					String pname = ep.getName()+".ecore";
-					if(!pname.equals("ecore.ecore")){
-						pname =  pname.charAt(0) + pname.substring(1);
-						// backup of current resource before saving (and so update):
-						Resource currentResource = ep.eResource();
-						if (currentResource!=null) resourcesBackup.put(ep, currentResource);
-						saveModel(ep, metamodelFile.getParentFile().getAbsolutePath()+"/"+pname);
-					}
-				}
-			}
-			// Metamodel serialization:
-			saveModel(metaModelRootObject, metamodelFilename);
-			// Restoring the initial resources:
-			for (EPackage ep : resourcesBackup.keySet()) resourcesBackup.get(ep).getContents().add(ep);
+	public static Map<String, EObject> createUUIDMap(EObject root, String UUIDtimestamp) {
+		Map<String, EObject> map = new HashMap<String, EObject>();
+		List<EObject> fifo = new ArrayList<EObject>();
+		for(fifo.add(root); !fifo.isEmpty(); ) {
+			EObject next = fifo.remove(0);
+			String nextUUID = UtilEMF.getUUID(next, UUIDtimestamp);			
+			if (nextUUID!=null) map.put(nextUUID, next);
+			fifo.addAll(next.eContents());
 		}
-		else saveModel(metaModelRootObject, metamodelFilename);
-		return metaModelRootObject;
+		return map;
 	}
 
 	/**
-	 * Model saving.
-	 * @param modelRootObject Root object to be serialized.
-	 * @param outputFilePath Name of the file to be created or updated.
-	 * @throws IOException Thrown if the output file cannot be created.
-	 * @return The updated root object.
+	 * Get the String value of UUID if it exists.
+	 * @param o Object to scan.
+	 * @return The UUID of o if it exists or null.
 	 */
-	public static EObject saveModel(EObject modelRootObject, String outputFilePath) throws IOException {
-		// Creating the resource set from the metadata of modelRootObject:
-		ResourceSet resourceSet = createResourceSet(modelRootObject.eClass().getEPackage().getNsURI(), modelRootObject.eClass().getEPackage());
-		// Creating a new resource in this resource set:
-		Resource resource = resourceSet.createResource(URI.createFileURI(new File(outputFilePath).getAbsolutePath()));
-		// Adding the object in the new resource and saving:
-		resource.getContents().add(modelRootObject);
-		resource.save(Collections.EMPTY_MAP);
-		return modelRootObject;
+	public static String getUUID (Object o, String UUIDtimestamp) {
+		EObject instance = ( (o==null||!(o instanceof EObject)) ? null : (EObject)o );		
+		EStructuralFeature esfUUID;
+		if(UUIDtimestamp != null){
+			esfUUID = (instance==null ? null : instance.eClass().getEStructuralFeature(UUIDtimestamp));
+		}else{
+			esfUUID = (instance==null ? null : instance.eClass().getEStructuralFeature("UUID"));
+		}
+		Object value = (esfUUID==null ? null : instance.eGet(esfUUID));
+		return ( (value==null||!(value instanceof String)) ? null : (String)value );
 	}
 
 	/**
 	 * 
-	 * @param metamodelRootPackage
-	 * @return 
+	 * @return
 	 */
-	public static boolean hasUUIDAttribute(EPackage metamodelRootPackage) {
-		boolean hasKeys = false;
-		for (TreeIterator<EObject> it = metamodelRootPackage.eAllContents(); it.hasNext();) {
-			EObject next = it.next();
-			if (next instanceof EClass) { // update of the classes...
-				EClass c = (EClass) next;
-				for(EStructuralFeature feature :c.getEStructuralFeatures() ){
-					if(feature.getName().equals("UUID")){
-						hasKeys = true;
-						break;
-					}
-				}
-				for (EClass supClass : c.getESuperTypes()) {// scan of inherited classes
-					for(EStructuralFeature feature :supClass.getEStructuralFeatures() ){
-						if(feature.getName().equals("UUID")){
-							hasKeys = true;
-							break;
-						}
-					}
-				}
-			}
-		}
-		return hasKeys;
-	}
-
-	/**
-	 * 
-	 * @param metamodelRootPackage
-	 * @return metamodel without duplicate UUID
-	 */
-	/*public static EPackage removeDuplicateUUIDAttribute(EPackage metamodelRootPackage) {
-		List<EStructuralFeature> uuidToRemove = new ArrayList<EStructuralFeature>();
-		for (TreeIterator<EObject> it = metamodelRootPackage.eAllContents(); it.hasNext();) {
-			EObject next = it.next();
-			EStructuralFeature uuid_c = null;
-			EStructuralFeature uuid_sc = null;
-			if (next instanceof EClass) { // update of the classes...
-				EClass c = (EClass) next;
-				for(EStructuralFeature feature :c.getEStructuralFeatures() ){
-					if(feature.getName().equals("UUID")){ uuid_c = feature; }
-				}
-				for (EClass supClass : c.getESuperTypes()) {// scan of inherited classes
-					for(EStructuralFeature feature :supClass.getEStructuralFeatures() ){
-						if(feature.getName().equals("UUID")){
-							uuid_sc = feature;
-							if(uuid_c != null && uuid_sc != null){ uuidToRemove.add(uuid_c); }
-						}
-					}
-				}
-			}
-		}
-		for (EStructuralFeature ef : uuidToRemove) EcoreUtil.remove(ef);
-		return metamodelRootPackage;
-	}*/
-
-	/**
-	 * 
-	 * @param metamodelRootPackage
-	 * @return metamodel without UUID
-	 */
-	public static EPackage removeUUIDAttribute(EPackage metamodelRootPackage){
-		List<EStructuralFeature> uuidToRemove = new ArrayList<EStructuralFeature>();
-		for(TreeIterator<EObject> it = metamodelRootPackage.eAllContents(); it.hasNext();){
-			EObject next = it.next();
-			EStructuralFeature uuid = null;
-			if(next instanceof EClass){
-				EClass c = (EClass) next;
-				for(EStructuralFeature feature : c.getEStructuralFeatures()){
-					if(feature.getName().equals("UUID")){
-						uuid = feature;
-						uuidToRemove.add(uuid);
-					}
-				}
-			}
-		}
-		for(EStructuralFeature ef : uuidToRemove) EcoreUtil.remove(ef);
-		return metamodelRootPackage;
-	}
-
-	/**
-	 * Creation of UUID values.
-	 * @param modelRoot Root object of the model to be modified.
-	 * @return Updated root object.
-	 */
-
-	//public static int uuidValue = 0;
-	//public static String uuidVal = ""+uuidValue;
-	public static EObject addUUIDValues(EObject modelRoot, EPackage rootPackage) {
-		// UUID feature of root object:
-		EStructuralFeature uuid = null;
-		EList<EAttribute> a = modelRoot.eClass().getEAllAttributes();
-		for(int i=0; i<a.size() && uuid==null; i++) 
-			if (a.get(i).getName().equals("UUID")) 
-				uuid = a.get(i);
-		// Update of root object :
-		if (uuid!=null){ 
-			if(rootPackage.getName().equals("cityis")){
-				if(modelRoot.eClass().getName().equals("Citizen")){
-					modelRoot.eSet(uuid,modelRoot.eGet(modelRoot.eClass().getEStructuralFeature("name")));
-				}else if(modelRoot.eClass().getName().equals("Address")){
-					modelRoot.eSet(uuid,modelRoot.eGet(modelRoot.eClass().getEStructuralFeature("number")).toString());
-				}else{
-					modelRoot.eSet(uuid,modelRoot.eGet(modelRoot.eClass().getEStructuralFeature("name")));
-				}
-			}else{
-				for(EAttribute attribute : modelRoot.eClass().getEAllAttributes()){
-					if(attribute.getName().equals("name")){
-						modelRoot.eSet(uuid, modelRoot.eClass().getName()+":"+modelRoot.eGet(modelRoot.eClass().getEStructuralFeature(attribute.getName())).toString());
-						break;
-					}else if(attribute.getName().equals("Identification")){
-						modelRoot.eSet(uuid, modelRoot.eClass().getName()+":"+modelRoot.eGet(modelRoot.eClass().getEStructuralFeature(attribute.getName())).toString());
-						break;
-					}else if(attribute.getName().equals("UUID")){
-						modelRoot.eSet(uuid, modelRoot.eClass().getName()+":"+EcoreUtil.generateUUID());
-						break;
-					}
-				}
-				//	modelRoot.eSet(uuid,modelRoot.eGet(modelRoot.eClass().getEStructuralFeature(nameForIdentification)).toString());
-				/*modelRoot.eSet(uuid, uuidVal);
-				uuidValue= uuidValue+1;
-				uuidVal= ""+uuidValue;	*/
-			}
-			//modelRoot.eSet(uuid, EcoreUtil.generateUUID());
-		}
-		// Update of children object :
-		for(EObject modelRootChild : modelRoot.eContents()) addUUIDValues(modelRootChild, rootPackage);
-		return modelRoot;
-	}
-
-	public static EObject addUUIDValues(EObject modelRoot, EPackage rootPackage, EPackage rootKeySubpackage) {
-		// UUID feature of root object:
-		EStructuralFeature uuid = null;
-		EList<EAttribute> a = modelRoot.eClass().getEAllAttributes();
-		for(int i=0; i<a.size() && uuid==null; i++) 
-			if (a.get(i).getName().equals("UUID")) 
-				uuid = a.get(i);
-		// Update of root object :
-		if (uuid!=null){ 
-			if(rootPackage.getName().equals("cityis")){
-				if(modelRoot.eClass().getName().equals("Citizen")){
-					modelRoot.eSet(uuid,modelRoot.eGet(modelRoot.eClass().getEStructuralFeature("name")));
-				}else if(modelRoot.eClass().getName().equals("Address")){
-					modelRoot.eSet(uuid,modelRoot.eGet(modelRoot.eClass().getEStructuralFeature("number")).toString());
-				}else{
-					modelRoot.eSet(uuid,modelRoot.eGet(modelRoot.eClass().getEStructuralFeature("name")));
-				}
-			}else{
-				for(EAttribute attribute : modelRoot.eClass().getEAllAttributes()){
-					if(attribute.getName().equals("name")){
-						modelRoot.eSet(uuid, modelRoot.eClass().getName()+":"+modelRoot.eGet(modelRoot.eClass().getEStructuralFeature(attribute.getName())).toString());
-						break;
-					}else if(attribute.getName().equals("Identification")){
-						modelRoot.eSet(uuid, modelRoot.eClass().getName()+":"+modelRoot.eGet(modelRoot.eClass().getEStructuralFeature(attribute.getName())).toString());
-						break;
-					}else if(attribute.getName().equals("UUID")){
-						modelRoot.eSet(uuid, modelRoot.eClass().getName()+":"+EcoreUtil.generateUUID());
-						break;
-					}
-				}
-				//	modelRoot.eSet(uuid,modelRoot.eGet(modelRoot.eClass().getEStructuralFeature(nameForIdentification)).toString());
-				/*modelRoot.eSet(uuid, uuidVal);
-				uuidValue= uuidValue+1;
-				uuidVal= ""+uuidValue;	*/
-			}
-			//modelRoot.eSet(uuid, EcoreUtil.generateUUID());
-		}
-		// Update of children object :
-		for(EObject modelRootChild : modelRoot.eContents()) addUUIDValues(modelRootChild, rootPackage);
-		return modelRoot;
-	}
-
-	public static Map<String, ArrayList<String>> buildMapReferencesToInstance(EObject modelRoot, EPackage rootPackage){
-		Map<String, ArrayList<String>> referencesToInstanceMap = new HashMap<String, ArrayList<String>>();
-		for(EReference reference : modelRoot.eClass().getEAllReferences()){
-			String referenceName = reference.getName();
-			EClassifier referenceType = reference.getEType();
-		}
-		return referencesToInstanceMap;
-	}
-
 	public static Map<String, Map<String, ArrayList<Object>>> buildMapDerived() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-
-	static Map<EPackage, String> packageLocationMap = new HashMap<EPackage, String>();
-
-	Map<EPackage, String> getPackageLocationMap(){
-		return packageLocationMap;
-	}
-
-	/**
-	 * 
-	 * @param rootPackage
-	 * @return
-	 */
-	public static Map<EPackage, ArrayList<EPackage>> getRelatedPackages(EPackage rootPackage, Map<EPackage, String> thePackageLocationMap, ArrayList<EPackage> evaluated){
-		ArrayList<EPackage> alreadyEvaluated;
-		if(evaluated == null || evaluated.isEmpty()){
-			alreadyEvaluated = new ArrayList<EPackage>();
-		}else{
-			alreadyEvaluated = evaluated;
-		}
-		packageLocationMap = thePackageLocationMap;
-		Map<EPackage, ArrayList<EPackage>> relatedPackagesMap = new HashMap<EPackage, ArrayList<EPackage>>();
-		ArrayList<EPackage> packagesList = new ArrayList<EPackage>();
-		for(TreeIterator<EObject> it = rootPackage.eAllContents(); it.hasNext();){
-			EObject next = it.next();
-			if(next instanceof EClass){
-				EClass c = (EClass) next;
-				// look for references to classes contained in external ecore
-				for(EReference er : c.getEAllReferences()){
-					EPackage containerPackage = (EPackage)(er.getEType().eContainer());
-					if(containerPackage != null){
-						if(!containerPackage.getNsURI().equals(rootPackage.getNsURI())){
-							if(!packagesList.contains(containerPackage)){
-								packagesList.add(containerPackage);
-								String location = lookForLocation(containerPackage, rootPackage, packageLocationMap);
-								packageLocationMap.put(containerPackage, location);
-							}
-						}
-					}
-				}
-				// look for supertypes in external ecore
-				for(EClass supertype : c.getEAllSuperTypes()){
-					EPackage containerPackage = (EPackage)(supertype.eContainer());
-					if(!containerPackage.getNsURI().equals(rootPackage.getNsURI())){
-						if(!packagesList.contains(containerPackage)){
-							packagesList.add(containerPackage);
-							String location = lookForLocation(containerPackage, rootPackage, packageLocationMap);
-							packageLocationMap.put(containerPackage, location);
-						}
-					}
-				}
-				relatedPackagesMap.put(rootPackage, packagesList);
-			}
-		}
-		if(!packagesList.isEmpty()){
-			for(EPackage p : packagesList){
-				if(!alreadyEvaluated.contains(p)){
-					alreadyEvaluated.add(p);
-					Map<EPackage, ArrayList<EPackage>> temporalMap = new HashMap<EPackage, ArrayList<EPackage>>();
-					temporalMap = getRelatedPackages(p, packageLocationMap, alreadyEvaluated);
-					relatedPackagesMap.putAll(temporalMap);
-				}
-			}
-		}
-		return relatedPackagesMap;
-	}
-
-	/**
-	 * 
-	 * @param ePackage
-	 * @param rootPackage
-	 * @return
-	 */
-	public static  String lookForLocation(EPackage ePackage, EPackage rootPackage, Map<EPackage, String> packageLocationMap){
-		String rootLocation = packageLocationMap.get(rootPackage);
-		return rootLocation.replace(rootPackage.getName()+".ecore", ePackage.getName()+".ecore");		
-	}
-
-	public static EClass getClass(EPackage ePackage, EClass eClass){
-		EClass ec = null;
-		for(TreeIterator<EObject> it = ePackage.eAllContents(); it.hasNext();){
-			EObject next = it.next();
-			if(next instanceof EClass){
-				EClass c = (EClass) next;
-				if(c.getName().equals(eClass.getName())){
-					ec = c;
-					break;
-				}
-			}
-		}
-		return ec;
-	}
-
-	/**
-	 * 
-	 * @param rootPackage
-	 * @return
-	 */
-	public static boolean verifyKeys(EPackage rootPackage){
-		boolean addKeys = true;
-		for(TreeIterator<EObject> it = rootPackage.eAllContents(); it.hasNext();){
-			EObject next = it.next();
-			if(next instanceof EClass){
-				EClass c = (EClass) next;
-				for(EAttribute ea : c.getEAllAttributes()){
-					if(ea.getName().equals("UUID")){
-						addKeys = false;
-						break;
-					}
-				}
-			}
-		}
-		return addKeys;
-	}
-
-	/**
-	 * 
-	 * @return
-	 */
-	public static Map<EPackage, EPackage> addKeys(EPackage pack, Map<EPackage, EPackage> packageKeyMap){
-		boolean addKeys = verifyKeys(pack);
-		EPackage temporalPackage;
-		EPackage rootKeyPackage = null;
-		String keyEcoreFile;
-		if(addKeys){ 
-			//temporalPackage = UtilEMF.addUUIDAttribute(originalEcoreFile);
-			//rootKeyPackage = UtilEMF.removeDuplicateUUIDAttribute(temporalPackage);
-		}
-
-		//String[] strArray = originalEcoreFile.split("\\.");
-		//String modelName = strArray[strArray.length-2];
-		//keyEcoreFile = (originalEcoreFile.replace(modelName, modelName+"_K")).toLowerCase();	
-		rootKeyPackage.setName((rootKeyPackage.getName()+"K").toLowerCase());
-		rootKeyPackage.setNsPrefix((rootKeyPackage.getNsPrefix()+"K").toLowerCase());
-		/*try {
-		//	UtilEMF.saveMetamodel(rootKeyPackage, keyEcoreFile, false);
-			//packageLocationMap.put(rootKeyPackage, keyEcoreFile);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}	*/
-		packageKeyMap.put(pack, rootKeyPackage);
-
-		return packageKeyMap;
-	}
-
-	/**
-	 * 
-	 * @param relatedPackages
-	 * @param packageLocationMap
-	 * @return
-	 */
-	public static Map<EPackage, EPackage> addKeys(Map<EPackage, ArrayList<EPackage>> relatedPackagesMap, Map<EPackage, String> packageLocationMap, ArrayList<EPackage> evaluated) {
-		Map<EPackage, EPackage> packageKeyMap = new HashMap<EPackage, EPackage>();
-		ArrayList<EPackage> alreadyEvaluated;
-		if(evaluated == null || evaluated.isEmpty()){
-			alreadyEvaluated = new ArrayList<EPackage>();
-		}else{
-			alreadyEvaluated = evaluated;
-		}
-		for (Entry<EPackage, ArrayList<EPackage>> e: relatedPackagesMap.entrySet()) {
-			EPackage p = e.getKey();
-			EPackage rootKeyPackage = null;
-			if(!alreadyEvaluated.contains(p)){
-				if(verifyKeys(p)){ rootKeyPackage = UtilEMF.addUUIDAttribute(packageLocationMap.get(p)); 				}
-				alreadyEvaluated.add(p);
-				rootKeyPackage.setName((rootKeyPackage.getName()+"K").toLowerCase());
-				rootKeyPackage.setNsPrefix((rootKeyPackage.getNsPrefix()+"K").toLowerCase());
-				String[] strArray = packageLocationMap.get(p).split("\\.");
-				String modelName = strArray[strArray.length-2];
-				String keyEcoreFile = (packageLocationMap.get(p).replace(modelName, modelName+"K")).toLowerCase();	
-				try {
-					UtilEMF.saveMetamodel(rootKeyPackage, keyEcoreFile, false);
-					packageKeyMap.put(p, rootKeyPackage);
-					packageLocationMap.put(rootKeyPackage, keyEcoreFile);
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
-			}
-		}
-		return packageKeyMap;
-	}
-
-	/**
-	 * 
-	 * @param rootPackage
-	 * @param relatedPackages
-	 */
-	public static Map<EPackage, String> relinkMetamodels(Map<EPackage, EPackage> packageKeyPackageMap, Map<EPackage, ArrayList<EPackage>> relatedPackages){
-		ArrayList<EPackage> packageWithUUID = new ArrayList<EPackage>();
-		ArrayList<EPackage> packageWithOutUUID = new ArrayList<EPackage>();
-		for (Entry<EPackage, ArrayList<EPackage>> e: relatedPackages.entrySet()) {
-			EPackage ep = packageKeyPackageMap.get(e.getKey());
-			packageWithUUID.add(ep);
-			for(TreeIterator<EObject> it = ep.eAllContents(); it.hasNext();){
-				EObject next = it.next();
-				ArrayList<EClass> toAdd = new ArrayList<EClass>();
-				ArrayList<EClass> toRemove = new ArrayList<EClass>();
-				if(next instanceof EClass){
-					EClass c = (EClass) next;
-					for(EClass sc : c.getESuperTypes()){
-						EPackage scContainerPackage = (EPackage)(sc.eContainer());
-						if(!scContainerPackage.equals(ep)){
-							for (Entry<EPackage, EPackage> e2: packageKeyPackageMap.entrySet()) {
-								EPackage key = e2.getKey();
-								EPackage newContainer = e2.getValue();
-								if(scContainerPackage.getNsURI().equals(key.getNsURI())){	
-									// get class of package
-									EClass relatedClass = UtilEMF.getClass(newContainer, sc);
-									toAdd.add(relatedClass);
-									toRemove.add(sc);
-								}
-							}
-						}
-					}
-					if(!toAdd.isEmpty()){ c.getESuperTypes().addAll(toAdd); }
-					if(!toRemove.isEmpty()){ c.getESuperTypes().removeAll(toRemove); }
-					// references dans ecores externes
-					for(EReference er : c.getEAllReferences()){
-						EPackage containerPackage = (EPackage)(er.getEType().eContainer());
-						if(!containerPackage.equals(ep)){
-							for (Entry<EPackage, EPackage> e2: packageKeyPackageMap.entrySet()) {
-								EPackage key = e2.getKey();
-								EPackage newContainer = e2.getValue();
-								if(containerPackage.getNsURI().equals(key.getNsURI())){	
-									EClass relatedClass = UtilEMF.getClass(newContainer, (EClass)er.getEType());
-									er.setEType(relatedClass);
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-		for (Entry<EPackage, String> e: packageLocationMap.entrySet()) {
-			if(!packageWithUUID.contains(e.getKey())){ packageWithOutUUID.add(e.getKey()); }	
-		}
-		for(EPackage p : packageWithOutUUID){ packageLocationMap.remove(p); }
-		return packageLocationMap;
-	}
-
-	/**
-	 * 
-	 * @param rootPackage
-	 * @param packageKeyPackageMap
-	 * @param toAddMap
-	 * @return
-	 */
-	public static EPackage addSuperTypes(EPackage rootPackage, Map<EPackage, EPackage> packageKeyPackageMap, Map<String, ArrayList<EClass>> toAddMap){
-		for(EPackage subp : rootPackage.getESubpackages()){
-			for(EClassifier eclass : subp.getEClassifiers()){
-				ArrayList<EClass> val = toAddMap.get(eclass.getName());
-				if(val != null){
-					((EClass) eclass).getESuperTypes().addAll(val); 
-				}
-			}
-		}
-		return rootPackage;
-	}
-
-	public static EPackage removeAnnotations(EPackage rootPackage, Map<EPackage, EPackage> packageKeyPackageMap){
-		for(EPackage subp : rootPackage.getESubpackages()){
-			removeAnnotations(subp);
-		}
-		return rootPackage;
-	}
-
-	
-
-
-
-	
-
-	/**
-	 * Creating an ecore composed of subpackages. Each subpackage correspond to an external ecore
-	 * @param rootPackage
-	 * @param externalEcoreMap
-	 */
-	public static EPackage createExtendedEcore(Map<EPackage, ArrayList<EPackage>> relatedPackages, String originalEcoreFilePath, EPackage rootPackage){
-		String name =  rootPackage.getName()+"Extended";
-		EPackage newRootPackage;
-
-		EcoreFactory theCoreFactory = EcoreFactory.eINSTANCE;
-		newRootPackage = theCoreFactory.createEPackage();
-		newRootPackage.setName(name);
-		newRootPackage.setNsPrefix(name);
-		newRootPackage.setNsURI("http://"+name+".ecore");
-
-		for (Entry<EPackage, ArrayList<EPackage>> e: relatedPackages.entrySet()) {
-			EPackage ep = e.getKey();
-			EPackage pack = theCoreFactory.createEPackage();
-			if(!isContainedInEcore(newRootPackage, ep)){
-				if(!ep.getName().equals("ecore")){
-					pack = EcoreUtil.copy(ep);
-					pack.setName(pack.getName());
-					pack.setNsPrefix(pack.getNsPrefix());
-					pack.setNsURI(pack.getNsURI());
-
-					for(EClassifier ec : pack.getEClassifiers()){
-						ArrayList<EClass> toAdd = new ArrayList<EClass>();
-						ArrayList<EClass> toRemove = new ArrayList<EClass>();
-						if(ec instanceof EClass){
-							for(EClass sc : ((EClass) ec).getESuperTypes()){ 
-								toRemove.add(sc); 
-							}
-							if(!toRemove.isEmpty()){ 
-								((EClass) ec).getESuperTypes().removeAll(toRemove); }
-							//fake references
-							for(EReference er : ((EClass) ec).getEAllReferences()){ 
-								er.setEType(ec); 
-							}
-						}
-
-					}
-					newRootPackage.getESubpackages().add(pack);
-				}
-			}
-		}
-		// reestablish super classes
-		newRootPackage = reestablishSuperClass(newRootPackage, relatedPackages);
-		// reestablish references
-		newRootPackage = reestablishReference(newRootPackage, relatedPackages);
-		// remove annotations
-		newRootPackage = removeAnnotation(newRootPackage, relatedPackages);
-		return newRootPackage;
-	}
-
-
-	/**
-	 * 
-	 * @param ep
-	 * @param esp
-	 * @return
-	 */
-	public static EPackage getSubpackage(EPackage ep, EPackage esp){
-		EPackage subpackage = null;
-		for(EPackage sub : ep.getESubpackages()){
-			if(sub.getNsURI().equals(esp.getNsURI())){
-				subpackage = sub;
-				break;
-			}
-		}
-		return subpackage;
-	}
-
-	/**
-	 * 
-	 * @param newPackage
-	 * @param rootPackage
-	 * @return
-	 */
-	public static EPackage getKeyPackage(EPackage newPackage, EPackage rootPackage) {
-		EPackage result = null;
-		for(EPackage p : newPackage.getESubpackages()){
-
-			// toLowerCase ???????
-			if(p.getName().equals((rootPackage.getName()+"k").toLowerCase())){
-				result = p;
-				break;
-			}
-		}
-		return result;
-	}
-
-	
-	
-
-	/**
-	 * 
-	 * @param rootPackage
-	 * @param packageKeyPackageMap
-	 * @param toAddMap
-	 * @return
-	 */
-
-
-	public static EPackage addSuperClasses(EPackage rootPackage, Map<EPackage, ArrayList<EPackage>> relatedPackagesMap, Map<String, ArrayList<EClass>> toAddMap){
-		for(EPackage subp : rootPackage.getESubpackages()){
-			for(EClassifier eclass : subp.getEClassifiers()){
-				ArrayList<EClass> val = toAddMap.get(eclass.getName());
-				if(val != null){
-					((EClass) eclass).getESuperTypes().addAll(val); 
-				}
-			}
-		}
-		return rootPackage;
-	}
-
 }

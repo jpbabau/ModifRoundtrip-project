@@ -37,7 +37,7 @@ public class TestCoevolution {
 		IORefactor.saveMetamodel(targetMetamodel, "C:/ModifRoundtrip-project/ModifRoundtrip/UtilTest/metamodel/coevolution/MPL_final.ecore");
 	
 		EObject targetModel = coevolution.getTargetModel();
-		IOMigration.saveModel(targetModel, "C:/ModifRoundtrip-project/ModifRoundtrip/UtilTest/model/coevolution/model_final.xmi");
+		IOMigration.saveModel(targetModel, "C:/ModifRoundtrip-project/ModifRoundtrip/UtilTest/model/coevolution/model_final.mpl");
 	}
 
 }
