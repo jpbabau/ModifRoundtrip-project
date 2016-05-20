@@ -2,6 +2,7 @@ package modifspecification;
 
 import org.eclipse.emf.ecore.EPackage;
 
+import migration.tools.UtilEMF;
 import modif.Modifications;
 
 public class TestUtilModifSpecification {
@@ -11,8 +12,8 @@ public class TestUtilModifSpecification {
 
 		/** TEST 1  - Generation **/
 
-	/*	// Source metamodel (with UUIDs)
-		EPackage sourceMetamodelUUID = IOModifSpecification.loadMetamodel("C:/ModifRoundtrip-project/ModifRoundtrip/UtilTest/metamodel/Test2/MPLUUID.ecore");
+		// Source metamodel (with UUIDs)
+	/*	EPackage sourceMetamodelUUID = UtilEMF.loadMetamodel("C:/ModifRoundtrip-project/ModifRoundtrip/UtilTest/metamodel/Test2/MPLUUID.ecore");
 
 		// Set seource metamodel
 		UtilModifSpecification.setSourceMetamodel(sourceMetamodelUUID);

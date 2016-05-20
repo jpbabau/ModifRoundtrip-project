@@ -127,6 +127,44 @@ public class UtilUUID {
 	private static void setTimeStamp(String timeStamp) {
 		UUIDtimeStamp = timeStamp;
 	}
+	
+	/**
+	 * Set UUID values.
+	 * It sets the UUID attribute of each instance with a ramdom value.
+	 * @param model Root object of the model to be modified.
+	 * @return model Model with UUID values.
+	 */
+	private static EObject setUUIDValues(EObject model) {
+		// UUID feature of root object:
+		EStructuralFeature uuid = null;
+		EList<EAttribute> a = model.eClass().getEAllAttributes();
+		for(int i=0; i<a.size() && uuid==null; i++) {
+			if (a.get(i).getName().equals("UUID"+UUIDtimeStamp)) {
+				uuid = a.get(i);
+				// If the current timestamp is not the timestamp of the model
+			}else if(a.get(i).getName().equals(getTimeStampFromModel(model))) {
+				uuid = a.get(i);
+			}
+		}
+		// Update of root object :
+		if (uuid!=null){ 
+			for(EAttribute attribute : model.eClass().getEAllAttributes()){
+				if(attribute.getName().equals("UUID"+UUIDtimeStamp)){
+					model.eSet(uuid, model.eClass().getName()+":"+EcoreUtil.generateUUID());
+					break;
+					// If the current timestamp is not the timestamp of the model
+				}else if(attribute.getName().equals(getTimeStampFromModel(model))){
+					model.eSet(uuid, model.eClass().getName()+":"+EcoreUtil.generateUUID());
+					break;
+				}
+			}
+		}
+		// Update of children object :
+		for(EObject modelRootChild : model.eContents()) {
+			setUUIDValues(modelRootChild);
+		}
+		return model;
+	}
 
 
 	// PUBLIC ***********************************************************************************
@@ -191,18 +229,6 @@ public class UtilUUID {
 	}
 
 	/**
-	 * Deletion of UUID attributes.
-	 * @param metamodelFilePath File path of the metamodel from wich UUID attributes have to me removed.
-	 * @return Updated root package.
-	 */
-	public static EPackage removeUUIDAttribute(String metamodelFilePath){
-		// Metamodel loading
-		EPackage metamodelRootPackage = UtilEMF.loadMetamodel(metamodelFilePath);
-		// Update
-		return removeUUIDMetamodelAttribute(metamodelRootPackage);
-	}
-
-	/**
 	 * Remove the UUID attribute.
 	 * It removes, from the top of the hierarchy, the abstract class containing the UUID attribute.
 	 * All inheritance links beetween the deleted class and other classes are also removed. 
@@ -239,44 +265,6 @@ public class UtilUUID {
 		EObject model = removeUUIDModelAttribute(modelUUID);
 		EObject modelWithoutUUID = UtilEMF.changeMetamodel(model, metamodel);
 		return modelWithoutUUID;
-	}
-
-	/**
-	 * Set UUID values.
-	 * It sets the UUID attribute of each instance with a ramdom value.
-	 * @param model Root object of the model to be modified.
-	 * @return model Model with UUID values.
-	 */
-	public static EObject setUUIDValues(EObject model) {
-		// UUID feature of root object:
-		EStructuralFeature uuid = null;
-		EList<EAttribute> a = model.eClass().getEAllAttributes();
-		for(int i=0; i<a.size() && uuid==null; i++) {
-			if (a.get(i).getName().equals("UUID"+UUIDtimeStamp)) {
-				uuid = a.get(i);
-				// If the current timestamp is not the timestamp of the model
-			}else if(a.get(i).getName().equals(getTimeStampFromModel(model))) {
-				uuid = a.get(i);
-			}
-		}
-		// Update of root object :
-		if (uuid!=null){ 
-			for(EAttribute attribute : model.eClass().getEAllAttributes()){
-				if(attribute.getName().equals("UUID"+UUIDtimeStamp)){
-					model.eSet(uuid, model.eClass().getName()+":"+EcoreUtil.generateUUID());
-					break;
-					// If the current timestamp is not the timestamp of the model
-				}else if(attribute.getName().equals(getTimeStampFromModel(model))){
-					model.eSet(uuid, model.eClass().getName()+":"+EcoreUtil.generateUUID());
-					break;
-				}
-			}
-		}
-		// Update of children object :
-		for(EObject modelRootChild : model.eContents()) {
-			setUUIDValues(modelRootChild);
-		}
-		return model;
 	}
 
 }

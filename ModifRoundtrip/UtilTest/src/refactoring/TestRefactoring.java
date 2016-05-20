@@ -1,10 +1,11 @@
 package refactoring;
 
+import java.io.IOException;
+
+import migration.tools.UtilEMF;
 import modif.Modifications;
 
 import org.eclipse.emf.ecore.EPackage;
-
-import refactor.IORefactor;
 
 public class TestRefactoring {
 
@@ -14,7 +15,7 @@ public class TestRefactoring {
 		Refactoring refactoring = new Refactoring();
 
 		// Load the source metamodel
-		EPackage sourceMetamodel = IORefactor.loadMetamodel("C:/ModifRoundtrip-project/ModifRoundtrip/UtilTest/metamodel/MPL.ecore");
+		EPackage sourceMetamodel = UtilEMF.loadMetamodel("C:/ModifRoundtrip-project/ModifRoundtrip/UtilTest/metamodel/MPL.ecore");
 
 		// Set the source metamodel
 		refactoring.setSourceMetamodel(sourceMetamodel);
@@ -24,7 +25,11 @@ public class TestRefactoring {
 
 		// Refactor
 		EPackage targetMetamodel = refactoring.refactor();
-		IORefactor.saveMetamodel(targetMetamodel, "C:/ModifRoundtrip-project/ModifRoundtrip/UtilTest/metamodel/Ref.ecore");
+		try {
+			UtilEMF.saveMetamodel(targetMetamodel, "C:/ModifRoundtrip-project/ModifRoundtrip/UtilTest/metamodel/Ref.ecore");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

@@ -1,5 +1,10 @@
 package migration;
 
+import java.io.IOException;
+
+import migration.tools.UtilEMF;
+import migrationSpecification.IOMigrationSpecification;
+
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 
@@ -10,14 +15,14 @@ public class TestMigration {
 		/** TEST 1  - Migrate **/
 
 		// Load migration specification
-		Migration migrationSpecification = IOMigration.loadMigrationSpecification("C:/ModifRoundtrip-project/ModifRoundtrip/UtilTest/migration/Test2/CopyMPL.migration.xmi");
+		Migration migrationSpecification = IOMigrationSpecification.loadMigrationSpecification("C:/ModifRoundtrip-project/ModifRoundtrip/UtilTest/migration/Test2/CopyMPL.migration.xmi");
 
 		// Set Migration specification
 		UtilMigration.setMigrationSpecification(migrationSpecification);
 
 		// Load source model
-		EPackage sourceMetamodel = IOMigration.loadMetamodel("C:/ModifRoundtrip-project/ModifRoundtrip/UtilTest/metamodel/Test2/MPLUUID.ecore");
-		EObject sourceModel = IOMigration.loadModel("C:/ModifRoundtrip-project/ModifRoundtrip/UtilTest/model/Test3/model.mpluuid.xmi", sourceMetamodel);
+		EPackage sourceMetamodel = UtilEMF.loadMetamodel("C:/ModifRoundtrip-project/ModifRoundtrip/UtilTest/metamodel/Test2/MPLUUID.ecore");
+		EObject sourceModel = UtilEMF.loadModel("C:/ModifRoundtrip-project/ModifRoundtrip/UtilTest/model/Test3/model.mpluuid.xmi", sourceMetamodel);
 
 		// set sourceModel
 		UtilMigration.setSourceModel(sourceModel);
@@ -29,7 +34,12 @@ public class TestMigration {
 		EObject targetModel = UtilMigration.getTargetModel();
 
 		// Save target model
-		IOMigration.saveModel(targetModel, "C:/ModifRoundtrip-project/ModifRoundtrip/UtilTest/model/Test1/model.mplrefactoreduuid.xmi");
+		try {
+			UtilEMF.saveModel(targetModel, "C:/ModifRoundtrip-project/ModifRoundtrip/UtilTest/model/Test1/model.mplrefactoreduuid.xmi");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

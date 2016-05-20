@@ -1,7 +1,9 @@
 package migrationSpecification;
 
 import migration.Migration;
+import migration.tools.UtilEMF;
 import modif.Modifications;
+import modifspecification.IOModifSpecification;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
@@ -13,25 +15,25 @@ public class TestUtilMigrationSpecification {
 		/** TEST 1  - Generation **/
 
 		// Load source metamodel (with UUIDs)
-		EPackage sourceMetamodel = IOMigrationSpecification.loadMetamodel("C:/ModifRoundtrip-project/ModifRoundtrip/UtilTest/metamodel/Test2/MPLUUID.ecore");
+		EPackage sourceMetamodel = UtilEMF.loadMetamodel("C:/ModifRoundtrip-project/ModifRoundtrip/UtilTest/metamodel/Test2/MPLUUID.ecore");
 
 		// Set source metamodel
 		UtilMigrationSpecification.setSourceMetamodel(sourceMetamodel);
 		
 		// Load targetMetamodel (with UUIDs)
-		EPackage targetMetamodel = IOMigrationSpecification.loadMetamodel("C:/ModifRoundtrip-project/ModifRoundtrip/UtilTest/metamodel/Test1/MPLUUIDRefactored.ecore");
+		EPackage targetMetamodel = UtilEMF.loadMetamodel("C:/ModifRoundtrip-project/ModifRoundtrip/UtilTest/metamodel/Test1/MPLUUIDRefactored.ecore");
 
 		// Set target metamodel
 		UtilMigrationSpecification.setTargetMetamodel(targetMetamodel);
 		
 		// Load modif specification
-		Modifications modifSpecification = IOMigrationSpecification.loadModifSpecification("C:/ModifRoundtrip-project/ModifRoundtrip/UtilTest/modif/Test1/CopyMPL.modif");
+		Modifications modifSpecification = IOModifSpecification.loadModifSpecification("C:/ModifRoundtrip-project/ModifRoundtrip/UtilTest/modif/Test1/CopyMPL.modif");
 		
 		// Set modif specification
 		UtilMigrationSpecification.setModifSpecification(modifSpecification);
 		
 		// Load source model (with UUIDs)
-		EObject sourceModel = IOMigrationSpecification.loadModel("C:/ModifRoundtrip-project/ModifRoundtrip/UtilTest/model/Test3/model.mpluuid.xmi", sourceMetamodel);
+		EObject sourceModel = UtilEMF.loadModel("C:/ModifRoundtrip-project/ModifRoundtrip/UtilTest/model/Test3/model.mpluuid.xmi", sourceMetamodel);
 		
 		// Set source model
 		UtilMigrationSpecification.setSourceModel(sourceModel);

@@ -1570,18 +1570,6 @@ public class UtilEMF {
 	}
 
 	/**
-	 * Get the String value of UUID if it exists.
-	 * @param o Object to scan.
-	 * @return The UUID of o if it exists or null.
-	 */
-	public static String getUUID (Object o) {
-		EObject instance = ( (o==null||!(o instanceof EObject)) ? null : (EObject)o );
-		EStructuralFeature esfUUID = (instance==null ? null : instance.eClass().getEStructuralFeature("UUID"));
-		Object value = (esfUUID==null ? null : instance.eGet(esfUUID));
-		return ( (value==null||!(value instanceof String)) ? null : (String)value );
-	}
-
-	/**
 	 * Metamodel processor: removes annotations. 
 	 * @param metaModelRootObject Root object of the metamodel to be processed.
 	 * @return Root object of the updated metamodel (without annotations).
@@ -1653,11 +1641,6 @@ public class UtilEMF {
 		return metaModelRootObject;
 	}
 
-
-
-
-
-
 	/**
 	 * Initialisation of a map relating UUIDs to the corresponding EObjects.
 	 * @param root The root instance of the model to scan.
@@ -1673,6 +1656,18 @@ public class UtilEMF {
 			fifo.addAll(next.eContents());
 		}
 		return map;
+	}
+	
+	/**
+	 * Get the String value of UUID if it exists.
+	 * @param o Object to scan.
+	 * @return The UUID of o if it exists or null.
+	 */
+	public static String getUUID (Object o) {
+		EObject instance = ( (o==null||!(o instanceof EObject)) ? null : (EObject)o );
+		EStructuralFeature esfUUID = (instance==null ? null : instance.eClass().getEStructuralFeature("UUID"));
+		Object value = (esfUUID==null ? null : instance.eGet(esfUUID));
+		return ( (value==null||!(value instanceof String)) ? null : (String)value );
 	}
 
 	/**

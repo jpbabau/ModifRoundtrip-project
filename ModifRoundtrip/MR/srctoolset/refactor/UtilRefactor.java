@@ -73,8 +73,6 @@ public class UtilRefactor {
 	 */
 	public static void setModifSpecification(Modifications theModifSpecification) {
 		modifSpecification = theModifSpecification;
-		
-		System.out.println(modifSpecification);
 	}
 
 	/**

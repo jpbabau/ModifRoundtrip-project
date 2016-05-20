@@ -1,13 +1,13 @@
 package coevolution;
 
-import migration.IOMigration;
+import java.io.IOException;
+
+import migration.tools.UtilEMF;
 import migrationSpecification.IOMigrationSpecification;
 import modif.Modifications;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
-
-import refactor.IORefactor;
 
 public class TestCoevolution {
 
@@ -16,7 +16,7 @@ public class TestCoevolution {
 		Coevolution coevolution = new Coevolution();
 
 		// Load the source metamodel
-		EPackage sourceMetamodel = IORefactor.loadMetamodel("C:/ModifRoundtrip-project/ModifRoundtrip/UtilTest/metamodel/MPLtest.ecore");
+		EPackage sourceMetamodel = UtilEMF.loadMetamodel("C:/ModifRoundtrip-project/ModifRoundtrip/UtilTest/metamodel/MPLtest.ecore");
 
 		// Set the source metamodel
 		coevolution.setSourceMetamodel(sourceMetamodel);
@@ -25,7 +25,7 @@ public class TestCoevolution {
 		Modifications modifSpecification = coevolution.createModif("C:/ModifRoundtrip-project/ModifRoundtrip/UtilTest/modif/coevolution/MPLtest.modif");
 
 		// Load the source model
-		EObject sourceModel = IOMigrationSpecification.loadModel("C:/ModifRoundtrip-project/ModifRoundtrip/UtilTest/model/Expression.xmi", sourceMetamodel);
+		EObject sourceModel = UtilEMF.loadModel("C:/ModifRoundtrip-project/ModifRoundtrip/UtilTest/model/Expression.xmi", sourceMetamodel);
 		
 		// Set source model
 		coevolution.setSourceModel(sourceModel);
@@ -34,10 +34,18 @@ public class TestCoevolution {
 		coevolution.coevolve();
 		
 		EPackage targetMetamodel = coevolution.getTargetMetamodel();
-		IORefactor.saveMetamodel(targetMetamodel, "C:/ModifRoundtrip-project/ModifRoundtrip/UtilTest/metamodel/coevolution/MPL_final.ecore");
+		try {
+			UtilEMF.saveMetamodel(targetMetamodel, "C:/ModifRoundtrip-project/ModifRoundtrip/UtilTest/metamodel/coevolution/MPL_final.ecore");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	
 		EObject targetModel = coevolution.getTargetModel();
-		IOMigration.saveModel(targetModel, "C:/ModifRoundtrip-project/ModifRoundtrip/UtilTest/model/coevolution/model_final.mpl");
+		try {
+			UtilEMF.saveModel(targetModel, "C:/ModifRoundtrip-project/ModifRoundtrip/UtilTest/model/coevolution/model_final.mpl");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 }
