@@ -97,7 +97,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="values" lowerBound="2" upperBound="2" eType="//Value"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="UUIDClass" abstract="true">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="UUID1305161707" lowerBound="1">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="UUID2005161210" lowerBound="1">
       <eType xsi:type="ecore:EDataType" href="Ecore.ecore#//EString"/>
     </eStructuralFeatures>
   </eClassifiers>

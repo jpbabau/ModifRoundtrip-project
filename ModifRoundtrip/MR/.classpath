@@ -4,8 +4,7 @@
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="src" path="srctoolset"/>
 	<classpathentry kind="lib" path="C:/ModifRoundtrip-project/eclipseMR/plugins/org.eclipse.emf.ecore.xmi_2.10.2.v20150123-0348.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/EcoreModif"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/Migration"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ModifRoundtrip"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ModifMetamodels"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

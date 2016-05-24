@@ -2711,18 +2711,18 @@ ruleChangeBounds returns [EObject current=null]
     {
     	newLeafNode(otherlv_6, grammarAccess.getChangeBoundsAccess().getRightParenthesisKeyword_6());
     }
-	otherlv_7='to' 
+(	otherlv_7='to' 
     {
-    	newLeafNode(otherlv_7, grammarAccess.getChangeBoundsAccess().getToKeyword_7());
+    	newLeafNode(otherlv_7, grammarAccess.getChangeBoundsAccess().getToKeyword_7_0());
     }
 	otherlv_8='(' 
     {
-    	newLeafNode(otherlv_8, grammarAccess.getChangeBoundsAccess().getLeftParenthesisKeyword_8());
+    	newLeafNode(otherlv_8, grammarAccess.getChangeBoundsAccess().getLeftParenthesisKeyword_7_1());
     }
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getChangeBoundsAccess().getNewLowerEIntParserRuleCall_9_0()); 
+	        newCompositeNode(grammarAccess.getChangeBoundsAccess().getNewLowerEIntParserRuleCall_7_2_0()); 
 	    }
 		lv_newLower_9_0=ruleEInt		{
 	        if ($current==null) {
@@ -2739,12 +2739,12 @@ ruleChangeBounds returns [EObject current=null]
 )
 )	otherlv_10=',' 
     {
-    	newLeafNode(otherlv_10, grammarAccess.getChangeBoundsAccess().getCommaKeyword_10());
+    	newLeafNode(otherlv_10, grammarAccess.getChangeBoundsAccess().getCommaKeyword_7_3());
     }
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getChangeBoundsAccess().getNewUpperEIntParserRuleCall_11_0()); 
+	        newCompositeNode(grammarAccess.getChangeBoundsAccess().getNewUpperEIntParserRuleCall_7_4_0()); 
 	    }
 		lv_newUpper_11_0=ruleEInt		{
 	        if ($current==null) {
@@ -2761,9 +2761,9 @@ ruleChangeBounds returns [EObject current=null]
 )
 )	otherlv_12=')' 
     {
-    	newLeafNode(otherlv_12, grammarAccess.getChangeBoundsAccess().getRightParenthesisKeyword_12());
+    	newLeafNode(otherlv_12, grammarAccess.getChangeBoundsAccess().getRightParenthesisKeyword_7_5());
     }
-)
+)?)
 ;
 
 

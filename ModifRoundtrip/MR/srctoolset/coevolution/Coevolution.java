@@ -3,9 +3,9 @@ package coevolution;
 import java.io.IOException;
 
 import migration.Migration;
-import migration.UtilMigration;
 import migration.tools.UtilEMF;
 import migrationSpecification.UtilMigrationSpecification;
+import migration_.UtilMigration;
 import modif.Modifications;
 import modifspecification.IOModifSpecification;
 import modifspecification.UtilModifSpecification;

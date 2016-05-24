@@ -6407,7 +6407,7 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleChangeBounds"
-    // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:2652:1: ruleChangeBounds returns [EObject current=null] : ( () otherlv_1= 'bounds' otherlv_2= '(' ( (lv_oldLower_3_0= ruleEInt ) ) otherlv_4= ',' ( (lv_oldUpper_5_0= ruleEInt ) ) otherlv_6= ')' otherlv_7= 'to' otherlv_8= '(' ( (lv_newLower_9_0= ruleEInt ) ) otherlv_10= ',' ( (lv_newUpper_11_0= ruleEInt ) ) otherlv_12= ')' ) ;
+    // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:2652:1: ruleChangeBounds returns [EObject current=null] : ( () otherlv_1= 'bounds' otherlv_2= '(' ( (lv_oldLower_3_0= ruleEInt ) ) otherlv_4= ',' ( (lv_oldUpper_5_0= ruleEInt ) ) otherlv_6= ')' (otherlv_7= 'to' otherlv_8= '(' ( (lv_newLower_9_0= ruleEInt ) ) otherlv_10= ',' ( (lv_newUpper_11_0= ruleEInt ) ) otherlv_12= ')' )? ) ;
     public final EObject ruleChangeBounds() throws RecognitionException {
         EObject current = null;
 
@@ -6431,11 +6431,11 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
          enterRule(); 
             
         try {
-            // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:2655:28: ( ( () otherlv_1= 'bounds' otherlv_2= '(' ( (lv_oldLower_3_0= ruleEInt ) ) otherlv_4= ',' ( (lv_oldUpper_5_0= ruleEInt ) ) otherlv_6= ')' otherlv_7= 'to' otherlv_8= '(' ( (lv_newLower_9_0= ruleEInt ) ) otherlv_10= ',' ( (lv_newUpper_11_0= ruleEInt ) ) otherlv_12= ')' ) )
-            // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:2656:1: ( () otherlv_1= 'bounds' otherlv_2= '(' ( (lv_oldLower_3_0= ruleEInt ) ) otherlv_4= ',' ( (lv_oldUpper_5_0= ruleEInt ) ) otherlv_6= ')' otherlv_7= 'to' otherlv_8= '(' ( (lv_newLower_9_0= ruleEInt ) ) otherlv_10= ',' ( (lv_newUpper_11_0= ruleEInt ) ) otherlv_12= ')' )
+            // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:2655:28: ( ( () otherlv_1= 'bounds' otherlv_2= '(' ( (lv_oldLower_3_0= ruleEInt ) ) otherlv_4= ',' ( (lv_oldUpper_5_0= ruleEInt ) ) otherlv_6= ')' (otherlv_7= 'to' otherlv_8= '(' ( (lv_newLower_9_0= ruleEInt ) ) otherlv_10= ',' ( (lv_newUpper_11_0= ruleEInt ) ) otherlv_12= ')' )? ) )
+            // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:2656:1: ( () otherlv_1= 'bounds' otherlv_2= '(' ( (lv_oldLower_3_0= ruleEInt ) ) otherlv_4= ',' ( (lv_oldUpper_5_0= ruleEInt ) ) otherlv_6= ')' (otherlv_7= 'to' otherlv_8= '(' ( (lv_newLower_9_0= ruleEInt ) ) otherlv_10= ',' ( (lv_newUpper_11_0= ruleEInt ) ) otherlv_12= ')' )? )
             {
-            // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:2656:1: ( () otherlv_1= 'bounds' otherlv_2= '(' ( (lv_oldLower_3_0= ruleEInt ) ) otherlv_4= ',' ( (lv_oldUpper_5_0= ruleEInt ) ) otherlv_6= ')' otherlv_7= 'to' otherlv_8= '(' ( (lv_newLower_9_0= ruleEInt ) ) otherlv_10= ',' ( (lv_newUpper_11_0= ruleEInt ) ) otherlv_12= ')' )
-            // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:2656:2: () otherlv_1= 'bounds' otherlv_2= '(' ( (lv_oldLower_3_0= ruleEInt ) ) otherlv_4= ',' ( (lv_oldUpper_5_0= ruleEInt ) ) otherlv_6= ')' otherlv_7= 'to' otherlv_8= '(' ( (lv_newLower_9_0= ruleEInt ) ) otherlv_10= ',' ( (lv_newUpper_11_0= ruleEInt ) ) otherlv_12= ')'
+            // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:2656:1: ( () otherlv_1= 'bounds' otherlv_2= '(' ( (lv_oldLower_3_0= ruleEInt ) ) otherlv_4= ',' ( (lv_oldUpper_5_0= ruleEInt ) ) otherlv_6= ')' (otherlv_7= 'to' otherlv_8= '(' ( (lv_newLower_9_0= ruleEInt ) ) otherlv_10= ',' ( (lv_newUpper_11_0= ruleEInt ) ) otherlv_12= ')' )? )
+            // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:2656:2: () otherlv_1= 'bounds' otherlv_2= '(' ( (lv_oldLower_3_0= ruleEInt ) ) otherlv_4= ',' ( (lv_oldUpper_5_0= ruleEInt ) ) otherlv_6= ')' (otherlv_7= 'to' otherlv_8= '(' ( (lv_newLower_9_0= ruleEInt ) ) otherlv_10= ',' ( (lv_newUpper_11_0= ruleEInt ) ) otherlv_12= ')' )?
             {
             // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:2656:2: ()
             // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:2657:5: 
@@ -6526,84 +6526,101 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
 
                 	newLeafNode(otherlv_6, grammarAccess.getChangeBoundsAccess().getRightParenthesisKeyword_6());
                 
-            otherlv_7=(Token)match(input,21,FollowSets000.FOLLOW_21_in_ruleChangeBounds5683); 
+            // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:2714:1: (otherlv_7= 'to' otherlv_8= '(' ( (lv_newLower_9_0= ruleEInt ) ) otherlv_10= ',' ( (lv_newUpper_11_0= ruleEInt ) ) otherlv_12= ')' )?
+            int alt67=2;
+            int LA67_0 = input.LA(1);
 
-                	newLeafNode(otherlv_7, grammarAccess.getChangeBoundsAccess().getToKeyword_7());
-                
-            otherlv_8=(Token)match(input,33,FollowSets000.FOLLOW_33_in_ruleChangeBounds5695); 
+            if ( (LA67_0==21) ) {
+                alt67=1;
+            }
+            switch (alt67) {
+                case 1 :
+                    // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:2714:3: otherlv_7= 'to' otherlv_8= '(' ( (lv_newLower_9_0= ruleEInt ) ) otherlv_10= ',' ( (lv_newUpper_11_0= ruleEInt ) ) otherlv_12= ')'
+                    {
+                    otherlv_7=(Token)match(input,21,FollowSets000.FOLLOW_21_in_ruleChangeBounds5684); 
 
-                	newLeafNode(otherlv_8, grammarAccess.getChangeBoundsAccess().getLeftParenthesisKeyword_8());
-                
-            // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:2722:1: ( (lv_newLower_9_0= ruleEInt ) )
-            // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:2723:1: (lv_newLower_9_0= ruleEInt )
-            {
-            // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:2723:1: (lv_newLower_9_0= ruleEInt )
-            // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:2724:3: lv_newLower_9_0= ruleEInt
-            {
-             
-            	        newCompositeNode(grammarAccess.getChangeBoundsAccess().getNewLowerEIntParserRuleCall_9_0()); 
-            	    
-            pushFollow(FollowSets000.FOLLOW_ruleEInt_in_ruleChangeBounds5716);
-            lv_newLower_9_0=ruleEInt();
+                        	newLeafNode(otherlv_7, grammarAccess.getChangeBoundsAccess().getToKeyword_7_0());
+                        
+                    otherlv_8=(Token)match(input,33,FollowSets000.FOLLOW_33_in_ruleChangeBounds5696); 
 
-            state._fsp--;
+                        	newLeafNode(otherlv_8, grammarAccess.getChangeBoundsAccess().getLeftParenthesisKeyword_7_1());
+                        
+                    // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:2722:1: ( (lv_newLower_9_0= ruleEInt ) )
+                    // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:2723:1: (lv_newLower_9_0= ruleEInt )
+                    {
+                    // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:2723:1: (lv_newLower_9_0= ruleEInt )
+                    // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:2724:3: lv_newLower_9_0= ruleEInt
+                    {
+                     
+                    	        newCompositeNode(grammarAccess.getChangeBoundsAccess().getNewLowerEIntParserRuleCall_7_2_0()); 
+                    	    
+                    pushFollow(FollowSets000.FOLLOW_ruleEInt_in_ruleChangeBounds5717);
+                    lv_newLower_9_0=ruleEInt();
+
+                    state._fsp--;
 
 
-            	        if (current==null) {
-            	            current = createModelElementForParent(grammarAccess.getChangeBoundsRule());
-            	        }
-                   		set(
-                   			current, 
-                   			"newLower",
-                    		lv_newLower_9_0, 
-                    		"EInt");
-            	        afterParserOrEnumRuleCall();
-            	    
+                    	        if (current==null) {
+                    	            current = createModelElementForParent(grammarAccess.getChangeBoundsRule());
+                    	        }
+                           		set(
+                           			current, 
+                           			"newLower",
+                            		lv_newLower_9_0, 
+                            		"EInt");
+                    	        afterParserOrEnumRuleCall();
+                    	    
+
+                    }
+
+
+                    }
+
+                    otherlv_10=(Token)match(input,45,FollowSets000.FOLLOW_45_in_ruleChangeBounds5729); 
+
+                        	newLeafNode(otherlv_10, grammarAccess.getChangeBoundsAccess().getCommaKeyword_7_3());
+                        
+                    // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:2744:1: ( (lv_newUpper_11_0= ruleEInt ) )
+                    // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:2745:1: (lv_newUpper_11_0= ruleEInt )
+                    {
+                    // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:2745:1: (lv_newUpper_11_0= ruleEInt )
+                    // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:2746:3: lv_newUpper_11_0= ruleEInt
+                    {
+                     
+                    	        newCompositeNode(grammarAccess.getChangeBoundsAccess().getNewUpperEIntParserRuleCall_7_4_0()); 
+                    	    
+                    pushFollow(FollowSets000.FOLLOW_ruleEInt_in_ruleChangeBounds5750);
+                    lv_newUpper_11_0=ruleEInt();
+
+                    state._fsp--;
+
+
+                    	        if (current==null) {
+                    	            current = createModelElementForParent(grammarAccess.getChangeBoundsRule());
+                    	        }
+                           		set(
+                           			current, 
+                           			"newUpper",
+                            		lv_newUpper_11_0, 
+                            		"EInt");
+                    	        afterParserOrEnumRuleCall();
+                    	    
+
+                    }
+
+
+                    }
+
+                    otherlv_12=(Token)match(input,34,FollowSets000.FOLLOW_34_in_ruleChangeBounds5762); 
+
+                        	newLeafNode(otherlv_12, grammarAccess.getChangeBoundsAccess().getRightParenthesisKeyword_7_5());
+                        
+
+                    }
+                    break;
 
             }
 
-
-            }
-
-            otherlv_10=(Token)match(input,45,FollowSets000.FOLLOW_45_in_ruleChangeBounds5728); 
-
-                	newLeafNode(otherlv_10, grammarAccess.getChangeBoundsAccess().getCommaKeyword_10());
-                
-            // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:2744:1: ( (lv_newUpper_11_0= ruleEInt ) )
-            // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:2745:1: (lv_newUpper_11_0= ruleEInt )
-            {
-            // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:2745:1: (lv_newUpper_11_0= ruleEInt )
-            // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:2746:3: lv_newUpper_11_0= ruleEInt
-            {
-             
-            	        newCompositeNode(grammarAccess.getChangeBoundsAccess().getNewUpperEIntParserRuleCall_11_0()); 
-            	    
-            pushFollow(FollowSets000.FOLLOW_ruleEInt_in_ruleChangeBounds5749);
-            lv_newUpper_11_0=ruleEInt();
-
-            state._fsp--;
-
-
-            	        if (current==null) {
-            	            current = createModelElementForParent(grammarAccess.getChangeBoundsRule());
-            	        }
-                   		set(
-                   			current, 
-                   			"newUpper",
-                    		lv_newUpper_11_0, 
-                    		"EInt");
-            	        afterParserOrEnumRuleCall();
-            	    
-
-            }
-
-
-            }
-
-            otherlv_12=(Token)match(input,34,FollowSets000.FOLLOW_34_in_ruleChangeBounds5761); 
-
-                	newLeafNode(otherlv_12, grammarAccess.getChangeBoundsAccess().getRightParenthesisKeyword_12());
-                
 
             }
 
@@ -6637,13 +6654,13 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
             // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:2776:2: iv_ruleAttributeModification= ruleAttributeModification EOF
             {
              newCompositeNode(grammarAccess.getAttributeModificationRule()); 
-            pushFollow(FollowSets000.FOLLOW_ruleAttributeModification_in_entryRuleAttributeModification5797);
+            pushFollow(FollowSets000.FOLLOW_ruleAttributeModification_in_entryRuleAttributeModification5800);
             iv_ruleAttributeModification=ruleAttributeModification();
 
             state._fsp--;
 
              current =iv_ruleAttributeModification; 
-            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleAttributeModification5807); 
+            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleAttributeModification5810); 
 
             }
 
@@ -6698,20 +6715,20 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
             // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:2787:2: ( (lv_remove_0_0= 'remove' ) )? otherlv_1= 'att' ( (lv_oldName_2_0= ruleEString ) ) (otherlv_3= 'to' ( (lv_newName_4_0= ruleEString ) ) )? ( (lv_changeBounds_5_0= ruleChangeBounds ) )? ( ( (lv_changeType_6_0= 'changeType' ) ) otherlv_7= 'to' ( (lv_newType_8_0= rulePrimitiveType ) ) )? ( (lv_removeEAnnotations_9_0= 'removeEAnnotations' ) )? (otherlv_10= 'annotation' otherlv_11= '{' ( (lv_annotationModification_12_0= ruleAnnotationModification ) ) (otherlv_13= ';' ( (lv_annotationModification_14_0= ruleAnnotationModification ) ) )* otherlv_15= '}' )?
             {
             // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:2787:2: ( (lv_remove_0_0= 'remove' ) )?
-            int alt67=2;
-            int LA67_0 = input.LA(1);
+            int alt68=2;
+            int LA68_0 = input.LA(1);
 
-            if ( (LA67_0==19) ) {
-                alt67=1;
+            if ( (LA68_0==19) ) {
+                alt68=1;
             }
-            switch (alt67) {
+            switch (alt68) {
                 case 1 :
                     // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:2788:1: (lv_remove_0_0= 'remove' )
                     {
                     // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:2788:1: (lv_remove_0_0= 'remove' )
                     // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:2789:3: lv_remove_0_0= 'remove'
                     {
-                    lv_remove_0_0=(Token)match(input,19,FollowSets000.FOLLOW_19_in_ruleAttributeModification5850); 
+                    lv_remove_0_0=(Token)match(input,19,FollowSets000.FOLLOW_19_in_ruleAttributeModification5853); 
 
                             newLeafNode(lv_remove_0_0, grammarAccess.getAttributeModificationAccess().getRemoveRemoveKeyword_0_0());
                         
@@ -6730,7 +6747,7 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
 
             }
 
-            otherlv_1=(Token)match(input,48,FollowSets000.FOLLOW_48_in_ruleAttributeModification5876); 
+            otherlv_1=(Token)match(input,48,FollowSets000.FOLLOW_48_in_ruleAttributeModification5879); 
 
                 	newLeafNode(otherlv_1, grammarAccess.getAttributeModificationAccess().getAttKeyword_1());
                 
@@ -6743,7 +6760,7 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
              
             	        newCompositeNode(grammarAccess.getAttributeModificationAccess().getOldNameEStringParserRuleCall_2_0()); 
             	    
-            pushFollow(FollowSets000.FOLLOW_ruleEString_in_ruleAttributeModification5897);
+            pushFollow(FollowSets000.FOLLOW_ruleEString_in_ruleAttributeModification5900);
             lv_oldName_2_0=ruleEString();
 
             state._fsp--;
@@ -6766,17 +6783,17 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
             }
 
             // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:2824:2: (otherlv_3= 'to' ( (lv_newName_4_0= ruleEString ) ) )?
-            int alt68=2;
-            int LA68_0 = input.LA(1);
+            int alt69=2;
+            int LA69_0 = input.LA(1);
 
-            if ( (LA68_0==21) ) {
-                alt68=1;
+            if ( (LA69_0==21) ) {
+                alt69=1;
             }
-            switch (alt68) {
+            switch (alt69) {
                 case 1 :
                     // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:2824:4: otherlv_3= 'to' ( (lv_newName_4_0= ruleEString ) )
                     {
-                    otherlv_3=(Token)match(input,21,FollowSets000.FOLLOW_21_in_ruleAttributeModification5910); 
+                    otherlv_3=(Token)match(input,21,FollowSets000.FOLLOW_21_in_ruleAttributeModification5913); 
 
                         	newLeafNode(otherlv_3, grammarAccess.getAttributeModificationAccess().getToKeyword_3_0());
                         
@@ -6789,7 +6806,7 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
                      
                     	        newCompositeNode(grammarAccess.getAttributeModificationAccess().getNewNameEStringParserRuleCall_3_1_0()); 
                     	    
-                    pushFollow(FollowSets000.FOLLOW_ruleEString_in_ruleAttributeModification5931);
+                    pushFollow(FollowSets000.FOLLOW_ruleEString_in_ruleAttributeModification5934);
                     lv_newName_4_0=ruleEString();
 
                     state._fsp--;
@@ -6818,13 +6835,13 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
             }
 
             // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:2846:4: ( (lv_changeBounds_5_0= ruleChangeBounds ) )?
-            int alt69=2;
-            int LA69_0 = input.LA(1);
+            int alt70=2;
+            int LA70_0 = input.LA(1);
 
-            if ( (LA69_0==47) ) {
-                alt69=1;
+            if ( (LA70_0==47) ) {
+                alt70=1;
             }
-            switch (alt69) {
+            switch (alt70) {
                 case 1 :
                     // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:2847:1: (lv_changeBounds_5_0= ruleChangeBounds )
                     {
@@ -6834,7 +6851,7 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
                      
                     	        newCompositeNode(grammarAccess.getAttributeModificationAccess().getChangeBoundsChangeBoundsParserRuleCall_4_0()); 
                     	    
-                    pushFollow(FollowSets000.FOLLOW_ruleChangeBounds_in_ruleAttributeModification5954);
+                    pushFollow(FollowSets000.FOLLOW_ruleChangeBounds_in_ruleAttributeModification5957);
                     lv_changeBounds_5_0=ruleChangeBounds();
 
                     state._fsp--;
@@ -6860,13 +6877,13 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
             }
 
             // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:2864:3: ( ( (lv_changeType_6_0= 'changeType' ) ) otherlv_7= 'to' ( (lv_newType_8_0= rulePrimitiveType ) ) )?
-            int alt70=2;
-            int LA70_0 = input.LA(1);
+            int alt71=2;
+            int LA71_0 = input.LA(1);
 
-            if ( (LA70_0==49) ) {
-                alt70=1;
+            if ( (LA71_0==49) ) {
+                alt71=1;
             }
-            switch (alt70) {
+            switch (alt71) {
                 case 1 :
                     // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:2864:4: ( (lv_changeType_6_0= 'changeType' ) ) otherlv_7= 'to' ( (lv_newType_8_0= rulePrimitiveType ) )
                     {
@@ -6876,7 +6893,7 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
                     // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:2865:1: (lv_changeType_6_0= 'changeType' )
                     // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:2866:3: lv_changeType_6_0= 'changeType'
                     {
-                    lv_changeType_6_0=(Token)match(input,49,FollowSets000.FOLLOW_49_in_ruleAttributeModification5974); 
+                    lv_changeType_6_0=(Token)match(input,49,FollowSets000.FOLLOW_49_in_ruleAttributeModification5977); 
 
                             newLeafNode(lv_changeType_6_0, grammarAccess.getAttributeModificationAccess().getChangeTypeChangeTypeKeyword_5_0_0());
                         
@@ -6892,7 +6909,7 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
 
                     }
 
-                    otherlv_7=(Token)match(input,21,FollowSets000.FOLLOW_21_in_ruleAttributeModification5999); 
+                    otherlv_7=(Token)match(input,21,FollowSets000.FOLLOW_21_in_ruleAttributeModification6002); 
 
                         	newLeafNode(otherlv_7, grammarAccess.getAttributeModificationAccess().getToKeyword_5_1());
                         
@@ -6905,7 +6922,7 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
                      
                     	        newCompositeNode(grammarAccess.getAttributeModificationAccess().getNewTypePrimitiveTypeParserRuleCall_5_2_0()); 
                     	    
-                    pushFollow(FollowSets000.FOLLOW_rulePrimitiveType_in_ruleAttributeModification6020);
+                    pushFollow(FollowSets000.FOLLOW_rulePrimitiveType_in_ruleAttributeModification6023);
                     lv_newType_8_0=rulePrimitiveType();
 
                     state._fsp--;
@@ -6934,20 +6951,20 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
             }
 
             // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:2901:4: ( (lv_removeEAnnotations_9_0= 'removeEAnnotations' ) )?
-            int alt71=2;
-            int LA71_0 = input.LA(1);
+            int alt72=2;
+            int LA72_0 = input.LA(1);
 
-            if ( (LA71_0==24) ) {
-                alt71=1;
+            if ( (LA72_0==24) ) {
+                alt72=1;
             }
-            switch (alt71) {
+            switch (alt72) {
                 case 1 :
                     // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:2902:1: (lv_removeEAnnotations_9_0= 'removeEAnnotations' )
                     {
                     // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:2902:1: (lv_removeEAnnotations_9_0= 'removeEAnnotations' )
                     // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:2903:3: lv_removeEAnnotations_9_0= 'removeEAnnotations'
                     {
-                    lv_removeEAnnotations_9_0=(Token)match(input,24,FollowSets000.FOLLOW_24_in_ruleAttributeModification6040); 
+                    lv_removeEAnnotations_9_0=(Token)match(input,24,FollowSets000.FOLLOW_24_in_ruleAttributeModification6043); 
 
                             newLeafNode(lv_removeEAnnotations_9_0, grammarAccess.getAttributeModificationAccess().getRemoveEAnnotationsRemoveEAnnotationsKeyword_6_0());
                         
@@ -6967,21 +6984,21 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
             }
 
             // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:2916:3: (otherlv_10= 'annotation' otherlv_11= '{' ( (lv_annotationModification_12_0= ruleAnnotationModification ) ) (otherlv_13= ';' ( (lv_annotationModification_14_0= ruleAnnotationModification ) ) )* otherlv_15= '}' )?
-            int alt73=2;
-            int LA73_0 = input.LA(1);
+            int alt74=2;
+            int LA74_0 = input.LA(1);
 
-            if ( (LA73_0==32) ) {
-                alt73=1;
+            if ( (LA74_0==32) ) {
+                alt74=1;
             }
-            switch (alt73) {
+            switch (alt74) {
                 case 1 :
                     // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:2916:5: otherlv_10= 'annotation' otherlv_11= '{' ( (lv_annotationModification_12_0= ruleAnnotationModification ) ) (otherlv_13= ';' ( (lv_annotationModification_14_0= ruleAnnotationModification ) ) )* otherlv_15= '}'
                     {
-                    otherlv_10=(Token)match(input,32,FollowSets000.FOLLOW_32_in_ruleAttributeModification6067); 
+                    otherlv_10=(Token)match(input,32,FollowSets000.FOLLOW_32_in_ruleAttributeModification6070); 
 
                         	newLeafNode(otherlv_10, grammarAccess.getAttributeModificationAccess().getAnnotationKeyword_7_0());
                         
-                    otherlv_11=(Token)match(input,26,FollowSets000.FOLLOW_26_in_ruleAttributeModification6079); 
+                    otherlv_11=(Token)match(input,26,FollowSets000.FOLLOW_26_in_ruleAttributeModification6082); 
 
                         	newLeafNode(otherlv_11, grammarAccess.getAttributeModificationAccess().getLeftCurlyBracketKeyword_7_1());
                         
@@ -6994,7 +7011,7 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
                      
                     	        newCompositeNode(grammarAccess.getAttributeModificationAccess().getAnnotationModificationAnnotationModificationParserRuleCall_7_2_0()); 
                     	    
-                    pushFollow(FollowSets000.FOLLOW_ruleAnnotationModification_in_ruleAttributeModification6100);
+                    pushFollow(FollowSets000.FOLLOW_ruleAnnotationModification_in_ruleAttributeModification6103);
                     lv_annotationModification_12_0=ruleAnnotationModification();
 
                     state._fsp--;
@@ -7017,21 +7034,21 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
                     }
 
                     // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:2942:2: (otherlv_13= ';' ( (lv_annotationModification_14_0= ruleAnnotationModification ) ) )*
-                    loop72:
+                    loop73:
                     do {
-                        int alt72=2;
-                        int LA72_0 = input.LA(1);
+                        int alt73=2;
+                        int LA73_0 = input.LA(1);
 
-                        if ( (LA72_0==27) ) {
-                            alt72=1;
+                        if ( (LA73_0==27) ) {
+                            alt73=1;
                         }
 
 
-                        switch (alt72) {
+                        switch (alt73) {
                     	case 1 :
                     	    // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:2942:4: otherlv_13= ';' ( (lv_annotationModification_14_0= ruleAnnotationModification ) )
                     	    {
-                    	    otherlv_13=(Token)match(input,27,FollowSets000.FOLLOW_27_in_ruleAttributeModification6113); 
+                    	    otherlv_13=(Token)match(input,27,FollowSets000.FOLLOW_27_in_ruleAttributeModification6116); 
 
                     	        	newLeafNode(otherlv_13, grammarAccess.getAttributeModificationAccess().getSemicolonKeyword_7_3_0());
                     	        
@@ -7044,7 +7061,7 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
                     	     
                     	    	        newCompositeNode(grammarAccess.getAttributeModificationAccess().getAnnotationModificationAnnotationModificationParserRuleCall_7_3_1_0()); 
                     	    	    
-                    	    pushFollow(FollowSets000.FOLLOW_ruleAnnotationModification_in_ruleAttributeModification6134);
+                    	    pushFollow(FollowSets000.FOLLOW_ruleAnnotationModification_in_ruleAttributeModification6137);
                     	    lv_annotationModification_14_0=ruleAnnotationModification();
 
                     	    state._fsp--;
@@ -7071,11 +7088,11 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
                     	    break;
 
                     	default :
-                    	    break loop72;
+                    	    break loop73;
                         }
                     } while (true);
 
-                    otherlv_15=(Token)match(input,28,FollowSets000.FOLLOW_28_in_ruleAttributeModification6148); 
+                    otherlv_15=(Token)match(input,28,FollowSets000.FOLLOW_28_in_ruleAttributeModification6151); 
 
                         	newLeafNode(otherlv_15, grammarAccess.getAttributeModificationAccess().getRightCurlyBracketKeyword_7_4());
                         
@@ -7118,13 +7135,13 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
             // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:2978:2: iv_ruleReferenceModification= ruleReferenceModification EOF
             {
              newCompositeNode(grammarAccess.getReferenceModificationRule()); 
-            pushFollow(FollowSets000.FOLLOW_ruleReferenceModification_in_entryRuleReferenceModification6186);
+            pushFollow(FollowSets000.FOLLOW_ruleReferenceModification_in_entryRuleReferenceModification6189);
             iv_ruleReferenceModification=ruleReferenceModification();
 
             state._fsp--;
 
              current =iv_ruleReferenceModification; 
-            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleReferenceModification6196); 
+            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleReferenceModification6199); 
 
             }
 
@@ -7183,20 +7200,20 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
             // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:2989:2: ( (lv_remove_0_0= 'remove' ) )? otherlv_1= 'ref' ( (lv_oldName_2_0= ruleEString ) ) (otherlv_3= 'to' ( (lv_newName_4_0= ruleEString ) ) )? ( (lv_changeBounds_5_0= ruleChangeBounds ) )? ( (lv_changeContainement_6_0= 'changeContainement' ) )? ( (lv_removeOpposite_7_0= 'removeOpposite' ) )? (otherlv_8= 'addOpposite' ( (lv_addOpposite_9_0= ruleAddOpposite ) ) )? (otherlv_10= 'reify' ( (lv_reify_11_0= ruleReferenceReification ) ) )? ( (lv_removeEAnnotations_12_0= 'removeEAnnotations' ) )? (otherlv_13= 'annotation' otherlv_14= '{' ( (lv_annotationModification_15_0= ruleAnnotationModification ) ) (otherlv_16= ';' ( (lv_annotationModification_17_0= ruleAnnotationModification ) ) )* otherlv_18= '}' )?
             {
             // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:2989:2: ( (lv_remove_0_0= 'remove' ) )?
-            int alt74=2;
-            int LA74_0 = input.LA(1);
+            int alt75=2;
+            int LA75_0 = input.LA(1);
 
-            if ( (LA74_0==19) ) {
-                alt74=1;
+            if ( (LA75_0==19) ) {
+                alt75=1;
             }
-            switch (alt74) {
+            switch (alt75) {
                 case 1 :
                     // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:2990:1: (lv_remove_0_0= 'remove' )
                     {
                     // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:2990:1: (lv_remove_0_0= 'remove' )
                     // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:2991:3: lv_remove_0_0= 'remove'
                     {
-                    lv_remove_0_0=(Token)match(input,19,FollowSets000.FOLLOW_19_in_ruleReferenceModification6239); 
+                    lv_remove_0_0=(Token)match(input,19,FollowSets000.FOLLOW_19_in_ruleReferenceModification6242); 
 
                             newLeafNode(lv_remove_0_0, grammarAccess.getReferenceModificationAccess().getRemoveRemoveKeyword_0_0());
                         
@@ -7215,7 +7232,7 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
 
             }
 
-            otherlv_1=(Token)match(input,50,FollowSets000.FOLLOW_50_in_ruleReferenceModification6265); 
+            otherlv_1=(Token)match(input,50,FollowSets000.FOLLOW_50_in_ruleReferenceModification6268); 
 
                 	newLeafNode(otherlv_1, grammarAccess.getReferenceModificationAccess().getRefKeyword_1());
                 
@@ -7228,7 +7245,7 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
              
             	        newCompositeNode(grammarAccess.getReferenceModificationAccess().getOldNameEStringParserRuleCall_2_0()); 
             	    
-            pushFollow(FollowSets000.FOLLOW_ruleEString_in_ruleReferenceModification6286);
+            pushFollow(FollowSets000.FOLLOW_ruleEString_in_ruleReferenceModification6289);
             lv_oldName_2_0=ruleEString();
 
             state._fsp--;
@@ -7251,17 +7268,17 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
             }
 
             // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:3026:2: (otherlv_3= 'to' ( (lv_newName_4_0= ruleEString ) ) )?
-            int alt75=2;
-            int LA75_0 = input.LA(1);
+            int alt76=2;
+            int LA76_0 = input.LA(1);
 
-            if ( (LA75_0==21) ) {
-                alt75=1;
+            if ( (LA76_0==21) ) {
+                alt76=1;
             }
-            switch (alt75) {
+            switch (alt76) {
                 case 1 :
                     // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:3026:4: otherlv_3= 'to' ( (lv_newName_4_0= ruleEString ) )
                     {
-                    otherlv_3=(Token)match(input,21,FollowSets000.FOLLOW_21_in_ruleReferenceModification6299); 
+                    otherlv_3=(Token)match(input,21,FollowSets000.FOLLOW_21_in_ruleReferenceModification6302); 
 
                         	newLeafNode(otherlv_3, grammarAccess.getReferenceModificationAccess().getToKeyword_3_0());
                         
@@ -7274,7 +7291,7 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
                      
                     	        newCompositeNode(grammarAccess.getReferenceModificationAccess().getNewNameEStringParserRuleCall_3_1_0()); 
                     	    
-                    pushFollow(FollowSets000.FOLLOW_ruleEString_in_ruleReferenceModification6320);
+                    pushFollow(FollowSets000.FOLLOW_ruleEString_in_ruleReferenceModification6323);
                     lv_newName_4_0=ruleEString();
 
                     state._fsp--;
@@ -7303,13 +7320,13 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
             }
 
             // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:3048:4: ( (lv_changeBounds_5_0= ruleChangeBounds ) )?
-            int alt76=2;
-            int LA76_0 = input.LA(1);
+            int alt77=2;
+            int LA77_0 = input.LA(1);
 
-            if ( (LA76_0==47) ) {
-                alt76=1;
+            if ( (LA77_0==47) ) {
+                alt77=1;
             }
-            switch (alt76) {
+            switch (alt77) {
                 case 1 :
                     // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:3049:1: (lv_changeBounds_5_0= ruleChangeBounds )
                     {
@@ -7319,7 +7336,7 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
                      
                     	        newCompositeNode(grammarAccess.getReferenceModificationAccess().getChangeBoundsChangeBoundsParserRuleCall_4_0()); 
                     	    
-                    pushFollow(FollowSets000.FOLLOW_ruleChangeBounds_in_ruleReferenceModification6343);
+                    pushFollow(FollowSets000.FOLLOW_ruleChangeBounds_in_ruleReferenceModification6346);
                     lv_changeBounds_5_0=ruleChangeBounds();
 
                     state._fsp--;
@@ -7345,20 +7362,20 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
             }
 
             // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:3066:3: ( (lv_changeContainement_6_0= 'changeContainement' ) )?
-            int alt77=2;
-            int LA77_0 = input.LA(1);
+            int alt78=2;
+            int LA78_0 = input.LA(1);
 
-            if ( (LA77_0==51) ) {
-                alt77=1;
+            if ( (LA78_0==51) ) {
+                alt78=1;
             }
-            switch (alt77) {
+            switch (alt78) {
                 case 1 :
                     // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:3067:1: (lv_changeContainement_6_0= 'changeContainement' )
                     {
                     // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:3067:1: (lv_changeContainement_6_0= 'changeContainement' )
                     // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:3068:3: lv_changeContainement_6_0= 'changeContainement'
                     {
-                    lv_changeContainement_6_0=(Token)match(input,51,FollowSets000.FOLLOW_51_in_ruleReferenceModification6362); 
+                    lv_changeContainement_6_0=(Token)match(input,51,FollowSets000.FOLLOW_51_in_ruleReferenceModification6365); 
 
                             newLeafNode(lv_changeContainement_6_0, grammarAccess.getReferenceModificationAccess().getChangeContainementChangeContainementKeyword_5_0());
                         
@@ -7378,20 +7395,20 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
             }
 
             // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:3081:3: ( (lv_removeOpposite_7_0= 'removeOpposite' ) )?
-            int alt78=2;
-            int LA78_0 = input.LA(1);
+            int alt79=2;
+            int LA79_0 = input.LA(1);
 
-            if ( (LA78_0==52) ) {
-                alt78=1;
+            if ( (LA79_0==52) ) {
+                alt79=1;
             }
-            switch (alt78) {
+            switch (alt79) {
                 case 1 :
                     // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:3082:1: (lv_removeOpposite_7_0= 'removeOpposite' )
                     {
                     // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:3082:1: (lv_removeOpposite_7_0= 'removeOpposite' )
                     // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:3083:3: lv_removeOpposite_7_0= 'removeOpposite'
                     {
-                    lv_removeOpposite_7_0=(Token)match(input,52,FollowSets000.FOLLOW_52_in_ruleReferenceModification6394); 
+                    lv_removeOpposite_7_0=(Token)match(input,52,FollowSets000.FOLLOW_52_in_ruleReferenceModification6397); 
 
                             newLeafNode(lv_removeOpposite_7_0, grammarAccess.getReferenceModificationAccess().getRemoveOppositeRemoveOppositeKeyword_6_0());
                         
@@ -7411,17 +7428,17 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
             }
 
             // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:3096:3: (otherlv_8= 'addOpposite' ( (lv_addOpposite_9_0= ruleAddOpposite ) ) )?
-            int alt79=2;
-            int LA79_0 = input.LA(1);
+            int alt80=2;
+            int LA80_0 = input.LA(1);
 
-            if ( (LA79_0==53) ) {
-                alt79=1;
+            if ( (LA80_0==53) ) {
+                alt80=1;
             }
-            switch (alt79) {
+            switch (alt80) {
                 case 1 :
                     // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:3096:5: otherlv_8= 'addOpposite' ( (lv_addOpposite_9_0= ruleAddOpposite ) )
                     {
-                    otherlv_8=(Token)match(input,53,FollowSets000.FOLLOW_53_in_ruleReferenceModification6421); 
+                    otherlv_8=(Token)match(input,53,FollowSets000.FOLLOW_53_in_ruleReferenceModification6424); 
 
                         	newLeafNode(otherlv_8, grammarAccess.getReferenceModificationAccess().getAddOppositeKeyword_7_0());
                         
@@ -7434,7 +7451,7 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
                      
                     	        newCompositeNode(grammarAccess.getReferenceModificationAccess().getAddOppositeAddOppositeParserRuleCall_7_1_0()); 
                     	    
-                    pushFollow(FollowSets000.FOLLOW_ruleAddOpposite_in_ruleReferenceModification6442);
+                    pushFollow(FollowSets000.FOLLOW_ruleAddOpposite_in_ruleReferenceModification6445);
                     lv_addOpposite_9_0=ruleAddOpposite();
 
                     state._fsp--;
@@ -7463,17 +7480,17 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
             }
 
             // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:3118:4: (otherlv_10= 'reify' ( (lv_reify_11_0= ruleReferenceReification ) ) )?
-            int alt80=2;
-            int LA80_0 = input.LA(1);
+            int alt81=2;
+            int LA81_0 = input.LA(1);
 
-            if ( (LA80_0==41) ) {
-                alt80=1;
+            if ( (LA81_0==41) ) {
+                alt81=1;
             }
-            switch (alt80) {
+            switch (alt81) {
                 case 1 :
                     // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:3118:6: otherlv_10= 'reify' ( (lv_reify_11_0= ruleReferenceReification ) )
                     {
-                    otherlv_10=(Token)match(input,41,FollowSets000.FOLLOW_41_in_ruleReferenceModification6457); 
+                    otherlv_10=(Token)match(input,41,FollowSets000.FOLLOW_41_in_ruleReferenceModification6460); 
 
                         	newLeafNode(otherlv_10, grammarAccess.getReferenceModificationAccess().getReifyKeyword_8_0());
                         
@@ -7486,7 +7503,7 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
                      
                     	        newCompositeNode(grammarAccess.getReferenceModificationAccess().getReifyReferenceReificationParserRuleCall_8_1_0()); 
                     	    
-                    pushFollow(FollowSets000.FOLLOW_ruleReferenceReification_in_ruleReferenceModification6478);
+                    pushFollow(FollowSets000.FOLLOW_ruleReferenceReification_in_ruleReferenceModification6481);
                     lv_reify_11_0=ruleReferenceReification();
 
                     state._fsp--;
@@ -7515,20 +7532,20 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
             }
 
             // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:3140:4: ( (lv_removeEAnnotations_12_0= 'removeEAnnotations' ) )?
-            int alt81=2;
-            int LA81_0 = input.LA(1);
+            int alt82=2;
+            int LA82_0 = input.LA(1);
 
-            if ( (LA81_0==24) ) {
-                alt81=1;
+            if ( (LA82_0==24) ) {
+                alt82=1;
             }
-            switch (alt81) {
+            switch (alt82) {
                 case 1 :
                     // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:3141:1: (lv_removeEAnnotations_12_0= 'removeEAnnotations' )
                     {
                     // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:3141:1: (lv_removeEAnnotations_12_0= 'removeEAnnotations' )
                     // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:3142:3: lv_removeEAnnotations_12_0= 'removeEAnnotations'
                     {
-                    lv_removeEAnnotations_12_0=(Token)match(input,24,FollowSets000.FOLLOW_24_in_ruleReferenceModification6498); 
+                    lv_removeEAnnotations_12_0=(Token)match(input,24,FollowSets000.FOLLOW_24_in_ruleReferenceModification6501); 
 
                             newLeafNode(lv_removeEAnnotations_12_0, grammarAccess.getReferenceModificationAccess().getRemoveEAnnotationsRemoveEAnnotationsKeyword_9_0());
                         
@@ -7548,21 +7565,21 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
             }
 
             // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:3155:3: (otherlv_13= 'annotation' otherlv_14= '{' ( (lv_annotationModification_15_0= ruleAnnotationModification ) ) (otherlv_16= ';' ( (lv_annotationModification_17_0= ruleAnnotationModification ) ) )* otherlv_18= '}' )?
-            int alt83=2;
-            int LA83_0 = input.LA(1);
+            int alt84=2;
+            int LA84_0 = input.LA(1);
 
-            if ( (LA83_0==32) ) {
-                alt83=1;
+            if ( (LA84_0==32) ) {
+                alt84=1;
             }
-            switch (alt83) {
+            switch (alt84) {
                 case 1 :
                     // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:3155:5: otherlv_13= 'annotation' otherlv_14= '{' ( (lv_annotationModification_15_0= ruleAnnotationModification ) ) (otherlv_16= ';' ( (lv_annotationModification_17_0= ruleAnnotationModification ) ) )* otherlv_18= '}'
                     {
-                    otherlv_13=(Token)match(input,32,FollowSets000.FOLLOW_32_in_ruleReferenceModification6525); 
+                    otherlv_13=(Token)match(input,32,FollowSets000.FOLLOW_32_in_ruleReferenceModification6528); 
 
                         	newLeafNode(otherlv_13, grammarAccess.getReferenceModificationAccess().getAnnotationKeyword_10_0());
                         
-                    otherlv_14=(Token)match(input,26,FollowSets000.FOLLOW_26_in_ruleReferenceModification6537); 
+                    otherlv_14=(Token)match(input,26,FollowSets000.FOLLOW_26_in_ruleReferenceModification6540); 
 
                         	newLeafNode(otherlv_14, grammarAccess.getReferenceModificationAccess().getLeftCurlyBracketKeyword_10_1());
                         
@@ -7575,7 +7592,7 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
                      
                     	        newCompositeNode(grammarAccess.getReferenceModificationAccess().getAnnotationModificationAnnotationModificationParserRuleCall_10_2_0()); 
                     	    
-                    pushFollow(FollowSets000.FOLLOW_ruleAnnotationModification_in_ruleReferenceModification6558);
+                    pushFollow(FollowSets000.FOLLOW_ruleAnnotationModification_in_ruleReferenceModification6561);
                     lv_annotationModification_15_0=ruleAnnotationModification();
 
                     state._fsp--;
@@ -7598,21 +7615,21 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
                     }
 
                     // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:3181:2: (otherlv_16= ';' ( (lv_annotationModification_17_0= ruleAnnotationModification ) ) )*
-                    loop82:
+                    loop83:
                     do {
-                        int alt82=2;
-                        int LA82_0 = input.LA(1);
+                        int alt83=2;
+                        int LA83_0 = input.LA(1);
 
-                        if ( (LA82_0==27) ) {
-                            alt82=1;
+                        if ( (LA83_0==27) ) {
+                            alt83=1;
                         }
 
 
-                        switch (alt82) {
+                        switch (alt83) {
                     	case 1 :
                     	    // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:3181:4: otherlv_16= ';' ( (lv_annotationModification_17_0= ruleAnnotationModification ) )
                     	    {
-                    	    otherlv_16=(Token)match(input,27,FollowSets000.FOLLOW_27_in_ruleReferenceModification6571); 
+                    	    otherlv_16=(Token)match(input,27,FollowSets000.FOLLOW_27_in_ruleReferenceModification6574); 
 
                     	        	newLeafNode(otherlv_16, grammarAccess.getReferenceModificationAccess().getSemicolonKeyword_10_3_0());
                     	        
@@ -7625,7 +7642,7 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
                     	     
                     	    	        newCompositeNode(grammarAccess.getReferenceModificationAccess().getAnnotationModificationAnnotationModificationParserRuleCall_10_3_1_0()); 
                     	    	    
-                    	    pushFollow(FollowSets000.FOLLOW_ruleAnnotationModification_in_ruleReferenceModification6592);
+                    	    pushFollow(FollowSets000.FOLLOW_ruleAnnotationModification_in_ruleReferenceModification6595);
                     	    lv_annotationModification_17_0=ruleAnnotationModification();
 
                     	    state._fsp--;
@@ -7652,11 +7669,11 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
                     	    break;
 
                     	default :
-                    	    break loop82;
+                    	    break loop83;
                         }
                     } while (true);
 
-                    otherlv_18=(Token)match(input,28,FollowSets000.FOLLOW_28_in_ruleReferenceModification6606); 
+                    otherlv_18=(Token)match(input,28,FollowSets000.FOLLOW_28_in_ruleReferenceModification6609); 
 
                         	newLeafNode(otherlv_18, grammarAccess.getReferenceModificationAccess().getRightCurlyBracketKeyword_10_4());
                         
@@ -7699,13 +7716,13 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
             // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:3217:2: iv_rulePrimitiveType= rulePrimitiveType EOF
             {
              newCompositeNode(grammarAccess.getPrimitiveTypeRule()); 
-            pushFollow(FollowSets000.FOLLOW_rulePrimitiveType_in_entryRulePrimitiveType6645);
+            pushFollow(FollowSets000.FOLLOW_rulePrimitiveType_in_entryRulePrimitiveType6648);
             iv_rulePrimitiveType=rulePrimitiveType();
 
             state._fsp--;
 
              current =iv_rulePrimitiveType.getText(); 
-            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRulePrimitiveType6656); 
+            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRulePrimitiveType6659); 
 
             }
 
@@ -7736,45 +7753,45 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
             // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:3228:1: (kw= 'int' | kw= 'string' | kw= 'boolean' | kw= 'char' | kw= 'float' )
             {
             // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:3228:1: (kw= 'int' | kw= 'string' | kw= 'boolean' | kw= 'char' | kw= 'float' )
-            int alt84=5;
+            int alt85=5;
             switch ( input.LA(1) ) {
             case 54:
                 {
-                alt84=1;
+                alt85=1;
                 }
                 break;
             case 55:
                 {
-                alt84=2;
+                alt85=2;
                 }
                 break;
             case 56:
                 {
-                alt84=3;
+                alt85=3;
                 }
                 break;
             case 57:
                 {
-                alt84=4;
+                alt85=4;
                 }
                 break;
             case 58:
                 {
-                alt84=5;
+                alt85=5;
                 }
                 break;
             default:
                 NoViableAltException nvae =
-                    new NoViableAltException("", 84, 0, input);
+                    new NoViableAltException("", 85, 0, input);
 
                 throw nvae;
             }
 
-            switch (alt84) {
+            switch (alt85) {
                 case 1 :
                     // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:3229:2: kw= 'int'
                     {
-                    kw=(Token)match(input,54,FollowSets000.FOLLOW_54_in_rulePrimitiveType6694); 
+                    kw=(Token)match(input,54,FollowSets000.FOLLOW_54_in_rulePrimitiveType6697); 
 
                             current.merge(kw);
                             newLeafNode(kw, grammarAccess.getPrimitiveTypeAccess().getIntKeyword_0()); 
@@ -7785,7 +7802,7 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
                 case 2 :
                     // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:3236:2: kw= 'string'
                     {
-                    kw=(Token)match(input,55,FollowSets000.FOLLOW_55_in_rulePrimitiveType6713); 
+                    kw=(Token)match(input,55,FollowSets000.FOLLOW_55_in_rulePrimitiveType6716); 
 
                             current.merge(kw);
                             newLeafNode(kw, grammarAccess.getPrimitiveTypeAccess().getStringKeyword_1()); 
@@ -7796,7 +7813,7 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
                 case 3 :
                     // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:3243:2: kw= 'boolean'
                     {
-                    kw=(Token)match(input,56,FollowSets000.FOLLOW_56_in_rulePrimitiveType6732); 
+                    kw=(Token)match(input,56,FollowSets000.FOLLOW_56_in_rulePrimitiveType6735); 
 
                             current.merge(kw);
                             newLeafNode(kw, grammarAccess.getPrimitiveTypeAccess().getBooleanKeyword_2()); 
@@ -7807,7 +7824,7 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
                 case 4 :
                     // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:3250:2: kw= 'char'
                     {
-                    kw=(Token)match(input,57,FollowSets000.FOLLOW_57_in_rulePrimitiveType6751); 
+                    kw=(Token)match(input,57,FollowSets000.FOLLOW_57_in_rulePrimitiveType6754); 
 
                             current.merge(kw);
                             newLeafNode(kw, grammarAccess.getPrimitiveTypeAccess().getCharKeyword_3()); 
@@ -7818,7 +7835,7 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
                 case 5 :
                     // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:3257:2: kw= 'float'
                     {
-                    kw=(Token)match(input,58,FollowSets000.FOLLOW_58_in_rulePrimitiveType6770); 
+                    kw=(Token)match(input,58,FollowSets000.FOLLOW_58_in_rulePrimitiveType6773); 
 
                             current.merge(kw);
                             newLeafNode(kw, grammarAccess.getPrimitiveTypeAccess().getFloatKeyword_4()); 
@@ -7859,13 +7876,13 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
             // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:3272:2: iv_ruleAddOpposite= ruleAddOpposite EOF
             {
              newCompositeNode(grammarAccess.getAddOppositeRule()); 
-            pushFollow(FollowSets000.FOLLOW_ruleAddOpposite_in_entryRuleAddOpposite6810);
+            pushFollow(FollowSets000.FOLLOW_ruleAddOpposite_in_entryRuleAddOpposite6813);
             iv_ruleAddOpposite=ruleAddOpposite();
 
             state._fsp--;
 
              current =iv_ruleAddOpposite; 
-            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleAddOpposite6820); 
+            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleAddOpposite6823); 
 
             }
 
@@ -7907,7 +7924,7 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
             // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:3283:1: (otherlv_0= '(' ( (lv_oppositeName_1_0= ruleEString ) ) otherlv_2= ',' ( (lv_oppositeLower_3_0= ruleEInt ) ) otherlv_4= ',' ( (lv_oppositeUpper_5_0= ruleEInt ) ) otherlv_6= ')' )
             // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:3283:3: otherlv_0= '(' ( (lv_oppositeName_1_0= ruleEString ) ) otherlv_2= ',' ( (lv_oppositeLower_3_0= ruleEInt ) ) otherlv_4= ',' ( (lv_oppositeUpper_5_0= ruleEInt ) ) otherlv_6= ')'
             {
-            otherlv_0=(Token)match(input,33,FollowSets000.FOLLOW_33_in_ruleAddOpposite6857); 
+            otherlv_0=(Token)match(input,33,FollowSets000.FOLLOW_33_in_ruleAddOpposite6860); 
 
                 	newLeafNode(otherlv_0, grammarAccess.getAddOppositeAccess().getLeftParenthesisKeyword_0());
                 
@@ -7920,7 +7937,7 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
              
             	        newCompositeNode(grammarAccess.getAddOppositeAccess().getOppositeNameEStringParserRuleCall_1_0()); 
             	    
-            pushFollow(FollowSets000.FOLLOW_ruleEString_in_ruleAddOpposite6878);
+            pushFollow(FollowSets000.FOLLOW_ruleEString_in_ruleAddOpposite6881);
             lv_oppositeName_1_0=ruleEString();
 
             state._fsp--;
@@ -7942,7 +7959,7 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
 
             }
 
-            otherlv_2=(Token)match(input,45,FollowSets000.FOLLOW_45_in_ruleAddOpposite6890); 
+            otherlv_2=(Token)match(input,45,FollowSets000.FOLLOW_45_in_ruleAddOpposite6893); 
 
                 	newLeafNode(otherlv_2, grammarAccess.getAddOppositeAccess().getCommaKeyword_2());
                 
@@ -7955,7 +7972,7 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
              
             	        newCompositeNode(grammarAccess.getAddOppositeAccess().getOppositeLowerEIntParserRuleCall_3_0()); 
             	    
-            pushFollow(FollowSets000.FOLLOW_ruleEInt_in_ruleAddOpposite6911);
+            pushFollow(FollowSets000.FOLLOW_ruleEInt_in_ruleAddOpposite6914);
             lv_oppositeLower_3_0=ruleEInt();
 
             state._fsp--;
@@ -7977,7 +7994,7 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
 
             }
 
-            otherlv_4=(Token)match(input,45,FollowSets000.FOLLOW_45_in_ruleAddOpposite6923); 
+            otherlv_4=(Token)match(input,45,FollowSets000.FOLLOW_45_in_ruleAddOpposite6926); 
 
                 	newLeafNode(otherlv_4, grammarAccess.getAddOppositeAccess().getCommaKeyword_4());
                 
@@ -7990,7 +8007,7 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
              
             	        newCompositeNode(grammarAccess.getAddOppositeAccess().getOppositeUpperEIntParserRuleCall_5_0()); 
             	    
-            pushFollow(FollowSets000.FOLLOW_ruleEInt_in_ruleAddOpposite6944);
+            pushFollow(FollowSets000.FOLLOW_ruleEInt_in_ruleAddOpposite6947);
             lv_oppositeUpper_5_0=ruleEInt();
 
             state._fsp--;
@@ -8012,7 +8029,7 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
 
             }
 
-            otherlv_6=(Token)match(input,34,FollowSets000.FOLLOW_34_in_ruleAddOpposite6956); 
+            otherlv_6=(Token)match(input,34,FollowSets000.FOLLOW_34_in_ruleAddOpposite6959); 
 
                 	newLeafNode(otherlv_6, grammarAccess.getAddOppositeAccess().getRightParenthesisKeyword_6());
                 
@@ -8049,13 +8066,13 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
             // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:3363:2: iv_ruleReferenceReification= ruleReferenceReification EOF
             {
              newCompositeNode(grammarAccess.getReferenceReificationRule()); 
-            pushFollow(FollowSets000.FOLLOW_ruleReferenceReification_in_entryRuleReferenceReification6992);
+            pushFollow(FollowSets000.FOLLOW_ruleReferenceReification_in_entryRuleReferenceReification6995);
             iv_ruleReferenceReification=ruleReferenceReification();
 
             state._fsp--;
 
              current =iv_ruleReferenceReification; 
-            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleReferenceReification7002); 
+            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleReferenceReification7005); 
 
             }
 
@@ -8097,7 +8114,7 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
             // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:3374:1: (otherlv_0= '(' ( (lv_nameClass_1_0= ruleEString ) ) otherlv_2= ',' ( (lv_nameFirstReference_3_0= ruleEString ) ) otherlv_4= ',' ( (lv_nameSecondReference_5_0= ruleEString ) ) otherlv_6= ')' )
             // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:3374:3: otherlv_0= '(' ( (lv_nameClass_1_0= ruleEString ) ) otherlv_2= ',' ( (lv_nameFirstReference_3_0= ruleEString ) ) otherlv_4= ',' ( (lv_nameSecondReference_5_0= ruleEString ) ) otherlv_6= ')'
             {
-            otherlv_0=(Token)match(input,33,FollowSets000.FOLLOW_33_in_ruleReferenceReification7039); 
+            otherlv_0=(Token)match(input,33,FollowSets000.FOLLOW_33_in_ruleReferenceReification7042); 
 
                 	newLeafNode(otherlv_0, grammarAccess.getReferenceReificationAccess().getLeftParenthesisKeyword_0());
                 
@@ -8110,7 +8127,7 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
              
             	        newCompositeNode(grammarAccess.getReferenceReificationAccess().getNameClassEStringParserRuleCall_1_0()); 
             	    
-            pushFollow(FollowSets000.FOLLOW_ruleEString_in_ruleReferenceReification7060);
+            pushFollow(FollowSets000.FOLLOW_ruleEString_in_ruleReferenceReification7063);
             lv_nameClass_1_0=ruleEString();
 
             state._fsp--;
@@ -8132,7 +8149,7 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
 
             }
 
-            otherlv_2=(Token)match(input,45,FollowSets000.FOLLOW_45_in_ruleReferenceReification7072); 
+            otherlv_2=(Token)match(input,45,FollowSets000.FOLLOW_45_in_ruleReferenceReification7075); 
 
                 	newLeafNode(otherlv_2, grammarAccess.getReferenceReificationAccess().getCommaKeyword_2());
                 
@@ -8145,7 +8162,7 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
              
             	        newCompositeNode(grammarAccess.getReferenceReificationAccess().getNameFirstReferenceEStringParserRuleCall_3_0()); 
             	    
-            pushFollow(FollowSets000.FOLLOW_ruleEString_in_ruleReferenceReification7093);
+            pushFollow(FollowSets000.FOLLOW_ruleEString_in_ruleReferenceReification7096);
             lv_nameFirstReference_3_0=ruleEString();
 
             state._fsp--;
@@ -8167,7 +8184,7 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
 
             }
 
-            otherlv_4=(Token)match(input,45,FollowSets000.FOLLOW_45_in_ruleReferenceReification7105); 
+            otherlv_4=(Token)match(input,45,FollowSets000.FOLLOW_45_in_ruleReferenceReification7108); 
 
                 	newLeafNode(otherlv_4, grammarAccess.getReferenceReificationAccess().getCommaKeyword_4());
                 
@@ -8180,7 +8197,7 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
              
             	        newCompositeNode(grammarAccess.getReferenceReificationAccess().getNameSecondReferenceEStringParserRuleCall_5_0()); 
             	    
-            pushFollow(FollowSets000.FOLLOW_ruleEString_in_ruleReferenceReification7126);
+            pushFollow(FollowSets000.FOLLOW_ruleEString_in_ruleReferenceReification7129);
             lv_nameSecondReference_5_0=ruleEString();
 
             state._fsp--;
@@ -8202,7 +8219,7 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
 
             }
 
-            otherlv_6=(Token)match(input,34,FollowSets000.FOLLOW_34_in_ruleReferenceReification7138); 
+            otherlv_6=(Token)match(input,34,FollowSets000.FOLLOW_34_in_ruleReferenceReification7141); 
 
                 	newLeafNode(otherlv_6, grammarAccess.getReferenceReificationAccess().getRightParenthesisKeyword_6());
                 
@@ -8239,13 +8256,13 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
             // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:3454:2: iv_ruleAddDerivedReference= ruleAddDerivedReference EOF
             {
              newCompositeNode(grammarAccess.getAddDerivedReferenceRule()); 
-            pushFollow(FollowSets000.FOLLOW_ruleAddDerivedReference_in_entryRuleAddDerivedReference7174);
+            pushFollow(FollowSets000.FOLLOW_ruleAddDerivedReference_in_entryRuleAddDerivedReference7177);
             iv_ruleAddDerivedReference=ruleAddDerivedReference();
 
             state._fsp--;
 
              current =iv_ruleAddDerivedReference; 
-            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleAddDerivedReference7184); 
+            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleAddDerivedReference7187); 
 
             }
 
@@ -8286,7 +8303,7 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
             // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:3465:1: (otherlv_0= 'addDerivedRef' ( (lv_newName_1_0= ruleEString ) ) otherlv_2= ':' ( (lv_referenceName_3_0= ruleEString ) ) (otherlv_4= ',' ( (lv_referenceName_5_0= ruleEString ) ) )* )
             // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:3465:3: otherlv_0= 'addDerivedRef' ( (lv_newName_1_0= ruleEString ) ) otherlv_2= ':' ( (lv_referenceName_3_0= ruleEString ) ) (otherlv_4= ',' ( (lv_referenceName_5_0= ruleEString ) ) )*
             {
-            otherlv_0=(Token)match(input,59,FollowSets000.FOLLOW_59_in_ruleAddDerivedReference7221); 
+            otherlv_0=(Token)match(input,59,FollowSets000.FOLLOW_59_in_ruleAddDerivedReference7224); 
 
                 	newLeafNode(otherlv_0, grammarAccess.getAddDerivedReferenceAccess().getAddDerivedRefKeyword_0());
                 
@@ -8299,7 +8316,7 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
              
             	        newCompositeNode(grammarAccess.getAddDerivedReferenceAccess().getNewNameEStringParserRuleCall_1_0()); 
             	    
-            pushFollow(FollowSets000.FOLLOW_ruleEString_in_ruleAddDerivedReference7242);
+            pushFollow(FollowSets000.FOLLOW_ruleEString_in_ruleAddDerivedReference7245);
             lv_newName_1_0=ruleEString();
 
             state._fsp--;
@@ -8321,7 +8338,7 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
 
             }
 
-            otherlv_2=(Token)match(input,60,FollowSets000.FOLLOW_60_in_ruleAddDerivedReference7254); 
+            otherlv_2=(Token)match(input,60,FollowSets000.FOLLOW_60_in_ruleAddDerivedReference7257); 
 
                 	newLeafNode(otherlv_2, grammarAccess.getAddDerivedReferenceAccess().getColonKeyword_2());
                 
@@ -8334,7 +8351,7 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
              
             	        newCompositeNode(grammarAccess.getAddDerivedReferenceAccess().getReferenceNameEStringParserRuleCall_3_0()); 
             	    
-            pushFollow(FollowSets000.FOLLOW_ruleEString_in_ruleAddDerivedReference7275);
+            pushFollow(FollowSets000.FOLLOW_ruleEString_in_ruleAddDerivedReference7278);
             lv_referenceName_3_0=ruleEString();
 
             state._fsp--;
@@ -8357,21 +8374,21 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
             }
 
             // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:3509:2: (otherlv_4= ',' ( (lv_referenceName_5_0= ruleEString ) ) )*
-            loop85:
+            loop86:
             do {
-                int alt85=2;
-                int LA85_0 = input.LA(1);
+                int alt86=2;
+                int LA86_0 = input.LA(1);
 
-                if ( (LA85_0==45) ) {
-                    alt85=1;
+                if ( (LA86_0==45) ) {
+                    alt86=1;
                 }
 
 
-                switch (alt85) {
+                switch (alt86) {
             	case 1 :
             	    // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:3509:4: otherlv_4= ',' ( (lv_referenceName_5_0= ruleEString ) )
             	    {
-            	    otherlv_4=(Token)match(input,45,FollowSets000.FOLLOW_45_in_ruleAddDerivedReference7288); 
+            	    otherlv_4=(Token)match(input,45,FollowSets000.FOLLOW_45_in_ruleAddDerivedReference7291); 
 
             	        	newLeafNode(otherlv_4, grammarAccess.getAddDerivedReferenceAccess().getCommaKeyword_4_0());
             	        
@@ -8384,7 +8401,7 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
             	     
             	    	        newCompositeNode(grammarAccess.getAddDerivedReferenceAccess().getReferenceNameEStringParserRuleCall_4_1_0()); 
             	    	    
-            	    pushFollow(FollowSets000.FOLLOW_ruleEString_in_ruleAddDerivedReference7309);
+            	    pushFollow(FollowSets000.FOLLOW_ruleEString_in_ruleAddDerivedReference7312);
             	    lv_referenceName_5_0=ruleEString();
 
             	    state._fsp--;
@@ -8411,7 +8428,7 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
             	    break;
 
             	default :
-            	    break loop85;
+            	    break loop86;
                 }
             } while (true);
 
@@ -8448,13 +8465,13 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
             // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:3541:2: iv_ruleAddDerivedAttribute= ruleAddDerivedAttribute EOF
             {
              newCompositeNode(grammarAccess.getAddDerivedAttributeRule()); 
-            pushFollow(FollowSets000.FOLLOW_ruleAddDerivedAttribute_in_entryRuleAddDerivedAttribute7347);
+            pushFollow(FollowSets000.FOLLOW_ruleAddDerivedAttribute_in_entryRuleAddDerivedAttribute7350);
             iv_ruleAddDerivedAttribute=ruleAddDerivedAttribute();
 
             state._fsp--;
 
              current =iv_ruleAddDerivedAttribute; 
-            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleAddDerivedAttribute7357); 
+            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleAddDerivedAttribute7360); 
 
             }
 
@@ -8498,7 +8515,7 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
             // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:3552:1: (otherlv_0= 'addDerivedAtt' ( (lv_newName_1_0= ruleEString ) ) otherlv_2= ':' ( (lv_referenceName_3_0= ruleEString ) ) (otherlv_4= ',' ( (lv_referenceName_5_0= ruleEString ) ) )* otherlv_6= ':' ( (lv_attributeName_7_0= ruleEString ) ) )
             // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:3552:3: otherlv_0= 'addDerivedAtt' ( (lv_newName_1_0= ruleEString ) ) otherlv_2= ':' ( (lv_referenceName_3_0= ruleEString ) ) (otherlv_4= ',' ( (lv_referenceName_5_0= ruleEString ) ) )* otherlv_6= ':' ( (lv_attributeName_7_0= ruleEString ) )
             {
-            otherlv_0=(Token)match(input,61,FollowSets000.FOLLOW_61_in_ruleAddDerivedAttribute7394); 
+            otherlv_0=(Token)match(input,61,FollowSets000.FOLLOW_61_in_ruleAddDerivedAttribute7397); 
 
                 	newLeafNode(otherlv_0, grammarAccess.getAddDerivedAttributeAccess().getAddDerivedAttKeyword_0());
                 
@@ -8511,7 +8528,7 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
              
             	        newCompositeNode(grammarAccess.getAddDerivedAttributeAccess().getNewNameEStringParserRuleCall_1_0()); 
             	    
-            pushFollow(FollowSets000.FOLLOW_ruleEString_in_ruleAddDerivedAttribute7415);
+            pushFollow(FollowSets000.FOLLOW_ruleEString_in_ruleAddDerivedAttribute7418);
             lv_newName_1_0=ruleEString();
 
             state._fsp--;
@@ -8533,7 +8550,7 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
 
             }
 
-            otherlv_2=(Token)match(input,60,FollowSets000.FOLLOW_60_in_ruleAddDerivedAttribute7427); 
+            otherlv_2=(Token)match(input,60,FollowSets000.FOLLOW_60_in_ruleAddDerivedAttribute7430); 
 
                 	newLeafNode(otherlv_2, grammarAccess.getAddDerivedAttributeAccess().getColonKeyword_2());
                 
@@ -8546,7 +8563,7 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
              
             	        newCompositeNode(grammarAccess.getAddDerivedAttributeAccess().getReferenceNameEStringParserRuleCall_3_0()); 
             	    
-            pushFollow(FollowSets000.FOLLOW_ruleEString_in_ruleAddDerivedAttribute7448);
+            pushFollow(FollowSets000.FOLLOW_ruleEString_in_ruleAddDerivedAttribute7451);
             lv_referenceName_3_0=ruleEString();
 
             state._fsp--;
@@ -8569,21 +8586,21 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
             }
 
             // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:3596:2: (otherlv_4= ',' ( (lv_referenceName_5_0= ruleEString ) ) )*
-            loop86:
+            loop87:
             do {
-                int alt86=2;
-                int LA86_0 = input.LA(1);
+                int alt87=2;
+                int LA87_0 = input.LA(1);
 
-                if ( (LA86_0==45) ) {
-                    alt86=1;
+                if ( (LA87_0==45) ) {
+                    alt87=1;
                 }
 
 
-                switch (alt86) {
+                switch (alt87) {
             	case 1 :
             	    // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:3596:4: otherlv_4= ',' ( (lv_referenceName_5_0= ruleEString ) )
             	    {
-            	    otherlv_4=(Token)match(input,45,FollowSets000.FOLLOW_45_in_ruleAddDerivedAttribute7461); 
+            	    otherlv_4=(Token)match(input,45,FollowSets000.FOLLOW_45_in_ruleAddDerivedAttribute7464); 
 
             	        	newLeafNode(otherlv_4, grammarAccess.getAddDerivedAttributeAccess().getCommaKeyword_4_0());
             	        
@@ -8596,7 +8613,7 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
             	     
             	    	        newCompositeNode(grammarAccess.getAddDerivedAttributeAccess().getReferenceNameEStringParserRuleCall_4_1_0()); 
             	    	    
-            	    pushFollow(FollowSets000.FOLLOW_ruleEString_in_ruleAddDerivedAttribute7482);
+            	    pushFollow(FollowSets000.FOLLOW_ruleEString_in_ruleAddDerivedAttribute7485);
             	    lv_referenceName_5_0=ruleEString();
 
             	    state._fsp--;
@@ -8623,11 +8640,11 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
             	    break;
 
             	default :
-            	    break loop86;
+            	    break loop87;
                 }
             } while (true);
 
-            otherlv_6=(Token)match(input,60,FollowSets000.FOLLOW_60_in_ruleAddDerivedAttribute7496); 
+            otherlv_6=(Token)match(input,60,FollowSets000.FOLLOW_60_in_ruleAddDerivedAttribute7499); 
 
                 	newLeafNode(otherlv_6, grammarAccess.getAddDerivedAttributeAccess().getColonKeyword_5());
                 
@@ -8640,7 +8657,7 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
              
             	        newCompositeNode(grammarAccess.getAddDerivedAttributeAccess().getAttributeNameEStringParserRuleCall_6_0()); 
             	    
-            pushFollow(FollowSets000.FOLLOW_ruleEString_in_ruleAddDerivedAttribute7517);
+            pushFollow(FollowSets000.FOLLOW_ruleEString_in_ruleAddDerivedAttribute7520);
             lv_attributeName_7_0=ruleEString();
 
             state._fsp--;
@@ -8695,13 +8712,13 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
             // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:3650:2: iv_ruleEnumerate= ruleEnumerate EOF
             {
              newCompositeNode(grammarAccess.getEnumerateRule()); 
-            pushFollow(FollowSets000.FOLLOW_ruleEnumerate_in_entryRuleEnumerate7553);
+            pushFollow(FollowSets000.FOLLOW_ruleEnumerate_in_entryRuleEnumerate7556);
             iv_ruleEnumerate=ruleEnumerate();
 
             state._fsp--;
 
              current =iv_ruleEnumerate; 
-            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleEnumerate7563); 
+            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleEnumerate7566); 
 
             }
 
@@ -8752,11 +8769,11 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
 
             }
 
-            otherlv_1=(Token)match(input,62,FollowSets000.FOLLOW_62_in_ruleEnumerate7609); 
+            otherlv_1=(Token)match(input,62,FollowSets000.FOLLOW_62_in_ruleEnumerate7612); 
 
                 	newLeafNode(otherlv_1, grammarAccess.getEnumerateAccess().getEnumerateKeyword_1());
                 
-            otherlv_2=(Token)match(input,33,FollowSets000.FOLLOW_33_in_ruleEnumerate7621); 
+            otherlv_2=(Token)match(input,33,FollowSets000.FOLLOW_33_in_ruleEnumerate7624); 
 
                 	newLeafNode(otherlv_2, grammarAccess.getEnumerateAccess().getLeftParenthesisKeyword_2());
                 
@@ -8769,7 +8786,7 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
              
             	        newCompositeNode(grammarAccess.getEnumerateAccess().getEnumNameEStringParserRuleCall_3_0()); 
             	    
-            pushFollow(FollowSets000.FOLLOW_ruleEString_in_ruleEnumerate7642);
+            pushFollow(FollowSets000.FOLLOW_ruleEString_in_ruleEnumerate7645);
             lv_enumName_3_0=ruleEString();
 
             state._fsp--;
@@ -8791,7 +8808,7 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
 
             }
 
-            otherlv_4=(Token)match(input,45,FollowSets000.FOLLOW_45_in_ruleEnumerate7654); 
+            otherlv_4=(Token)match(input,45,FollowSets000.FOLLOW_45_in_ruleEnumerate7657); 
 
                 	newLeafNode(otherlv_4, grammarAccess.getEnumerateAccess().getCommaKeyword_4());
                 
@@ -8804,7 +8821,7 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
              
             	        newCompositeNode(grammarAccess.getEnumerateAccess().getAttributeNameEStringParserRuleCall_5_0()); 
             	    
-            pushFollow(FollowSets000.FOLLOW_ruleEString_in_ruleEnumerate7675);
+            pushFollow(FollowSets000.FOLLOW_ruleEString_in_ruleEnumerate7678);
             lv_attributeName_5_0=ruleEString();
 
             state._fsp--;
@@ -8826,7 +8843,7 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
 
             }
 
-            otherlv_6=(Token)match(input,34,FollowSets000.FOLLOW_34_in_ruleEnumerate7687); 
+            otherlv_6=(Token)match(input,34,FollowSets000.FOLLOW_34_in_ruleEnumerate7690); 
 
                 	newLeafNode(otherlv_6, grammarAccess.getEnumerateAccess().getRightParenthesisKeyword_6());
                 
@@ -8863,13 +8880,13 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
             // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:3729:2: iv_ruleEInt= ruleEInt EOF
             {
              newCompositeNode(grammarAccess.getEIntRule()); 
-            pushFollow(FollowSets000.FOLLOW_ruleEInt_in_entryRuleEInt7724);
+            pushFollow(FollowSets000.FOLLOW_ruleEInt_in_entryRuleEInt7727);
             iv_ruleEInt=ruleEInt();
 
             state._fsp--;
 
              current =iv_ruleEInt.getText(); 
-            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleEInt7735); 
+            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleEInt7738); 
 
             }
 
@@ -8904,17 +8921,17 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
             // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:3740:2: (kw= '-' )? this_INT_1= RULE_INT
             {
             // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:3740:2: (kw= '-' )?
-            int alt87=2;
-            int LA87_0 = input.LA(1);
+            int alt88=2;
+            int LA88_0 = input.LA(1);
 
-            if ( (LA87_0==63) ) {
-                alt87=1;
+            if ( (LA88_0==63) ) {
+                alt88=1;
             }
-            switch (alt87) {
+            switch (alt88) {
                 case 1 :
                     // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:3741:2: kw= '-'
                     {
-                    kw=(Token)match(input,63,FollowSets000.FOLLOW_63_in_ruleEInt7774); 
+                    kw=(Token)match(input,63,FollowSets000.FOLLOW_63_in_ruleEInt7777); 
 
                             current.merge(kw);
                             newLeafNode(kw, grammarAccess.getEIntAccess().getHyphenMinusKeyword_0()); 
@@ -8925,7 +8942,7 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
 
             }
 
-            this_INT_1=(Token)match(input,RULE_INT,FollowSets000.FOLLOW_RULE_INT_in_ruleEInt7791); 
+            this_INT_1=(Token)match(input,RULE_INT,FollowSets000.FOLLOW_RULE_INT_in_ruleEInt7794); 
 
             		current.merge(this_INT_1);
                 
@@ -8965,13 +8982,13 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
             // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:3765:2: iv_ruleEString= ruleEString EOF
             {
              newCompositeNode(grammarAccess.getEStringRule()); 
-            pushFollow(FollowSets000.FOLLOW_ruleEString_in_entryRuleEString7839);
+            pushFollow(FollowSets000.FOLLOW_ruleEString_in_entryRuleEString7842);
             iv_ruleEString=ruleEString();
 
             state._fsp--;
 
              current =iv_ruleEString.getText(); 
-            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleEString7850); 
+            match(input,EOF,FollowSets000.FOLLOW_EOF_in_entryRuleEString7853); 
 
             }
 
@@ -9003,26 +9020,26 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
             // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:3776:1: (this_STRING_0= RULE_STRING | this_ID_1= RULE_ID )
             {
             // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:3776:1: (this_STRING_0= RULE_STRING | this_ID_1= RULE_ID )
-            int alt88=2;
-            int LA88_0 = input.LA(1);
+            int alt89=2;
+            int LA89_0 = input.LA(1);
 
-            if ( (LA88_0==RULE_STRING) ) {
-                alt88=1;
+            if ( (LA89_0==RULE_STRING) ) {
+                alt89=1;
             }
-            else if ( (LA88_0==RULE_ID) ) {
-                alt88=2;
+            else if ( (LA89_0==RULE_ID) ) {
+                alt89=2;
             }
             else {
                 NoViableAltException nvae =
-                    new NoViableAltException("", 88, 0, input);
+                    new NoViableAltException("", 89, 0, input);
 
                 throw nvae;
             }
-            switch (alt88) {
+            switch (alt89) {
                 case 1 :
                     // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:3776:6: this_STRING_0= RULE_STRING
                     {
-                    this_STRING_0=(Token)match(input,RULE_STRING,FollowSets000.FOLLOW_RULE_STRING_in_ruleEString7890); 
+                    this_STRING_0=(Token)match(input,RULE_STRING,FollowSets000.FOLLOW_RULE_STRING_in_ruleEString7893); 
 
                     		current.merge(this_STRING_0);
                         
@@ -9035,7 +9052,7 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
                 case 2 :
                     // ../xtext.modif/src-gen/xtext/parser/antlr/internal/InternalXModif.g:3784:10: this_ID_1= RULE_ID
                     {
-                    this_ID_1=(Token)match(input,RULE_ID,FollowSets000.FOLLOW_RULE_ID_in_ruleEString7916); 
+                    this_ID_1=(Token)match(input,RULE_ID,FollowSets000.FOLLOW_RULE_ID_in_ruleEString7919); 
 
                     		current.merge(this_ID_1);
                         
@@ -9298,111 +9315,111 @@ public class InternalXModifParser extends AbstractInternalAntlrParser {
         public static final BitSet FOLLOW_ruleEInt_in_ruleChangeBounds5626 = new BitSet(new long[]{0x0000200000000000L});
         public static final BitSet FOLLOW_45_in_ruleChangeBounds5638 = new BitSet(new long[]{0x8000000000000010L});
         public static final BitSet FOLLOW_ruleEInt_in_ruleChangeBounds5659 = new BitSet(new long[]{0x0000000400000000L});
-        public static final BitSet FOLLOW_34_in_ruleChangeBounds5671 = new BitSet(new long[]{0x0000000000200000L});
-        public static final BitSet FOLLOW_21_in_ruleChangeBounds5683 = new BitSet(new long[]{0x0000000200000000L});
-        public static final BitSet FOLLOW_33_in_ruleChangeBounds5695 = new BitSet(new long[]{0x8000000000000010L});
-        public static final BitSet FOLLOW_ruleEInt_in_ruleChangeBounds5716 = new BitSet(new long[]{0x0000200000000000L});
-        public static final BitSet FOLLOW_45_in_ruleChangeBounds5728 = new BitSet(new long[]{0x8000000000000010L});
-        public static final BitSet FOLLOW_ruleEInt_in_ruleChangeBounds5749 = new BitSet(new long[]{0x0000000400000000L});
-        public static final BitSet FOLLOW_34_in_ruleChangeBounds5761 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleAttributeModification_in_entryRuleAttributeModification5797 = new BitSet(new long[]{0x0000000000000000L});
-        public static final BitSet FOLLOW_EOF_in_entryRuleAttributeModification5807 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_19_in_ruleAttributeModification5850 = new BitSet(new long[]{0x0001000000000000L});
-        public static final BitSet FOLLOW_48_in_ruleAttributeModification5876 = new BitSet(new long[]{0x0000000000000060L});
-        public static final BitSet FOLLOW_ruleEString_in_ruleAttributeModification5897 = new BitSet(new long[]{0x0002800101200002L});
-        public static final BitSet FOLLOW_21_in_ruleAttributeModification5910 = new BitSet(new long[]{0x0000000000000060L});
-        public static final BitSet FOLLOW_ruleEString_in_ruleAttributeModification5931 = new BitSet(new long[]{0x0002800101000002L});
-        public static final BitSet FOLLOW_ruleChangeBounds_in_ruleAttributeModification5954 = new BitSet(new long[]{0x0002000101000002L});
-        public static final BitSet FOLLOW_49_in_ruleAttributeModification5974 = new BitSet(new long[]{0x0000000000200000L});
-        public static final BitSet FOLLOW_21_in_ruleAttributeModification5999 = new BitSet(new long[]{0x07C0000000000000L});
-        public static final BitSet FOLLOW_rulePrimitiveType_in_ruleAttributeModification6020 = new BitSet(new long[]{0x0000000101000002L});
-        public static final BitSet FOLLOW_24_in_ruleAttributeModification6040 = new BitSet(new long[]{0x0000000100000002L});
-        public static final BitSet FOLLOW_32_in_ruleAttributeModification6067 = new BitSet(new long[]{0x0000000004000000L});
-        public static final BitSet FOLLOW_26_in_ruleAttributeModification6079 = new BitSet(new long[]{0x0000000000080060L});
-        public static final BitSet FOLLOW_ruleAnnotationModification_in_ruleAttributeModification6100 = new BitSet(new long[]{0x0000000018000000L});
-        public static final BitSet FOLLOW_27_in_ruleAttributeModification6113 = new BitSet(new long[]{0x0000000000080060L});
-        public static final BitSet FOLLOW_ruleAnnotationModification_in_ruleAttributeModification6134 = new BitSet(new long[]{0x0000000018000000L});
-        public static final BitSet FOLLOW_28_in_ruleAttributeModification6148 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleReferenceModification_in_entryRuleReferenceModification6186 = new BitSet(new long[]{0x0000000000000000L});
-        public static final BitSet FOLLOW_EOF_in_entryRuleReferenceModification6196 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_19_in_ruleReferenceModification6239 = new BitSet(new long[]{0x0004000000000000L});
-        public static final BitSet FOLLOW_50_in_ruleReferenceModification6265 = new BitSet(new long[]{0x0000000000000060L});
-        public static final BitSet FOLLOW_ruleEString_in_ruleReferenceModification6286 = new BitSet(new long[]{0x0038820101200002L});
-        public static final BitSet FOLLOW_21_in_ruleReferenceModification6299 = new BitSet(new long[]{0x0000000000000060L});
-        public static final BitSet FOLLOW_ruleEString_in_ruleReferenceModification6320 = new BitSet(new long[]{0x0038820101000002L});
-        public static final BitSet FOLLOW_ruleChangeBounds_in_ruleReferenceModification6343 = new BitSet(new long[]{0x0038020101000002L});
-        public static final BitSet FOLLOW_51_in_ruleReferenceModification6362 = new BitSet(new long[]{0x0030020101000002L});
-        public static final BitSet FOLLOW_52_in_ruleReferenceModification6394 = new BitSet(new long[]{0x0020020101000002L});
-        public static final BitSet FOLLOW_53_in_ruleReferenceModification6421 = new BitSet(new long[]{0x0000000200000000L});
-        public static final BitSet FOLLOW_ruleAddOpposite_in_ruleReferenceModification6442 = new BitSet(new long[]{0x0000020101000002L});
-        public static final BitSet FOLLOW_41_in_ruleReferenceModification6457 = new BitSet(new long[]{0x0000000200000000L});
-        public static final BitSet FOLLOW_ruleReferenceReification_in_ruleReferenceModification6478 = new BitSet(new long[]{0x0000000101000002L});
-        public static final BitSet FOLLOW_24_in_ruleReferenceModification6498 = new BitSet(new long[]{0x0000000100000002L});
-        public static final BitSet FOLLOW_32_in_ruleReferenceModification6525 = new BitSet(new long[]{0x0000000004000000L});
-        public static final BitSet FOLLOW_26_in_ruleReferenceModification6537 = new BitSet(new long[]{0x0000000000080060L});
-        public static final BitSet FOLLOW_ruleAnnotationModification_in_ruleReferenceModification6558 = new BitSet(new long[]{0x0000000018000000L});
-        public static final BitSet FOLLOW_27_in_ruleReferenceModification6571 = new BitSet(new long[]{0x0000000000080060L});
-        public static final BitSet FOLLOW_ruleAnnotationModification_in_ruleReferenceModification6592 = new BitSet(new long[]{0x0000000018000000L});
-        public static final BitSet FOLLOW_28_in_ruleReferenceModification6606 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_rulePrimitiveType_in_entryRulePrimitiveType6645 = new BitSet(new long[]{0x0000000000000000L});
-        public static final BitSet FOLLOW_EOF_in_entryRulePrimitiveType6656 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_54_in_rulePrimitiveType6694 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_55_in_rulePrimitiveType6713 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_56_in_rulePrimitiveType6732 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_57_in_rulePrimitiveType6751 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_58_in_rulePrimitiveType6770 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleAddOpposite_in_entryRuleAddOpposite6810 = new BitSet(new long[]{0x0000000000000000L});
-        public static final BitSet FOLLOW_EOF_in_entryRuleAddOpposite6820 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_33_in_ruleAddOpposite6857 = new BitSet(new long[]{0x0000000000000060L});
-        public static final BitSet FOLLOW_ruleEString_in_ruleAddOpposite6878 = new BitSet(new long[]{0x0000200000000000L});
-        public static final BitSet FOLLOW_45_in_ruleAddOpposite6890 = new BitSet(new long[]{0x8000000000000010L});
-        public static final BitSet FOLLOW_ruleEInt_in_ruleAddOpposite6911 = new BitSet(new long[]{0x0000200000000000L});
-        public static final BitSet FOLLOW_45_in_ruleAddOpposite6923 = new BitSet(new long[]{0x8000000000000010L});
-        public static final BitSet FOLLOW_ruleEInt_in_ruleAddOpposite6944 = new BitSet(new long[]{0x0000000400000000L});
-        public static final BitSet FOLLOW_34_in_ruleAddOpposite6956 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleReferenceReification_in_entryRuleReferenceReification6992 = new BitSet(new long[]{0x0000000000000000L});
-        public static final BitSet FOLLOW_EOF_in_entryRuleReferenceReification7002 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_33_in_ruleReferenceReification7039 = new BitSet(new long[]{0x0000000000000060L});
-        public static final BitSet FOLLOW_ruleEString_in_ruleReferenceReification7060 = new BitSet(new long[]{0x0000200000000000L});
-        public static final BitSet FOLLOW_45_in_ruleReferenceReification7072 = new BitSet(new long[]{0x0000000000000060L});
-        public static final BitSet FOLLOW_ruleEString_in_ruleReferenceReification7093 = new BitSet(new long[]{0x0000200000000000L});
-        public static final BitSet FOLLOW_45_in_ruleReferenceReification7105 = new BitSet(new long[]{0x0000000000000060L});
-        public static final BitSet FOLLOW_ruleEString_in_ruleReferenceReification7126 = new BitSet(new long[]{0x0000000400000000L});
-        public static final BitSet FOLLOW_34_in_ruleReferenceReification7138 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleAddDerivedReference_in_entryRuleAddDerivedReference7174 = new BitSet(new long[]{0x0000000000000000L});
-        public static final BitSet FOLLOW_EOF_in_entryRuleAddDerivedReference7184 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_59_in_ruleAddDerivedReference7221 = new BitSet(new long[]{0x0000000000000060L});
-        public static final BitSet FOLLOW_ruleEString_in_ruleAddDerivedReference7242 = new BitSet(new long[]{0x1000000000000000L});
-        public static final BitSet FOLLOW_60_in_ruleAddDerivedReference7254 = new BitSet(new long[]{0x0000000000000060L});
-        public static final BitSet FOLLOW_ruleEString_in_ruleAddDerivedReference7275 = new BitSet(new long[]{0x0000200000000002L});
-        public static final BitSet FOLLOW_45_in_ruleAddDerivedReference7288 = new BitSet(new long[]{0x0000000000000060L});
-        public static final BitSet FOLLOW_ruleEString_in_ruleAddDerivedReference7309 = new BitSet(new long[]{0x0000200000000002L});
-        public static final BitSet FOLLOW_ruleAddDerivedAttribute_in_entryRuleAddDerivedAttribute7347 = new BitSet(new long[]{0x0000000000000000L});
-        public static final BitSet FOLLOW_EOF_in_entryRuleAddDerivedAttribute7357 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_61_in_ruleAddDerivedAttribute7394 = new BitSet(new long[]{0x0000000000000060L});
-        public static final BitSet FOLLOW_ruleEString_in_ruleAddDerivedAttribute7415 = new BitSet(new long[]{0x1000000000000000L});
-        public static final BitSet FOLLOW_60_in_ruleAddDerivedAttribute7427 = new BitSet(new long[]{0x0000000000000060L});
-        public static final BitSet FOLLOW_ruleEString_in_ruleAddDerivedAttribute7448 = new BitSet(new long[]{0x1000200000000000L});
-        public static final BitSet FOLLOW_45_in_ruleAddDerivedAttribute7461 = new BitSet(new long[]{0x0000000000000060L});
-        public static final BitSet FOLLOW_ruleEString_in_ruleAddDerivedAttribute7482 = new BitSet(new long[]{0x1000200000000000L});
-        public static final BitSet FOLLOW_60_in_ruleAddDerivedAttribute7496 = new BitSet(new long[]{0x0000000000000060L});
-        public static final BitSet FOLLOW_ruleEString_in_ruleAddDerivedAttribute7517 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleEnumerate_in_entryRuleEnumerate7553 = new BitSet(new long[]{0x0000000000000000L});
-        public static final BitSet FOLLOW_EOF_in_entryRuleEnumerate7563 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_62_in_ruleEnumerate7609 = new BitSet(new long[]{0x0000000200000000L});
-        public static final BitSet FOLLOW_33_in_ruleEnumerate7621 = new BitSet(new long[]{0x0000000000000060L});
-        public static final BitSet FOLLOW_ruleEString_in_ruleEnumerate7642 = new BitSet(new long[]{0x0000200000000000L});
-        public static final BitSet FOLLOW_45_in_ruleEnumerate7654 = new BitSet(new long[]{0x0000000000000060L});
-        public static final BitSet FOLLOW_ruleEString_in_ruleEnumerate7675 = new BitSet(new long[]{0x0000000400000000L});
-        public static final BitSet FOLLOW_34_in_ruleEnumerate7687 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleEInt_in_entryRuleEInt7724 = new BitSet(new long[]{0x0000000000000000L});
-        public static final BitSet FOLLOW_EOF_in_entryRuleEInt7735 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_63_in_ruleEInt7774 = new BitSet(new long[]{0x0000000000000010L});
-        public static final BitSet FOLLOW_RULE_INT_in_ruleEInt7791 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_ruleEString_in_entryRuleEString7839 = new BitSet(new long[]{0x0000000000000000L});
-        public static final BitSet FOLLOW_EOF_in_entryRuleEString7850 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_RULE_STRING_in_ruleEString7890 = new BitSet(new long[]{0x0000000000000002L});
-        public static final BitSet FOLLOW_RULE_ID_in_ruleEString7916 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_34_in_ruleChangeBounds5671 = new BitSet(new long[]{0x0000000000200002L});
+        public static final BitSet FOLLOW_21_in_ruleChangeBounds5684 = new BitSet(new long[]{0x0000000200000000L});
+        public static final BitSet FOLLOW_33_in_ruleChangeBounds5696 = new BitSet(new long[]{0x8000000000000010L});
+        public static final BitSet FOLLOW_ruleEInt_in_ruleChangeBounds5717 = new BitSet(new long[]{0x0000200000000000L});
+        public static final BitSet FOLLOW_45_in_ruleChangeBounds5729 = new BitSet(new long[]{0x8000000000000010L});
+        public static final BitSet FOLLOW_ruleEInt_in_ruleChangeBounds5750 = new BitSet(new long[]{0x0000000400000000L});
+        public static final BitSet FOLLOW_34_in_ruleChangeBounds5762 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleAttributeModification_in_entryRuleAttributeModification5800 = new BitSet(new long[]{0x0000000000000000L});
+        public static final BitSet FOLLOW_EOF_in_entryRuleAttributeModification5810 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_19_in_ruleAttributeModification5853 = new BitSet(new long[]{0x0001000000000000L});
+        public static final BitSet FOLLOW_48_in_ruleAttributeModification5879 = new BitSet(new long[]{0x0000000000000060L});
+        public static final BitSet FOLLOW_ruleEString_in_ruleAttributeModification5900 = new BitSet(new long[]{0x0002800101200002L});
+        public static final BitSet FOLLOW_21_in_ruleAttributeModification5913 = new BitSet(new long[]{0x0000000000000060L});
+        public static final BitSet FOLLOW_ruleEString_in_ruleAttributeModification5934 = new BitSet(new long[]{0x0002800101000002L});
+        public static final BitSet FOLLOW_ruleChangeBounds_in_ruleAttributeModification5957 = new BitSet(new long[]{0x0002000101000002L});
+        public static final BitSet FOLLOW_49_in_ruleAttributeModification5977 = new BitSet(new long[]{0x0000000000200000L});
+        public static final BitSet FOLLOW_21_in_ruleAttributeModification6002 = new BitSet(new long[]{0x07C0000000000000L});
+        public static final BitSet FOLLOW_rulePrimitiveType_in_ruleAttributeModification6023 = new BitSet(new long[]{0x0000000101000002L});
+        public static final BitSet FOLLOW_24_in_ruleAttributeModification6043 = new BitSet(new long[]{0x0000000100000002L});
+        public static final BitSet FOLLOW_32_in_ruleAttributeModification6070 = new BitSet(new long[]{0x0000000004000000L});
+        public static final BitSet FOLLOW_26_in_ruleAttributeModification6082 = new BitSet(new long[]{0x0000000000080060L});
+        public static final BitSet FOLLOW_ruleAnnotationModification_in_ruleAttributeModification6103 = new BitSet(new long[]{0x0000000018000000L});
+        public static final BitSet FOLLOW_27_in_ruleAttributeModification6116 = new BitSet(new long[]{0x0000000000080060L});
+        public static final BitSet FOLLOW_ruleAnnotationModification_in_ruleAttributeModification6137 = new BitSet(new long[]{0x0000000018000000L});
+        public static final BitSet FOLLOW_28_in_ruleAttributeModification6151 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleReferenceModification_in_entryRuleReferenceModification6189 = new BitSet(new long[]{0x0000000000000000L});
+        public static final BitSet FOLLOW_EOF_in_entryRuleReferenceModification6199 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_19_in_ruleReferenceModification6242 = new BitSet(new long[]{0x0004000000000000L});
+        public static final BitSet FOLLOW_50_in_ruleReferenceModification6268 = new BitSet(new long[]{0x0000000000000060L});
+        public static final BitSet FOLLOW_ruleEString_in_ruleReferenceModification6289 = new BitSet(new long[]{0x0038820101200002L});
+        public static final BitSet FOLLOW_21_in_ruleReferenceModification6302 = new BitSet(new long[]{0x0000000000000060L});
+        public static final BitSet FOLLOW_ruleEString_in_ruleReferenceModification6323 = new BitSet(new long[]{0x0038820101000002L});
+        public static final BitSet FOLLOW_ruleChangeBounds_in_ruleReferenceModification6346 = new BitSet(new long[]{0x0038020101000002L});
+        public static final BitSet FOLLOW_51_in_ruleReferenceModification6365 = new BitSet(new long[]{0x0030020101000002L});
+        public static final BitSet FOLLOW_52_in_ruleReferenceModification6397 = new BitSet(new long[]{0x0020020101000002L});
+        public static final BitSet FOLLOW_53_in_ruleReferenceModification6424 = new BitSet(new long[]{0x0000000200000000L});
+        public static final BitSet FOLLOW_ruleAddOpposite_in_ruleReferenceModification6445 = new BitSet(new long[]{0x0000020101000002L});
+        public static final BitSet FOLLOW_41_in_ruleReferenceModification6460 = new BitSet(new long[]{0x0000000200000000L});
+        public static final BitSet FOLLOW_ruleReferenceReification_in_ruleReferenceModification6481 = new BitSet(new long[]{0x0000000101000002L});
+        public static final BitSet FOLLOW_24_in_ruleReferenceModification6501 = new BitSet(new long[]{0x0000000100000002L});
+        public static final BitSet FOLLOW_32_in_ruleReferenceModification6528 = new BitSet(new long[]{0x0000000004000000L});
+        public static final BitSet FOLLOW_26_in_ruleReferenceModification6540 = new BitSet(new long[]{0x0000000000080060L});
+        public static final BitSet FOLLOW_ruleAnnotationModification_in_ruleReferenceModification6561 = new BitSet(new long[]{0x0000000018000000L});
+        public static final BitSet FOLLOW_27_in_ruleReferenceModification6574 = new BitSet(new long[]{0x0000000000080060L});
+        public static final BitSet FOLLOW_ruleAnnotationModification_in_ruleReferenceModification6595 = new BitSet(new long[]{0x0000000018000000L});
+        public static final BitSet FOLLOW_28_in_ruleReferenceModification6609 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_rulePrimitiveType_in_entryRulePrimitiveType6648 = new BitSet(new long[]{0x0000000000000000L});
+        public static final BitSet FOLLOW_EOF_in_entryRulePrimitiveType6659 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_54_in_rulePrimitiveType6697 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_55_in_rulePrimitiveType6716 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_56_in_rulePrimitiveType6735 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_57_in_rulePrimitiveType6754 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_58_in_rulePrimitiveType6773 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleAddOpposite_in_entryRuleAddOpposite6813 = new BitSet(new long[]{0x0000000000000000L});
+        public static final BitSet FOLLOW_EOF_in_entryRuleAddOpposite6823 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_33_in_ruleAddOpposite6860 = new BitSet(new long[]{0x0000000000000060L});
+        public static final BitSet FOLLOW_ruleEString_in_ruleAddOpposite6881 = new BitSet(new long[]{0x0000200000000000L});
+        public static final BitSet FOLLOW_45_in_ruleAddOpposite6893 = new BitSet(new long[]{0x8000000000000010L});
+        public static final BitSet FOLLOW_ruleEInt_in_ruleAddOpposite6914 = new BitSet(new long[]{0x0000200000000000L});
+        public static final BitSet FOLLOW_45_in_ruleAddOpposite6926 = new BitSet(new long[]{0x8000000000000010L});
+        public static final BitSet FOLLOW_ruleEInt_in_ruleAddOpposite6947 = new BitSet(new long[]{0x0000000400000000L});
+        public static final BitSet FOLLOW_34_in_ruleAddOpposite6959 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleReferenceReification_in_entryRuleReferenceReification6995 = new BitSet(new long[]{0x0000000000000000L});
+        public static final BitSet FOLLOW_EOF_in_entryRuleReferenceReification7005 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_33_in_ruleReferenceReification7042 = new BitSet(new long[]{0x0000000000000060L});
+        public static final BitSet FOLLOW_ruleEString_in_ruleReferenceReification7063 = new BitSet(new long[]{0x0000200000000000L});
+        public static final BitSet FOLLOW_45_in_ruleReferenceReification7075 = new BitSet(new long[]{0x0000000000000060L});
+        public static final BitSet FOLLOW_ruleEString_in_ruleReferenceReification7096 = new BitSet(new long[]{0x0000200000000000L});
+        public static final BitSet FOLLOW_45_in_ruleReferenceReification7108 = new BitSet(new long[]{0x0000000000000060L});
+        public static final BitSet FOLLOW_ruleEString_in_ruleReferenceReification7129 = new BitSet(new long[]{0x0000000400000000L});
+        public static final BitSet FOLLOW_34_in_ruleReferenceReification7141 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleAddDerivedReference_in_entryRuleAddDerivedReference7177 = new BitSet(new long[]{0x0000000000000000L});
+        public static final BitSet FOLLOW_EOF_in_entryRuleAddDerivedReference7187 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_59_in_ruleAddDerivedReference7224 = new BitSet(new long[]{0x0000000000000060L});
+        public static final BitSet FOLLOW_ruleEString_in_ruleAddDerivedReference7245 = new BitSet(new long[]{0x1000000000000000L});
+        public static final BitSet FOLLOW_60_in_ruleAddDerivedReference7257 = new BitSet(new long[]{0x0000000000000060L});
+        public static final BitSet FOLLOW_ruleEString_in_ruleAddDerivedReference7278 = new BitSet(new long[]{0x0000200000000002L});
+        public static final BitSet FOLLOW_45_in_ruleAddDerivedReference7291 = new BitSet(new long[]{0x0000000000000060L});
+        public static final BitSet FOLLOW_ruleEString_in_ruleAddDerivedReference7312 = new BitSet(new long[]{0x0000200000000002L});
+        public static final BitSet FOLLOW_ruleAddDerivedAttribute_in_entryRuleAddDerivedAttribute7350 = new BitSet(new long[]{0x0000000000000000L});
+        public static final BitSet FOLLOW_EOF_in_entryRuleAddDerivedAttribute7360 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_61_in_ruleAddDerivedAttribute7397 = new BitSet(new long[]{0x0000000000000060L});
+        public static final BitSet FOLLOW_ruleEString_in_ruleAddDerivedAttribute7418 = new BitSet(new long[]{0x1000000000000000L});
+        public static final BitSet FOLLOW_60_in_ruleAddDerivedAttribute7430 = new BitSet(new long[]{0x0000000000000060L});
+        public static final BitSet FOLLOW_ruleEString_in_ruleAddDerivedAttribute7451 = new BitSet(new long[]{0x1000200000000000L});
+        public static final BitSet FOLLOW_45_in_ruleAddDerivedAttribute7464 = new BitSet(new long[]{0x0000000000000060L});
+        public static final BitSet FOLLOW_ruleEString_in_ruleAddDerivedAttribute7485 = new BitSet(new long[]{0x1000200000000000L});
+        public static final BitSet FOLLOW_60_in_ruleAddDerivedAttribute7499 = new BitSet(new long[]{0x0000000000000060L});
+        public static final BitSet FOLLOW_ruleEString_in_ruleAddDerivedAttribute7520 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEnumerate_in_entryRuleEnumerate7556 = new BitSet(new long[]{0x0000000000000000L});
+        public static final BitSet FOLLOW_EOF_in_entryRuleEnumerate7566 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_62_in_ruleEnumerate7612 = new BitSet(new long[]{0x0000000200000000L});
+        public static final BitSet FOLLOW_33_in_ruleEnumerate7624 = new BitSet(new long[]{0x0000000000000060L});
+        public static final BitSet FOLLOW_ruleEString_in_ruleEnumerate7645 = new BitSet(new long[]{0x0000200000000000L});
+        public static final BitSet FOLLOW_45_in_ruleEnumerate7657 = new BitSet(new long[]{0x0000000000000060L});
+        public static final BitSet FOLLOW_ruleEString_in_ruleEnumerate7678 = new BitSet(new long[]{0x0000000400000000L});
+        public static final BitSet FOLLOW_34_in_ruleEnumerate7690 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEInt_in_entryRuleEInt7727 = new BitSet(new long[]{0x0000000000000000L});
+        public static final BitSet FOLLOW_EOF_in_entryRuleEInt7738 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_63_in_ruleEInt7777 = new BitSet(new long[]{0x0000000000000010L});
+        public static final BitSet FOLLOW_RULE_INT_in_ruleEInt7794 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_ruleEString_in_entryRuleEString7842 = new BitSet(new long[]{0x0000000000000000L});
+        public static final BitSet FOLLOW_EOF_in_entryRuleEString7853 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_RULE_STRING_in_ruleEString7893 = new BitSet(new long[]{0x0000000000000002L});
+        public static final BitSet FOLLOW_RULE_ID_in_ruleEString7919 = new BitSet(new long[]{0x0000000000000002L});
     }
 
 

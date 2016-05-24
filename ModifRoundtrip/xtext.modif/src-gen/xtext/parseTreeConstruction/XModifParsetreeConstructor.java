@@ -7763,11 +7763,11 @@ protected class StructuralFeatureModification_ReferenceModificationParserRuleCal
 /************ begin Rule ChangeBounds ****************
  *
  * ChangeBounds:
- * 	{ChangeBounds} "bounds" "(" oldLower=EInt "," oldUpper=EInt ")" "to" "(" newLower=EInt "," newUpper=EInt ")";
+ * 	{ChangeBounds} "bounds" "(" oldLower=EInt "," oldUpper=EInt ")" ("to" "(" newLower=EInt "," newUpper=EInt ")")?;
  *
  **/
 
-// {ChangeBounds} "bounds" "(" oldLower=EInt "," oldUpper=EInt ")" "to" "(" newLower=EInt "," newUpper=EInt ")"
+// {ChangeBounds} "bounds" "(" oldLower=EInt "," oldUpper=EInt ")" ("to" "(" newLower=EInt "," newUpper=EInt ")")?
 protected class ChangeBounds_Group extends GroupToken {
 	
 	public ChangeBounds_Group(AbstractToken lastRuleCallOrigin, AbstractToken next, int transitionIndex, IEObjectConsumer eObjectConsumer) {
@@ -7782,7 +7782,8 @@ protected class ChangeBounds_Group extends GroupToken {
     @Override
 	public AbstractToken createFollower(int index, IEObjectConsumer inst) {
 		switch(index) {
-			case 0: return new ChangeBounds_RightParenthesisKeyword_12(lastRuleCallOrigin, this, 0, inst);
+			case 0: return new ChangeBounds_Group_7(lastRuleCallOrigin, this, 0, inst);
+			case 1: return new ChangeBounds_RightParenthesisKeyword_6(lastRuleCallOrigin, this, 1, inst);
 			default: return null;
 		}	
 	}
@@ -7978,16 +7979,38 @@ protected class ChangeBounds_RightParenthesisKeyword_6 extends KeywordToken  {
 
 }
 
-// "to"
-protected class ChangeBounds_ToKeyword_7 extends KeywordToken  {
+// ("to" "(" newLower=EInt "," newUpper=EInt ")")?
+protected class ChangeBounds_Group_7 extends GroupToken {
 	
-	public ChangeBounds_ToKeyword_7(AbstractToken lastRuleCallOrigin, AbstractToken next, int transitionIndex, IEObjectConsumer eObjectConsumer) {
+	public ChangeBounds_Group_7(AbstractToken lastRuleCallOrigin, AbstractToken next, int transitionIndex, IEObjectConsumer eObjectConsumer) {
+		super(lastRuleCallOrigin, next, transitionIndex, eObjectConsumer);
+	}
+	
+	@Override
+	public Group getGrammarElement() {
+		return grammarAccess.getChangeBoundsAccess().getGroup_7();
+	}
+
+    @Override
+	public AbstractToken createFollower(int index, IEObjectConsumer inst) {
+		switch(index) {
+			case 0: return new ChangeBounds_RightParenthesisKeyword_7_5(lastRuleCallOrigin, this, 0, inst);
+			default: return null;
+		}	
+	}
+
+}
+
+// "to"
+protected class ChangeBounds_ToKeyword_7_0 extends KeywordToken  {
+	
+	public ChangeBounds_ToKeyword_7_0(AbstractToken lastRuleCallOrigin, AbstractToken next, int transitionIndex, IEObjectConsumer eObjectConsumer) {
 		super(lastRuleCallOrigin, next, transitionIndex, eObjectConsumer);
 	}
 	
 	@Override
 	public Keyword getGrammarElement() {
-		return grammarAccess.getChangeBoundsAccess().getToKeyword_7();
+		return grammarAccess.getChangeBoundsAccess().getToKeyword_7_0();
 	}
 
     @Override
@@ -8001,21 +8024,21 @@ protected class ChangeBounds_ToKeyword_7 extends KeywordToken  {
 }
 
 // "("
-protected class ChangeBounds_LeftParenthesisKeyword_8 extends KeywordToken  {
+protected class ChangeBounds_LeftParenthesisKeyword_7_1 extends KeywordToken  {
 	
-	public ChangeBounds_LeftParenthesisKeyword_8(AbstractToken lastRuleCallOrigin, AbstractToken next, int transitionIndex, IEObjectConsumer eObjectConsumer) {
+	public ChangeBounds_LeftParenthesisKeyword_7_1(AbstractToken lastRuleCallOrigin, AbstractToken next, int transitionIndex, IEObjectConsumer eObjectConsumer) {
 		super(lastRuleCallOrigin, next, transitionIndex, eObjectConsumer);
 	}
 	
 	@Override
 	public Keyword getGrammarElement() {
-		return grammarAccess.getChangeBoundsAccess().getLeftParenthesisKeyword_8();
+		return grammarAccess.getChangeBoundsAccess().getLeftParenthesisKeyword_7_1();
 	}
 
     @Override
 	public AbstractToken createFollower(int index, IEObjectConsumer inst) {
 		switch(index) {
-			case 0: return new ChangeBounds_ToKeyword_7(lastRuleCallOrigin, this, 0, inst);
+			case 0: return new ChangeBounds_ToKeyword_7_0(lastRuleCallOrigin, this, 0, inst);
 			default: return null;
 		}	
 	}
@@ -8023,21 +8046,21 @@ protected class ChangeBounds_LeftParenthesisKeyword_8 extends KeywordToken  {
 }
 
 // newLower=EInt
-protected class ChangeBounds_NewLowerAssignment_9 extends AssignmentToken  {
+protected class ChangeBounds_NewLowerAssignment_7_2 extends AssignmentToken  {
 	
-	public ChangeBounds_NewLowerAssignment_9(AbstractToken lastRuleCallOrigin, AbstractToken next, int transitionIndex, IEObjectConsumer eObjectConsumer) {
+	public ChangeBounds_NewLowerAssignment_7_2(AbstractToken lastRuleCallOrigin, AbstractToken next, int transitionIndex, IEObjectConsumer eObjectConsumer) {
 		super(lastRuleCallOrigin, next, transitionIndex, eObjectConsumer);
 	}
 	
 	@Override
 	public Assignment getGrammarElement() {
-		return grammarAccess.getChangeBoundsAccess().getNewLowerAssignment_9();
+		return grammarAccess.getChangeBoundsAccess().getNewLowerAssignment_7_2();
 	}
 
     @Override
 	public AbstractToken createFollower(int index, IEObjectConsumer inst) {
 		switch(index) {
-			case 0: return new ChangeBounds_LeftParenthesisKeyword_8(lastRuleCallOrigin, this, 0, inst);
+			case 0: return new ChangeBounds_LeftParenthesisKeyword_7_1(lastRuleCallOrigin, this, 0, inst);
 			default: return null;
 		}	
 	}
@@ -8046,9 +8069,9 @@ protected class ChangeBounds_NewLowerAssignment_9 extends AssignmentToken  {
 	public IEObjectConsumer tryConsume() {
 		if((value = eObjectConsumer.getConsumable("newLower",true)) == null) return null;
 		IEObjectConsumer obj = eObjectConsumer.cloneAndConsume("newLower");
-		if(valueSerializer.isValid(obj.getEObject(), grammarAccess.getChangeBoundsAccess().getNewLowerEIntParserRuleCall_9_0(), value, null)) {
+		if(valueSerializer.isValid(obj.getEObject(), grammarAccess.getChangeBoundsAccess().getNewLowerEIntParserRuleCall_7_2_0(), value, null)) {
 			type = AssignmentType.DATATYPE_RULE_CALL;
-			element = grammarAccess.getChangeBoundsAccess().getNewLowerEIntParserRuleCall_9_0();
+			element = grammarAccess.getChangeBoundsAccess().getNewLowerEIntParserRuleCall_7_2_0();
 			return obj;
 		}
 		return null;
@@ -8057,21 +8080,21 @@ protected class ChangeBounds_NewLowerAssignment_9 extends AssignmentToken  {
 }
 
 // ","
-protected class ChangeBounds_CommaKeyword_10 extends KeywordToken  {
+protected class ChangeBounds_CommaKeyword_7_3 extends KeywordToken  {
 	
-	public ChangeBounds_CommaKeyword_10(AbstractToken lastRuleCallOrigin, AbstractToken next, int transitionIndex, IEObjectConsumer eObjectConsumer) {
+	public ChangeBounds_CommaKeyword_7_3(AbstractToken lastRuleCallOrigin, AbstractToken next, int transitionIndex, IEObjectConsumer eObjectConsumer) {
 		super(lastRuleCallOrigin, next, transitionIndex, eObjectConsumer);
 	}
 	
 	@Override
 	public Keyword getGrammarElement() {
-		return grammarAccess.getChangeBoundsAccess().getCommaKeyword_10();
+		return grammarAccess.getChangeBoundsAccess().getCommaKeyword_7_3();
 	}
 
     @Override
 	public AbstractToken createFollower(int index, IEObjectConsumer inst) {
 		switch(index) {
-			case 0: return new ChangeBounds_NewLowerAssignment_9(lastRuleCallOrigin, this, 0, inst);
+			case 0: return new ChangeBounds_NewLowerAssignment_7_2(lastRuleCallOrigin, this, 0, inst);
 			default: return null;
 		}	
 	}
@@ -8079,21 +8102,21 @@ protected class ChangeBounds_CommaKeyword_10 extends KeywordToken  {
 }
 
 // newUpper=EInt
-protected class ChangeBounds_NewUpperAssignment_11 extends AssignmentToken  {
+protected class ChangeBounds_NewUpperAssignment_7_4 extends AssignmentToken  {
 	
-	public ChangeBounds_NewUpperAssignment_11(AbstractToken lastRuleCallOrigin, AbstractToken next, int transitionIndex, IEObjectConsumer eObjectConsumer) {
+	public ChangeBounds_NewUpperAssignment_7_4(AbstractToken lastRuleCallOrigin, AbstractToken next, int transitionIndex, IEObjectConsumer eObjectConsumer) {
 		super(lastRuleCallOrigin, next, transitionIndex, eObjectConsumer);
 	}
 	
 	@Override
 	public Assignment getGrammarElement() {
-		return grammarAccess.getChangeBoundsAccess().getNewUpperAssignment_11();
+		return grammarAccess.getChangeBoundsAccess().getNewUpperAssignment_7_4();
 	}
 
     @Override
 	public AbstractToken createFollower(int index, IEObjectConsumer inst) {
 		switch(index) {
-			case 0: return new ChangeBounds_CommaKeyword_10(lastRuleCallOrigin, this, 0, inst);
+			case 0: return new ChangeBounds_CommaKeyword_7_3(lastRuleCallOrigin, this, 0, inst);
 			default: return null;
 		}	
 	}
@@ -8102,9 +8125,9 @@ protected class ChangeBounds_NewUpperAssignment_11 extends AssignmentToken  {
 	public IEObjectConsumer tryConsume() {
 		if((value = eObjectConsumer.getConsumable("newUpper",true)) == null) return null;
 		IEObjectConsumer obj = eObjectConsumer.cloneAndConsume("newUpper");
-		if(valueSerializer.isValid(obj.getEObject(), grammarAccess.getChangeBoundsAccess().getNewUpperEIntParserRuleCall_11_0(), value, null)) {
+		if(valueSerializer.isValid(obj.getEObject(), grammarAccess.getChangeBoundsAccess().getNewUpperEIntParserRuleCall_7_4_0(), value, null)) {
 			type = AssignmentType.DATATYPE_RULE_CALL;
-			element = grammarAccess.getChangeBoundsAccess().getNewUpperEIntParserRuleCall_11_0();
+			element = grammarAccess.getChangeBoundsAccess().getNewUpperEIntParserRuleCall_7_4_0();
 			return obj;
 		}
 		return null;
@@ -8113,26 +8136,27 @@ protected class ChangeBounds_NewUpperAssignment_11 extends AssignmentToken  {
 }
 
 // ")"
-protected class ChangeBounds_RightParenthesisKeyword_12 extends KeywordToken  {
+protected class ChangeBounds_RightParenthesisKeyword_7_5 extends KeywordToken  {
 	
-	public ChangeBounds_RightParenthesisKeyword_12(AbstractToken lastRuleCallOrigin, AbstractToken next, int transitionIndex, IEObjectConsumer eObjectConsumer) {
+	public ChangeBounds_RightParenthesisKeyword_7_5(AbstractToken lastRuleCallOrigin, AbstractToken next, int transitionIndex, IEObjectConsumer eObjectConsumer) {
 		super(lastRuleCallOrigin, next, transitionIndex, eObjectConsumer);
 	}
 	
 	@Override
 	public Keyword getGrammarElement() {
-		return grammarAccess.getChangeBoundsAccess().getRightParenthesisKeyword_12();
+		return grammarAccess.getChangeBoundsAccess().getRightParenthesisKeyword_7_5();
 	}
 
     @Override
 	public AbstractToken createFollower(int index, IEObjectConsumer inst) {
 		switch(index) {
-			case 0: return new ChangeBounds_NewUpperAssignment_11(lastRuleCallOrigin, this, 0, inst);
+			case 0: return new ChangeBounds_NewUpperAssignment_7_4(lastRuleCallOrigin, this, 0, inst);
 			default: return null;
 		}	
 	}
 
 }
+
 
 
 /************ end Rule ChangeBounds ****************/

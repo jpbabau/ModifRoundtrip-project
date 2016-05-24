@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import migration.tools.UtilEMF;
 import migrationSpecification.IOMigrationSpecification;
+import migration_.UtilMigration;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;

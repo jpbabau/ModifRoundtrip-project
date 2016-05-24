@@ -1599,20 +1599,21 @@ public class XModifGrammarAccess extends AbstractGrammarElementFinder {
 		private final Assignment cOldUpperAssignment_5 = (Assignment)cGroup.eContents().get(5);
 		private final RuleCall cOldUpperEIntParserRuleCall_5_0 = (RuleCall)cOldUpperAssignment_5.eContents().get(0);
 		private final Keyword cRightParenthesisKeyword_6 = (Keyword)cGroup.eContents().get(6);
-		private final Keyword cToKeyword_7 = (Keyword)cGroup.eContents().get(7);
-		private final Keyword cLeftParenthesisKeyword_8 = (Keyword)cGroup.eContents().get(8);
-		private final Assignment cNewLowerAssignment_9 = (Assignment)cGroup.eContents().get(9);
-		private final RuleCall cNewLowerEIntParserRuleCall_9_0 = (RuleCall)cNewLowerAssignment_9.eContents().get(0);
-		private final Keyword cCommaKeyword_10 = (Keyword)cGroup.eContents().get(10);
-		private final Assignment cNewUpperAssignment_11 = (Assignment)cGroup.eContents().get(11);
-		private final RuleCall cNewUpperEIntParserRuleCall_11_0 = (RuleCall)cNewUpperAssignment_11.eContents().get(0);
-		private final Keyword cRightParenthesisKeyword_12 = (Keyword)cGroup.eContents().get(12);
+		private final Group cGroup_7 = (Group)cGroup.eContents().get(7);
+		private final Keyword cToKeyword_7_0 = (Keyword)cGroup_7.eContents().get(0);
+		private final Keyword cLeftParenthesisKeyword_7_1 = (Keyword)cGroup_7.eContents().get(1);
+		private final Assignment cNewLowerAssignment_7_2 = (Assignment)cGroup_7.eContents().get(2);
+		private final RuleCall cNewLowerEIntParserRuleCall_7_2_0 = (RuleCall)cNewLowerAssignment_7_2.eContents().get(0);
+		private final Keyword cCommaKeyword_7_3 = (Keyword)cGroup_7.eContents().get(3);
+		private final Assignment cNewUpperAssignment_7_4 = (Assignment)cGroup_7.eContents().get(4);
+		private final RuleCall cNewUpperEIntParserRuleCall_7_4_0 = (RuleCall)cNewUpperAssignment_7_4.eContents().get(0);
+		private final Keyword cRightParenthesisKeyword_7_5 = (Keyword)cGroup_7.eContents().get(5);
 		
 		//ChangeBounds:
-		//	{ChangeBounds} "bounds" "(" oldLower=EInt "," oldUpper=EInt ")" "to" "(" newLower=EInt "," newUpper=EInt ")";
+		//	{ChangeBounds} "bounds" "(" oldLower=EInt "," oldUpper=EInt ")" ("to" "(" newLower=EInt "," newUpper=EInt ")")?;
 		public ParserRule getRule() { return rule; }
 
-		//{ChangeBounds} "bounds" "(" oldLower=EInt "," oldUpper=EInt ")" "to" "(" newLower=EInt "," newUpper=EInt ")"
+		//{ChangeBounds} "bounds" "(" oldLower=EInt "," oldUpper=EInt ")" ("to" "(" newLower=EInt "," newUpper=EInt ")")?
 		public Group getGroup() { return cGroup; }
 
 		//{ChangeBounds}
@@ -1642,29 +1643,32 @@ public class XModifGrammarAccess extends AbstractGrammarElementFinder {
 		//")"
 		public Keyword getRightParenthesisKeyword_6() { return cRightParenthesisKeyword_6; }
 
+		//("to" "(" newLower=EInt "," newUpper=EInt ")")?
+		public Group getGroup_7() { return cGroup_7; }
+
 		//"to"
-		public Keyword getToKeyword_7() { return cToKeyword_7; }
+		public Keyword getToKeyword_7_0() { return cToKeyword_7_0; }
 
 		//"("
-		public Keyword getLeftParenthesisKeyword_8() { return cLeftParenthesisKeyword_8; }
+		public Keyword getLeftParenthesisKeyword_7_1() { return cLeftParenthesisKeyword_7_1; }
 
 		//newLower=EInt
-		public Assignment getNewLowerAssignment_9() { return cNewLowerAssignment_9; }
+		public Assignment getNewLowerAssignment_7_2() { return cNewLowerAssignment_7_2; }
 
 		//EInt
-		public RuleCall getNewLowerEIntParserRuleCall_9_0() { return cNewLowerEIntParserRuleCall_9_0; }
+		public RuleCall getNewLowerEIntParserRuleCall_7_2_0() { return cNewLowerEIntParserRuleCall_7_2_0; }
 
 		//","
-		public Keyword getCommaKeyword_10() { return cCommaKeyword_10; }
+		public Keyword getCommaKeyword_7_3() { return cCommaKeyword_7_3; }
 
 		//newUpper=EInt
-		public Assignment getNewUpperAssignment_11() { return cNewUpperAssignment_11; }
+		public Assignment getNewUpperAssignment_7_4() { return cNewUpperAssignment_7_4; }
 
 		//EInt
-		public RuleCall getNewUpperEIntParserRuleCall_11_0() { return cNewUpperEIntParserRuleCall_11_0; }
+		public RuleCall getNewUpperEIntParserRuleCall_7_4_0() { return cNewUpperEIntParserRuleCall_7_4_0; }
 
 		//")"
-		public Keyword getRightParenthesisKeyword_12() { return cRightParenthesisKeyword_12; }
+		public Keyword getRightParenthesisKeyword_7_5() { return cRightParenthesisKeyword_7_5; }
 	}
 
 	public class AttributeModificationElements extends AbstractParserRuleElementFinder {
@@ -2590,7 +2594,7 @@ public class XModifGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//ChangeBounds:
-	//	{ChangeBounds} "bounds" "(" oldLower=EInt "," oldUpper=EInt ")" "to" "(" newLower=EInt "," newUpper=EInt ")";
+	//	{ChangeBounds} "bounds" "(" oldLower=EInt "," oldUpper=EInt ")" ("to" "(" newLower=EInt "," newUpper=EInt ")")?;
 	public ChangeBoundsElements getChangeBoundsAccess() {
 		return pChangeBounds;
 	}
