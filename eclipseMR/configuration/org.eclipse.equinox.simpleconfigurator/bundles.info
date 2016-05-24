@@ -1,8 +1,8 @@
 #version=1
-ModifMetamodels,0.1.0.1,plugins/ModifMetamodels_0.1.0.1.jar,4,false
-ModifMetamodels.edit,1.0.0.1,plugins/ModifMetamodels.edit_1.0.0.1.jar,4,false
-ModifMetamodels.editor,1.0.0.1,plugins/ModifMetamodels.editor_1.0.0.1.jar,4,false
-ModifMetamodels.tests,1.0.0.1,plugins/ModifMetamodels.tests_1.0.0.1.jar,4,false
+ModifPlugin,1.0.0.1,plugins/ModifPlugin_1.0.0.1.jar,4,false
+ModifPlugin.edit,1.0.0.1,plugins/ModifPlugin.edit_1.0.0.1.jar,4,false
+ModifPlugin.editor,1.0.0.1,plugins/ModifPlugin.editor_1.0.0.1.jar,4,false
+ModifPlugin.tests,1.0.0.1,plugins/ModifPlugin.tests_1.0.0.1.jar,4,false
 com.google.guava,15.0.0.v201403281430,plugins/com.google.guava_15.0.0.v201403281430.jar,4,false
 com.google.inject,3.0.0.v201312141243,plugins/com.google.inject_3.0.0.v201312141243.jar,4,false
 com.ibm.icu,52.1.1.v201501240615,plugins/com.ibm.icu_52.1.1.v201501240615.jar,4,false
