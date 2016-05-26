@@ -58,8 +58,9 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 
 
 
-import coevolution.MigrationRoundtrip;
-import coevolution.MigrationSpecificationGenerator;
+
+
+
 import dependency.DependencyPackage;
 import dependency.Graph;
 import migration.DerivedReference;
@@ -67,9 +68,11 @@ import migration.Instance;
 import migration.Migration;
 import migration.MigrationPackage;
 import migration.ReferencePath;
+import migrationRoundtrip.MigrationRoundtrip;
+import migrationRoundtrip.MigrationSpecificationGenerator;
+import migrationRoundtrip.ApplyOperators;
 import modif.*;
 import modif.util.*;
-import refactor.Refactoring;
 import utils.UtilEMF;
 import utils.utilModifFactory;
 import ecoremodif.EattributeModif;
@@ -425,7 +428,7 @@ public class modifService {
 	 * @param modifF modif file
 	 */
 	public void Minimize(String modifF) {
-		utils.Minimize tool = new utils.Minimize();
+		migrationRoundtrip.Minimize tool = new migrationRoundtrip.Minimize();
 		Modifications modif = modifIO.LoadModif(modifF);
 		tool.go(modif);
 		try { ModifIO.SaveModif(modif, modifF);
@@ -655,9 +658,9 @@ public class modifService {
 	public ArrayList<EPackage> Refactoring(RootEcoreModif theRootEcoreModif) {
 		ArrayList<EPackage> refactoredPackages = new ArrayList<EPackage>();
 		if (theRootEcoreModif != null) {
-			if (Refactoring.isOk(theRootEcoreModif)) {
+			if (ApplyOperators.isOk(theRootEcoreModif)) {
 				// launch refactoring operators
-				Refactoring.operate(theRootEcoreModif);
+				ApplyOperators.operate(theRootEcoreModif);
 			}
 		}
 
@@ -880,9 +883,9 @@ public class modifService {
 	 */
 	public String Refactor() {
 		if (theRootEcoreModif != null) {
-			if (Refactoring.isOk(theRootEcoreModif)) {
+			if (ApplyOperators.isOk(theRootEcoreModif)) {
 				// launch refactoring operators
-				Refactoring.operate(theRootEcoreModif);
+				ApplyOperators.operate(theRootEcoreModif);
 				// save the resulting ecore model		
 				try {
 					// Save refactored metamodel with UUID
@@ -902,9 +905,9 @@ public class modifService {
 		EPackage refactoredWithoutK = null;
 		//String refactoredWithoutKFileName = null;
 		if (theRootEcoreModif != null) {
-			if (Refactoring.isOk(theRootEcoreModif)) {
+			if (ApplyOperators.isOk(theRootEcoreModif)) {
 				// launch refactoring operators
-				Refactoring.operate(theRootEcoreModif);
+				ApplyOperators.operate(theRootEcoreModif);
 				// save the resulting ecore model		
 				try {
 					// Save refactored metamodel with UUID
@@ -936,9 +939,9 @@ public class modifService {
 	public EPackage RefactorSimpleMigration(RootEcoreModif theRootEcoreModif) {
 		EPackage refactoredWithoutK = null;
 		if (theRootEcoreModif != null) {
-			if (Refactoring.isOk(theRootEcoreModif)) {
+			if (ApplyOperators.isOk(theRootEcoreModif)) {
 				// launch refactoring operators
-				Refactoring.operate(theRootEcoreModif);
+				ApplyOperators.operate(theRootEcoreModif);
 
 				// save the resulting ecore model		
 				try {

@@ -39,6 +39,7 @@ import javax.swing.border.EmptyBorder;
 
 import migration.Migration;
 import migration.MigrationPackage;
+import migrationRoundtrip.MigrationRoundtrip;
 
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EAttribute;
@@ -60,8 +61,7 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Composite;
 
-import coevolution.MigrationRoundtrip;
-import reuseCodeGeneration.MigrationGenerator;
+import codeGeneration.MigrationGenerator;
 import utils.UtilEMF;
 
 public class modifUI {
