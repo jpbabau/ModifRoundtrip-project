@@ -1,6 +1,14 @@
+package ecoremodif;
+
+import modif.EnumLiteralModification;
+
+import org.eclipse.emf.ecore.EEnumLiteral;
+
 /**
  *  interface for EnumLiteralModif 
  *  getter and setter of ecore part (EEnumLiteral) and modif part (EnumLiteralModification)
+ *  
+ *  EnumLiteralModif is compounded of an ecore part (EEnumLiteral) and a modif part (EnumLiteralModification).
  *  
  *  Copyright (C) 2013 IDL
  * 
@@ -11,30 +19,21 @@
  *  22/11/2013
  */
 
-package ecoremodif;
-
-import modif.EnumLiteralModification;
-
-import org.eclipse.emf.ecore.EEnumLiteral;
-
-// EnumLiteralModif is compound of an ecore part (EEnumLiteral) and a modif part (EnumLiteralModification)
-
 public interface EnumLiteralModif {
 
-    // return the ecore part of EnumLiteralModif : EEnumLiteral 	
+	/** Return the ecore part of EnumLiteralModif: EEnumLiteral. */	
 	EEnumLiteral getEcore();
 
-	// set the ecore part of EnumLiteralModif : EEnumLiteral value
+	/** Set the ecore part of EnumLiteralModif: EEnumLiteral value. */
 	void setEcore(EEnumLiteral value);
 
-	// return the modif part of EnumLiteralModif : EnumLiteralModification 	
+	/** Return the modif part of EnumLiteralModif: EnumLiteralModification. */ 	
 	EnumLiteralModification getModif();
 
-	// set the modif part of EnumLiteralModif : EnumLiteralModification value
+	/** Set the modif part of EnumLiteralModif: EnumLiteralModification value. */
 	void setModif(EnumLiteralModification value);
 
-	// return the container of EnumLiteralModif : EnumModif	
+	/** Return the container of EnumLiteralModif: EnumModif. */
 	EnumModif getEnumModif();
 
-	
 }  // EnumLiteralModif

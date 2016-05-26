@@ -1,7 +1,18 @@
+package ecoremodif;
+
+import java.util.List;
+
+import modif.ClassModification;
+
+import org.eclipse.emf.ecore.EClass;
+
 /**
  *  interface for EclassModif 
  *  getter and setter of ecore part (EClass) and modif part (ClassModification)
  *  getter and setter of specific EclassModif features
+ *  
+ *  EclassModif is compounded of an ecore part (EClass) and a modif part (ClassModification).
+ *  It also contains the corresponding EattributeModif and EreferenceModif objects. 
  *
  *  Copyright (C) 2013 IDL
  * 
@@ -12,87 +23,78 @@
  *  22/11/2013
  */
 
-package ecoremodif;
-
-import java.util.List;
-
-import modif.ClassModification;
-
-import org.eclipse.emf.ecore.EClass;
-
-// EclassModif is compound of an ecore part (EClass) and a modif part (ClassModification)
-// it also contains the correspondent EattributeModif and EreferenceModif objects
-
 public interface EclassModif {
 
-    // return the ecore part of EclassModif : EClass 	
+	/** Return the ecore part of EclassModif: EClass. */	
 	EClass getEcore();
 
-	// set the ecore part of EclassModif : EClass value
+	/** Set the ecore part of EclassModif: EClass value. */
 	void setEcore(EClass value);
 
-	// return the modif part of EclassModif : ClassModification 	
+	/** Return the modif part of EclassModif: ClassModification. */	
 	ClassModification getModif();
 
-	// set the modif part of EclassModif : ClassModification value
+	/** Set the modif part of EclassModif: ClassModification value. */
 	void setModif(ClassModification value);
-	
-	// return the modif part of EclassModif : ClassModification 	
+
+	/** Return the modif part of EclassModif: ClassModification. */	
 	EpackageModif getParent();
-	
-	// return the long name of ecore part before modification
+
+	/** Return the long name of ecore part before modification. */
 	String getOldLongName();
-	
-	// return the long name of ecore part after modification
+
+	/** Return the long name of ecore part after modification. */
 	String getNewLongName();
-	
-    // return a list of EclassModif : objects containing EClass which inherit from ecore part  	
+
+	/** Return a list of EclassModif: objects containing EClass which inherits from ecore part. */ 	
 	List<EclassModif> getSubTypes();
 
-    // return a list of EclassModif : objects containing EClass which inherit directly
-	// or implicitly from ecore part  	
+	/** Return a list of EclassModif: objects containing EClass which inherit directly. Or implicitly from ecore part. */
 	List<EclassModif> getAllSubTypes();
-	
-	// return a list of EclassModif : objects containing a supertype of ecore part  	
+
+	/** Return a list of EclassModif: objects containing a supertype of ecore part. */	
 	List<EclassModif> getAllSuperTypes();
-	
-    // return a list of EreferenceModif : list of references to the class  	
+
+	/** Return a list of EreferenceModif: list of references to the class. */
 	List<EreferenceModif> getTo();	
 
-    // return a list of EreferenceModif : list of references to the class 
-	// or to a superClass
-	List<EreferenceModif> getAllTo();	
-	
-	// setters and getters for list of EattributeModif and EreferenceModif objects
+	/** Return a list of EreferenceModif: list of references to the class. Or to a superClass. */
+	List<EreferenceModif> getAllTo();
+
+	/** Get attributes. */
 	List<EattributeModif> getAttributeModif();	
-	
-	// get attributes and inherited attributes
+
+	/** Get attributes and inherited attributes. */
 	List<EattributeModif> getAllAttributes();
-	// get references and inherited references
+
+	/** Get references and inherited references. */
 	List<EreferenceModif> getAllReferences();
-	
-    // return if is EclassModif is added
+
+	/** Return true if this EclassModif is added. */
 	boolean isAdded();
-	
-	// set the isAdded property
+
+	/** Set the isAdded property. */
 	void setIsAdded(boolean value);
-	
-    // return if is EclassModif is merged
+
+	/** Return true if this EclassModif is merged. */
 	boolean isMerged();
-	
-	// set the isMerged property
+
+	/** Set the isMerged property. */
 	void setIsMerged(boolean value);
-	
-    // return if EclassModif inherits from add Name Class
+
+	/** Return true if this EclassModif inherits from a class whose name is NameClass. */
 	boolean inheritsFromNameClass();
-	
-	// set if EclassModif inherits from add Name Class
+
+	/** Set if EclassModif inherits from a classe whose name is NameClass. */
 	void setInheritsFromNameClass(boolean value);
-	
+
+	/** Add an attribute. */
 	void add(EattributeModif value);
-	
+
+	/** Get a list of modif references. */
 	List<EreferenceModif> getReferenceModif();	
-	
+
+	/** Add a reference. */
 	void add(EreferenceModif value);
-	
+
 }  // EclassModif

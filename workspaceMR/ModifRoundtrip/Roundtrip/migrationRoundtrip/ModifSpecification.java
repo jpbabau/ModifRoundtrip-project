@@ -8,7 +8,7 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
 import utils.utilModifFactory;
-import ecoremodifutils.ModifIO;
+import ecoremodif.utils.ModifIO;
 
 /**
  * Utilitary class for handling modif specifications.

@@ -1,3 +1,5 @@
+package ecoremodif;
+
 /**
  *  interface for ecoremodif element 
  *
@@ -10,12 +12,9 @@
  *  22/11/2013
  */
 
-package ecoremodif;
-
-//standard operation to be implemented by an ecoremodif elements to be visited
-
 public interface ModifElement {
 
+	/** Standard operation to be implemented by an ecoremodif element to be visited. */
 	void accept(ModifElementVisitor visitor);
-	
+
 }

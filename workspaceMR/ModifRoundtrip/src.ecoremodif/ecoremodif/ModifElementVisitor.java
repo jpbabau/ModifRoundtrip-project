@@ -1,5 +1,12 @@
+package ecoremodif;
+
+
+
 /**
  *  interface for ecoremodif element visitor
+ *  
+ *  Standard interface of a visitor class for ecoremodif elements. 
+ *  It defines a Visit Method for each element, except for RootEcoreModif, with the VisitRoot method.
  *
  *  Copyright (C) 2013 IDL
  * 
@@ -10,21 +17,30 @@
  *  22/11/2013
  */
 
-package ecoremodif;
-
-// standard interface of a visitor class for ecoremodif elements
-// defines a Visit Method for each element
-// except for RootEcoreModif, with the VisitRoot method
-
 public interface ModifElementVisitor {
 
+	/** Visit EpackageModif.*/
 	void Visit(EpackageModif pm);
+
+	/** Visit EclassModif.*/
 	void Visit(EclassModif cm);
+
+	/** Visit EattributeModif.*/
 	void Visit(EattributeModif am);	
+
+	/** Visit EreferenceModif.*/
 	void Visit(EreferenceModif am);	
-	void Visit(EdataTypeModif dtm);		
+
+	/** Visit EdataTypeModif.*/
+	void Visit(EdataTypeModif dtm);	
+
+	/** Visit EnumModif.*/
 	void Visit(EnumModif enm);		
-	void Visit(EnumLiteralModif elm);		
+
+	/** Visit EnumLiteralModif.*/
+	void Visit(EnumLiteralModif elm);	
+
+	/** Visit RootEcoreModif.*/
 	void VisitRoot(RootEcoreModif rm);
-	
+
 }

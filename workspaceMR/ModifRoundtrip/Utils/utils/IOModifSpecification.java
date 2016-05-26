@@ -7,7 +7,7 @@ import java.io.OutputStream;
 
 import migrationRoundtrip.ModifSpecification;
 import modif.Modifications;
-import ecoremodifutils.ModifIO;
+import ecoremodif.utils.ModifIO;
 
 public class IOModifSpecification {
 

@@ -9,7 +9,7 @@ import modif.Modifications;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 
-import ecoremodifutils.ModifIO;
+import ecoremodif.utils.ModifIO;
 
 public class IOMigrationSpecification {
 

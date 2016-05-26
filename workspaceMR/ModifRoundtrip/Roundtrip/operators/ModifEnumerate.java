@@ -22,7 +22,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 
 import ecoremodif.*;
 import ecoremodif.impl.*;
-import ecoremodifutils.UtilsFeatureEcoreModif;
+import ecoremodif.utils.UtilsFeatureEcoreModif;
 
 public class ModifEnumerate implements ModifElementVisitor {
 	

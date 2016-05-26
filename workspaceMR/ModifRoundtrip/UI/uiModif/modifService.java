@@ -61,6 +61,7 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 
 
 
+
 import dependency.DependencyPackage;
 import dependency.Graph;
 import migration.DerivedReference;
@@ -79,7 +80,7 @@ import ecoremodif.EattributeModif;
 import ecoremodif.EclassModif;
 import ecoremodif.EreferenceModif;
 import ecoremodif.RootEcoreModif;
-import ecoremodifutils.ModifIO;
+import ecoremodif.utils.ModifIO;
 
 public class modifService {
 

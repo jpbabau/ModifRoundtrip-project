@@ -21,7 +21,7 @@ public class ApplyOperators {
 	public static boolean isOk(RootEcoreModif theRootEcoreModif) {
 
 		// test if the ecore + modif element is valid
-		return (new ecoremodifutils.ValidModif().isValid(theRootEcoreModif));
+		return (new ecoremodif.utils.ValidModif().isValid(theRootEcoreModif));
 	}
 	
 	/**

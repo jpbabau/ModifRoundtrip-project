@@ -3,7 +3,7 @@ package migrationRoundtrip;
 import org.eclipse.emf.ecore.EPackage;
 
 import ecoremodif.RootEcoreModif;
-import ecoremodifutils.ModifIO;
+import ecoremodif.utils.ModifIO;
 import modif.Modifications;
 
 /**
