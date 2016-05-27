@@ -85,7 +85,7 @@ public class UtilUUID {
 
 	/**
 	 * Remove the UUID attribute of a class.
-	 * @param UUIDClass Class from wich the UUID attribute has to be removed.
+	 * @param UUIDClass Class from which the UUID attribute has to be removed.
 	 */
 	private static void removeAttribute(EClass UUIDClass) {
 		EStructuralFeature uuid = null;

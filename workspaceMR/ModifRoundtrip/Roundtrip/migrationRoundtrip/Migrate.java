@@ -3,6 +3,7 @@ package migrationRoundtrip;
 import migration.Migration;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
 
 public class Migrate {
 
@@ -31,6 +32,12 @@ public class Migrate {
 	public static void migrateModel(){
 		MigrationRoundtrip migrt = null;
 		migrt = new MigrationRoundtrip(migrationSpecification);
+		targetModel = migrt.onwardMigration();
+	}
+	
+	public static void migrateModel(EPackage targetMetamodel){
+		MigrationRoundtrip migrt = null;
+		migrt = new MigrationRoundtrip(migrationSpecification, targetMetamodel);
 		targetModel = migrt.onwardMigration();
 	}
 	
