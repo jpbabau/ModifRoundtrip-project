@@ -15,7 +15,6 @@ package uiModif;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -23,7 +22,6 @@ import java.util.Set;
 import org.eclipse.emf.ecore.EPackage;
 
 import utils.UtilEMF;
-import ecoremodif.RootEcoreModif;
 
 public class Main {
 
