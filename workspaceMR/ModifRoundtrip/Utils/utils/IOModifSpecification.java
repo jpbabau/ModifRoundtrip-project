@@ -27,7 +27,7 @@ public class IOModifSpecification {
 
 	/**
 	 * Save a modif specification.
-	 * @param modifSpecification Modif specification to ba saved.
+	 * @param modifSpecification Modif specification to be saved.
 	 * @param modifPath Path to save the modif specification.
 	 */
 	public static void saveModifSpecification(Modifications modifSpecification, String modifPath) {

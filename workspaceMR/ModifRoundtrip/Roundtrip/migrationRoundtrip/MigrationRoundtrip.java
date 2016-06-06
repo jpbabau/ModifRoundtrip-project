@@ -172,9 +172,7 @@ public class MigrationRoundtrip {
 		System.out.println("outputMetamodelFile "+outputMetamodelFile);
 		
 		this.metamodelTarget = UtilEMF.loadMetamodel(outputMetamodelFile);
-		
-		System.out.println("metamodelTarget "+metamodelTarget);
-		
+				
 		//this.model1SInit     = UtilEMF.loadModel(inputModelFile, this.metamodelSource);
 		this.model1SInit 	= migration.getInputModel();
 
@@ -195,18 +193,14 @@ public class MigrationRoundtrip {
 	public MigrationRoundtrip(Migration migration, EPackage targetMetamodel) {
 		// Extraction of URIs:
 		URI inputModelFile      = URI.createURI(migration.getInputModelURI()     );
-		URI inputMetamodelFile  = URI.createURI(migration.getInputMetamodelURI() );
+		URI inputMetamodelFile  = URI.createURI(migration.getInputMetamodelURI());
 		URI outputFile          = URI.createURI(migration.getOutputModelURI()    );
 		URI outputMetamodelFile = URI.createURI(migration.getOutputMetamodelURI());
 		// Initialisation of metamodels and of the input model:	
 		this.metamodelSource = UtilEMF.loadMetamodel(inputMetamodelFile);
-		
-	//	System.out.println("outputMetamodelFile "+outputMetamodelFile);
-		
+				
 		this.metamodelTarget = targetMetamodel;
-		
-		System.out.println("metamodelTarget "+metamodelTarget);
-		
+				
 		//this.model1SInit     = UtilEMF.loadModel(inputModelFile, this.metamodelSource);
 		this.model1SInit 	= migration.getInputModel();
 
@@ -224,6 +218,35 @@ public class MigrationRoundtrip {
 		//this.hiddenReferencesMap = this.deletedLinks.buildReferencesMap();
 	}
 
+	
+	public MigrationRoundtrip(Migration migration, EPackage sourceMetamodel, EPackage targetMetamodel) {
+		// Extraction of URIs:
+		URI inputModelFile      = URI.createURI(migration.getInputModelURI()     );
+		URI inputMetamodelFile  = URI.createURI(migration.getInputMetamodelURI());
+		URI outputFile          = URI.createURI(migration.getOutputModelURI()    );
+		URI outputMetamodelFile = URI.createURI(migration.getOutputMetamodelURI());
+		// Initialisation of metamodels and of the input model:	
+		this.metamodelSource = sourceMetamodel;
+				
+		this.metamodelTarget = targetMetamodel;
+				
+		//this.model1SInit     = UtilEMF.loadModel(inputModelFile, this.metamodelSource);
+		this.model1SInit 	= migration.getInputModel();
+
+		// Get timestamp for the initial model
+		for(EAttribute attribute : this.model1SInit.eClass().getEAllAttributes()){
+			if(attribute.getName().contains("UUID")){
+				UUIDtimeStamp = attribute.getName();
+				break;
+			}
+		}
+		// Initialisation of migrated model file path (the migrated model is not created here):
+		this.model2TMigratedFilePath = outputFile.path();
+		// Extraction of deleted links:
+		this.deletedLinks = new DeletedLinks(this.model1SInit, migration, UUIDtimeStamp);
+		//this.hiddenReferencesMap = this.deletedLinks.buildReferencesMap();
+	}
+	
 	/**
 	 * Handles onwardMigration when there is rename in the modif specification
 	 * 

@@ -19,9 +19,9 @@ public class Minimize {
 
 	private int minimizeType;
 
-	public void go(Modifications modif) {
+	public void accept(Modifications modif) {
 
-		go(modif.getRootPackageModification());
+		accept(modif.getRootPackageModification());
 	}
 
 	/**
@@ -31,27 +31,27 @@ public class Minimize {
 	 * @param type Type of minimize to be applied. 
 	 * 1 = toUpdate.  2 = strong.
 	 */
-	public void go(Modifications modif, int type) {
+	public void accept(Modifications modif, int type) {
 		minimizeType = type;
-		go(modif.getRootPackageModification());
+		accept(modif.getRootPackageModification());
 	}
 
-	private void go(PackageModification modif) {
+	private void accept(PackageModification modif) {
 		for (PackageModification subPackage : modif.getPackageModification()) {
-			go(subPackage);
+			accept(subPackage);
 		}
 		for (ClassModification subClass : modif.getClassModification()) {
-			go(subClass);
+			accept(subClass);
 		}
 		for (DataTypeModification dataType : modif.getDataTypeModification()) {
-			go(dataType);
+			accept(dataType);
 		}					
 		for (EnumModification eNum : modif.getEnumModification()) {
-			go(eNum);
+			accept(eNum);
 		}
 	}
 
-	private void go(ClassModification subClass) {
+	private void accept(ClassModification subClass) {
 
 		if (subClass.isRemove() || subClass.isHide()) {
 			subClass.setNewName("");
@@ -84,17 +84,17 @@ public class Minimize {
 			}
 			for (StructuralFeatureModification fm : subClass.getFeatureModification()) {
 				if (fm instanceof AttributeModification) {
-					go((AttributeModification) fm);
+					accept((AttributeModification) fm);
 				}
 				if (fm instanceof ReferenceModification) {
-					go((ReferenceModification) fm);
+					accept((ReferenceModification) fm);
 				}
 			}
 		}
 
 	}
 
-	private ArrayList<String> go(AttributeModification am) {
+	private ArrayList<String> accept(AttributeModification am) {
 		ArrayList<String> unchangedAtt = new ArrayList<String>();
 		boolean sameName = false;
 		boolean sameBounds = false;
@@ -127,7 +127,7 @@ public class Minimize {
 		return unchangedAtt;
 	}
 
-	private void go(ReferenceModification fm) {
+	private void accept(ReferenceModification fm) {
 
 		if (fm.isRemove()) {
 			fm.setNewName("");
@@ -153,7 +153,7 @@ public class Minimize {
 		}
 	}
 
-	private void go(DataTypeModification edm) {
+	private void accept(DataTypeModification edm) {
 
 		if (edm.isRemove()) {
 			edm.setNewName("");
@@ -168,7 +168,7 @@ public class Minimize {
 		}
 	}
 
-	private void go(EnumModification enm) {
+	private void accept(EnumModification enm) {
 
 		if (enm.isRemove()) {
 			//enm.setNewName(null);
