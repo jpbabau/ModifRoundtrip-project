@@ -21,6 +21,8 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 
+import utils.UtilUUID;
+
 /**
  * Utilitary class for handling migration specifications.
  * Source metamodel and source models have UUIDs.
@@ -107,25 +109,29 @@ public class MigrationSpecification {
 		List<String> attributes = new ArrayList<String>();
 		List<String> references = new ArrayList<String>();
 		String name = object.eClass().getName();
+		System.out.println("name : "+name);
 		Deletion deletion = factory.createDeletion();
-		ClassModification ecm = searchInModif(name);		
-		if(ecm.isRemove()){ deletion.setDeleteInstance(true); }
-		else if(ecm.isHide()){ deletion.setDeleteInstance(true); }
-		else{
-			deletion.setDeleteInstance(false);
-			for(StructuralFeatureModification  feature : ecm.getFeatureModification()){
-				if (feature instanceof AttributeModification && feature.isRemove()){
-					if(!feature.getNewName().equals(UUIDName)){ attributes.add(feature.getOldName()); }
-				}else if(feature instanceof ReferenceModification && feature.isRemove()){ references.add(feature.getOldName()); }
-			}
-			// search for the feature in the superclasses
-			for(EClass supereclass : object.eClass().getEAllSuperTypes()){
-				ClassModification superecm = searchInModif(supereclass.getName());
-				if(superecm != null) {
-					if(!superecm.isRemove()){ 
-						for(StructuralFeatureModification  superfeature : superecm.getFeatureModification()){
-							if (superfeature instanceof AttributeModification && superfeature.isRemove()){ }
-							else if(superfeature instanceof ReferenceModification && superfeature.isRemove()){ references.add(superfeature.getOldName()); }
+		ClassModification ecm = searchInModif(name);	
+		System.out.println(" --- ecm "+ ecm);
+		if(ecm != null){
+			if(ecm.isRemove()){ deletion.setDeleteInstance(true); }
+			else if(ecm.isHide()){ deletion.setDeleteInstance(true); }
+			else{
+				deletion.setDeleteInstance(false);
+				for(StructuralFeatureModification  feature : ecm.getFeatureModification()){
+					if (feature instanceof AttributeModification && feature.isRemove()){
+						if(!feature.getNewName().equals(UUIDName)){ attributes.add(feature.getOldName()); }
+					}else if(feature instanceof ReferenceModification && feature.isRemove()){ references.add(feature.getOldName()); }
+				}
+				// search for the feature in the superclasses
+				for(EClass supereclass : object.eClass().getEAllSuperTypes()){
+					ClassModification superecm = searchInModif(supereclass.getName());
+					if(superecm != null) {
+						if(!superecm.isRemove()){ 
+							for(StructuralFeatureModification  superfeature : superecm.getFeatureModification()){
+								if (superfeature instanceof AttributeModification && superfeature.isRemove()){ }
+								else if(superfeature instanceof ReferenceModification && superfeature.isRemove()){ references.add(superfeature.getOldName()); }
+							}
 						}
 					}
 				}
@@ -178,6 +184,8 @@ public class MigrationSpecification {
 
 		Migration migration = factory.createMigration();
 		String sourceMetamodelURI = modifSpecification.getRootPackageModification().getOldURIName();
+		
+		System.out.println("sourceMetamodelURI  "+sourceMetamodelURI);
 		String targetMetamodelURI = modifSpecification.getRootPackageModification().getNewURIName();
 		String sourceModelURI = "";
 		String targetModel = "";
@@ -238,6 +246,7 @@ public class MigrationSpecification {
 		}
 
 		allInstances.add(rootinstance);
+
 		if(!sourceModel.eContents().isEmpty()){
 			for(EObject object : sourceModel.eContents()){ createInstance(object); }
 		}
@@ -309,7 +318,7 @@ public class MigrationSpecification {
 	 * Set the source model.
 	 * @param model Source model.
 	 */
-	public static void setSourceModel(EObject model) {
+	public static void setSourceModel(EObject model) {		
 		sourceModel = model;
 	}
 
