@@ -1,5 +1,6 @@
 package utils;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -19,9 +20,16 @@ public class IOModifSpecification {
 	 * @return modif Loaded modif specification.
 	 */
 	public static Modifications loadModifSpecification(String modifSpecificationPath) {
+		Modifications modif = null;
+		File modifFile = new File(modifSpecificationPath);
+		if(modifFile.exists()){
 		ModifIO modifIO = new ModifIO();
-		Modifications modif = modifIO.LoadModif(modifSpecificationPath);	
+		modif = modifIO.LoadModif(modifSpecificationPath);	
 		ModifSpecification.setModifSpecification(modif);
+		}else{
+			System.err.println("[Loading] file "+modifSpecificationPath+" : file does not exist.");
+			System.exit(1);
+		}
 		return modif;
 	}
 

@@ -46,6 +46,22 @@ public class UtilUUID {
 		uuid.setUnique(true);
 		return uuid;
 	}
+	
+	/**
+	 * Create the UUID attribute. 
+	 * @return uuid UUID attribute.
+	 */
+	private static EAttribute createUUIDAttribute(String timeStamp) {
+		EAttribute uuid = EcoreFactory.eINSTANCE.createEAttribute();
+		// Add a timestamp to avoid errors if UUID exists
+		UUIDtimeStamp = timeStamp;
+		uuid.setName("UUID"+UUIDtimeStamp);
+		uuid.setEType(EcorePackage.eINSTANCE.getEString());
+		uuid.setLowerBound(1);
+		uuid.setUpperBound(1);
+		uuid.setUnique(true);
+		return uuid;
+	}
 
 	/**
 	 * Create a class called UUIDClass.
@@ -59,6 +75,16 @@ public class UtilUUID {
 		uuidClass.getEStructuralFeatures().add(createUUIDAttribute());
 		return uuidClass;
 	}
+	
+	private static EClass createUUIDClass(String timeStamp) {
+		EClass uuidClass = EcoreFactory.eINSTANCE.createEClass();
+		uuidClass.setAbstract(true);
+		// TODO verify that UUIDClass does not exist
+		uuidClass.setName("UUIDClass");
+		uuidClass.getEStructuralFeatures().add(createUUIDAttribute(timeStamp));
+		return uuidClass;
+	}
+
 
 	/**
 	 * Get the classes to the top of the hierarchy.
@@ -74,12 +100,19 @@ public class UtilUUID {
 			// Get only the classes
 			if (next instanceof EClass) {
 				EClass c = (EClass) next;
+				System.out.println("c  ! "+c.getName());
 				// Scan of inherited classes
 				EList<EClass> superClasses = c.getESuperTypes();
+				System.out.println("superClasses  ! "+superClasses);
+				System.out.println("size  ! "+superClasses.size());
 				// Add classes to the top classes list
-				if(superClasses.size() == 0) topClassesList.add(c);
+				if(superClasses.size() == 0) {
+					topClassesList.add(c);
+					System.out.println("added "+c.getName());
+				}
 			}
 		}
+		System.out.println("topClassesList  ! "+topClassesList);
 		return topClassesList;
 	}
 
@@ -171,7 +204,7 @@ public class UtilUUID {
 	 * Add the UUID attribute.
 	 * It adds, to the top of the hierarchy, an abstract class containing the UUID attribute.
 	 * All classes of the metamodel inherits directly or indirectly from the new class. 
-	 * @param metamodel Package of the metamodel to be extended with UUID attibutes.
+	 * @param metamodel Package of the metamodel to be extended with UUID attributes.
 	 * @return metamodelWithUUID Updated metamodel.
 	 */
 	public static EPackage addUUIDMetamodelAttribute(EPackage metamodel) {
@@ -184,6 +217,30 @@ public class UtilUUID {
 		
 		// Create UUIDClass
 		EClass UUIDClass = createUUIDClass();
+		// Add the UUIDClass to the metamodel
+		metamodelWithUUID.getEClassifiers().add(UUIDClass);
+		for (TreeIterator<EObject> it = metamodelWithUUID.eAllContents(); it.hasNext();) {
+			EObject next = it.next();
+			// Get only the classes
+			if (next instanceof EClass) {
+				EClass c = (EClass) next;
+				if(topClasses.contains(c)) c.getESuperTypes().add(UUIDClass); 
+			}
+		}
+		return metamodelWithUUID;
+	}
+	
+	public static EPackage addUUIDMetamodelAttribute(EPackage metamodel, String timeStamp) {
+		EPackage metamodelWithUUID = EcoreUtil.copy(metamodel);
+		
+		// All operations and annotations are removed from the metamodel
+		metamodelWithUUID = UtilEMF.removeOperations(UtilEMF.removeOppositeFeature(UtilEMF.removeAnnotations(metamodelWithUUID)));
+		
+		ArrayList<EClass> topClasses = getTopClasses(metamodelWithUUID);
+		System.out.println("topClasses  "+topClasses);
+		
+		// Create UUIDClass
+		EClass UUIDClass = createUUIDClass(timeStamp);
 		// Add the UUIDClass to the metamodel
 		metamodelWithUUID.getEClassifiers().add(UUIDClass);
 		for (TreeIterator<EObject> it = metamodelWithUUID.eAllContents(); it.hasNext();) {
@@ -224,6 +281,15 @@ public class UtilUUID {
 		}
 		setTimeStamp(timeStamp);
 		return timeStamp;
+	}
+	
+	/**
+	 * Get the timestamp associated to the UUID attribute.
+	 * @return UUIDtimeStamp Timestamp of the UUID attribute.
+	 */
+	public static String getTimeStamp() {
+		System.out.println("UUIDtimeStamp "+UUIDtimeStamp);
+		return UUIDtimeStamp;
 	}
 
 	/**
