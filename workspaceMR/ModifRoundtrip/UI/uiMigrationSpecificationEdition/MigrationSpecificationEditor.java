@@ -19,26 +19,20 @@ import java.awt.GridBagLayout;
 
 import javax.swing.JLabel;
 
-import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
 import javax.swing.DefaultListModel;
-import javax.swing.DefaultListSelectionModel;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JList;
-import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
 
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EStructuralFeature;
-import org.w3c.dom.ls.LSInput;
 
 import utils.UtilEMF;
 import migration.Migration;
-import migration.MigrationPackage;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -47,24 +41,20 @@ import java.io.IOException;
 public class MigrationSpecificationEditor {
 
 	private JFrame frmMigrationEditor;
-
 	private static String migrationSpecificationName;
-
 	private Migration migration;
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		System.out.println(migrationSpecificationName);
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
 					MigrationSpecificationEditor window = new MigrationSpecificationEditor(migrationSpecificationName);
 					window.frmMigrationEditor.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+				} 
+				catch (Exception e) { e.printStackTrace(); }
 			}
 		});
 	}
@@ -75,7 +65,6 @@ public class MigrationSpecificationEditor {
 	public MigrationSpecificationEditor(String migrationSpecification) {
 		migrationSpecificationName = migrationSpecification;
 		initialize();
-
 	}
 
 	/**
@@ -122,37 +111,29 @@ public class MigrationSpecificationEditor {
 			}
 
 		}*/
-		
-		
-		
+
+		/** TEST **/
+
 		model2.addElement("Brest");
-		
 		model.addElement("        UBO");
 		model.addElement("               20");
 		model.addElement("               Victor Le Gorgeu");
-		
 		model.addElement("        Residence Universitaire Kergoat");
 		model.addElement("               4");
 		model.addElement("               des Archives");
-		
 		model2.addElement("        Residence Universitaire Lanredec");
 		model2.addElement("               15");
 		model2.addElement("               Lanredec");
-		
 		model2.addElement("         CHRU");
 		model2.addElement("               51");
 		model2.addElement("               Professeur Langevin");
-		
 		model.addElement("        Residence University Recouvrance");
 		model.addElement("               3");
 		model.addElement("               Petite Vauban");
-		
 		modelPreDeleted.addElement("     29200");
 		modelPreDeleted.addElement("     France");
-		
 		modelPreDeleted.addElement("Anne");
 		modelPreDeleted.addElement("Robert");
-		
 		modelPreDeleted.addElement("Bellevue");
 		modelPreDeleted.addElement("Recouvrance");
 
@@ -229,19 +210,11 @@ public class MigrationSpecificationEditor {
 						model.removeElementAt(index);
 						model2.addElement(label);
 
-						try {
-							modifyInstance(label, false);
-						} catch (IOException e2) {
-							// TODO Auto-generated catch block
-							e2.printStackTrace();
-						}
+						try { modifyInstance(label, false); } 
+						catch (IOException e2) { e2.printStackTrace(); }
 
-						try {
-							UtilEMF.saveModel((EObject)migration,migrationSpecificationName.replace(".migration", "Customized.migration"));
-						} catch (IOException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
+						try { UtilEMF.saveModel((EObject)migration,migrationSpecificationName.replace(".migration", "Customized.migration")); } 
+						catch (IOException e1) { e1.printStackTrace(); }
 					}
 				}
 			}
@@ -266,19 +239,11 @@ public class MigrationSpecificationEditor {
 					model2.removeElementAt(index);
 					model.addElement(label);
 
-					try {
-						modifyInstance(label, true);
-					} catch (IOException e2) {
-						// TODO Auto-generated catch block
-						e2.printStackTrace();
-					}
+					try { modifyInstance(label, true); } 
+					catch (IOException e2) { e2.printStackTrace(); }
 
-					try {
-						UtilEMF.saveModel((EObject)migration,migrationSpecificationName.replace(".migration", "Customized.migration"));
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
+					try { UtilEMF.saveModel((EObject)migration,migrationSpecificationName.replace(".migration", "Customized.migration")); } 
+					catch (IOException e1) { e1.printStackTrace(); }
 				}
 			}
 		});
@@ -287,18 +252,18 @@ public class MigrationSpecificationEditor {
 		gbc_btnDelete.gridx = 2;
 		gbc_btnDelete.gridy = 3;
 		frmMigrationEditor.getContentPane().add(btnDelete, gbc_btnDelete);
-		
+
 		JButton btnValidate = new JButton("Validate");
 		GridBagConstraints gbc_btnValidate = new GridBagConstraints();
 		gbc_btnValidate.gridx = 2;
 		gbc_btnValidate.gridy = 4;
 		frmMigrationEditor.getContentPane().add(btnValidate, gbc_btnValidate);
-		
+
 	}
 
 	/**
 	 * 
-	 * @param instanceUUID instance whose value of deleteion has to be modified
+	 * @param instanceUUID instance whose value of deletion has to be modified
 	 * @param value value of deletion
 	 * @throws IOException
 	 */
@@ -306,9 +271,7 @@ public class MigrationSpecificationEditor {
 		for(EObject instance : migration.eContents()){
 			String instanceuuid = (String) instance.eGet(instance.eClass().getEStructuralFeature("UUID"));
 			if(instanceuuid.equals(instanceUUID)){
-				for(EObject deletion : instance.eContents()){					
-					deletion.eSet(deletion.eClass().getEStructuralFeature("deleteInstance"), value);
-				}
+				for(EObject deletion : instance.eContents()){ deletion.eSet(deletion.eClass().getEStructuralFeature("deleteInstance"), value); }
 			}
 		}
 	}
