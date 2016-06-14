@@ -1,6 +1,6 @@
 /**
  * 
- * operator to add a NamedClass
+ * Operator to add a NamedClass
  *
  *  Copyright (C) 2013 IDL
  * 
@@ -26,6 +26,11 @@ public class ModifAddAllName implements ModifElementVisitor {
 	protected String nameNameAttribute;
 	protected EClass nameClass;
 	
+	
+	/**
+	 * Visit Root object in order to add a NamedClass.
+	 * @param rm Root Ecore+modif.
+	 */
 	public void VisitRoot(RootEcoreModif rm){
 		
 		if (rm.getModifications().getAddNameClass()!=null) {
@@ -56,6 +61,11 @@ public class ModifAddAllName implements ModifElementVisitor {
 		}
 	}
 	
+	
+	/**
+	 * Visit a package in order to add a NamedClass.
+	 * @param pm Package.
+	 */
 	public void Visit(EpackageModif pm) {
 			
 		// for each  subpackage	
@@ -70,16 +80,18 @@ public class ModifAddAllName implements ModifElementVisitor {
 		}
 	}
 	
+	
+	/**
+	 * Add a NamedClass to the class cm.
+	 * @param cm Class.
+	 */
 	public void Visit(EclassModif cm){
 		if (cm.getEcore()!=null && !cm.getModif().isRemove() && !cm.getModif().isHide() ){
 			
 			// if there is no existing attribute with the same name of the attribute of the NamedClass
-			
 			boolean exist = false;
 			for ( EattributeModif atm : cm.getAllAttributes()) {
-				if (atm.getModif().getNewName().equals(nameNameAttribute) && ! atm.getModif().isRemove()) {
-					exist = true;
-				}
+				if (atm.getModif().getNewName().equals(nameNameAttribute) && ! atm.getModif().isRemove()) { exist = true; }
 			}
 			if (!exist) {
 				cm.getEcore().getESuperTypes().add(nameClass);

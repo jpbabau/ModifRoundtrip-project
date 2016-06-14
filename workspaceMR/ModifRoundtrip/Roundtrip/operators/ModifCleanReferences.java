@@ -1,6 +1,6 @@
 /**
  * 
- *  operator to remove null references
+ *  Operator to remove null references.
  *
  *  Copyright (C) 2013 IDL
  * 
@@ -19,17 +19,27 @@ import ecoremodif.*;
 import ecoremodif.impl.*;
 
 public class ModifCleanReferences implements ModifElementVisitor {
-	
+
+
+	/**
+	 * Visit the root Ecore+Modif in order to remove null references.
+	 * @param rm Root Ecore+Modif.
+	 */
 	public void VisitRoot(RootEcoreModif rm){
 		// access to the root package 
 		EpackageModifImpl root = (EpackageModifImpl) rm.getRoot();
-		
+
 		// visitor call for root package
 		root.accept(this);
 	}
-	
+
+
+	/**
+	 * Visit the a package in order to remove null references.
+	 * @param pm Package.
+	 */
 	public void Visit(EpackageModif pm) {
-			
+
 		// for each  subpackage	
 		for (EpackageModif subPackage : pm.getPackageModif()) {
 			//  visitor call for each subpackage
@@ -41,16 +51,25 @@ public class ModifCleanReferences implements ModifElementVisitor {
 			((EclassModifImpl)subClass).accept(this);			
 		}
 	}
-	
+
+
+	/**
+	 * Visit a class in order to remove null references.
+	 * @param cm Class.
+	 */
 	public void Visit(EclassModif cm){
-		
 		// for each reference	
 		for (EreferenceModif ref: cm.getReferenceModif()) {
 			//  visitor call for each reference
 			((EreferenceModifImpl)ref).accept(this);		
 		}
 	}
-	
+
+
+	/**
+	 * Remove the reference if it is null.
+	 * @param rm Root Ecore+Modif.
+	 */
 	public void Visit(EreferenceModif rm){
 		if (rm.getEcore()!=null ){
 			if (rm.getEcore().getEReferenceType()==null ) {			
@@ -59,7 +78,7 @@ public class ModifCleanReferences implements ModifElementVisitor {
 			}
 		}
 	}
-	
+
 
 	public void Visit(EattributeModif am)  {    }
 	public void Visit(EdataTypeModif dtm)  {	}

@@ -1,6 +1,6 @@
 /**
  * 
- * operator to add a Root class
+ * Operator to add a Root class.
  *
  *  Copyright (C) 2013 IDL
  * 
@@ -23,6 +23,11 @@ public class ModifAddRootClass implements ModifElementVisitor {
 	
 	protected EClass rootClass;
 	
+	
+	/**
+	 * Visit the root Ecore+Modif in order to add a Root class.
+	 * @param rm Root Ecore+Modif.
+	 */
 	public void VisitRoot(RootEcoreModif rm){
 		
 		if (rm.getModifications().getAddRootClass()!=null) {
@@ -39,7 +44,6 @@ public class ModifAddRootClass implements ModifElementVisitor {
 			// if there is no existing class with the same name
 			
 			if ( ! rm.existClassModification(rootClass.getName()) ) {
-				
 				// add this new  class to the root package
 				root.getEcore().getEClassifiers().add(rootClass);
 			
@@ -49,6 +53,11 @@ public class ModifAddRootClass implements ModifElementVisitor {
 		}
 	}
 	
+	
+	/**
+	 * Visit a package in order to add a Root class.
+	 * @param pm Package.
+	 */
 	public void Visit(EpackageModif pm) {
 			
 		// for each  subpackage	
@@ -63,6 +72,11 @@ public class ModifAddRootClass implements ModifElementVisitor {
 		}
 	}
 	
+	
+	/**
+	 * Add a root class.
+	 * @param cm Class.
+	 */
 	public void Visit(EclassModif cm){
 		if (cm.getEcore()!=null && !cm.getModif().isRemove() && !cm.getModif().isHide() && cm.getEcore().getESuperTypes().isEmpty()){
 		
@@ -85,6 +99,11 @@ public class ModifAddRootClass implements ModifElementVisitor {
 		}
 	}
 	
+	
+	/**
+	 * Set containment to false.
+	 * @param rm Reference. 
+	 */
 	public void Visit(EreferenceModif rm){	
 		if (rm.getEcore()!=null && !rm.getModif().isRemove() ) {
 			if (rm.getEcore().isContainment()) {
@@ -92,6 +111,8 @@ public class ModifAddRootClass implements ModifElementVisitor {
 			}
 		}
 	}
+	
+	
 	public void Visit(EattributeModif am){	}
 	public void Visit(EdataTypeModif dtm) {	}
 	public void Visit(EnumModif enm){		}

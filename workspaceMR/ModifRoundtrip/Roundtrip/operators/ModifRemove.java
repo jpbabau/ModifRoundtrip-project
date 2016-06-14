@@ -1,6 +1,6 @@
 /**
  * 
- *  operator to remove ecore elements
+ *  Operator to remove ecore elements.
  *
  *  Copyright (C) 2013 IDL
  * 
@@ -19,12 +19,17 @@ import ecoremodif.*;
 import ecoremodif.impl.*;
 
 public class ModifRemove implements ModifElementVisitor {
-	
+
+
+	/**
+	 * Remove ecore elements.
+	 * @param rm The root Ecore+Modif.
+	 */
 	public void VisitRoot(RootEcoreModif rm){
 
 		// access to the root package 
 		EpackageModifImpl root = (EpackageModifImpl) rm.getRoot();
-		
+
 		// visitor call for root package
 		root.accept(this);
 
@@ -32,11 +37,15 @@ public class ModifRemove implements ModifElementVisitor {
 		// because of the EClasses removed by the previous remove operation
 		ModifCleanReferences cleanReferences = new ModifCleanReferences();
 		cleanReferences.VisitRoot(rm);
-
 	}
-	
+
+
+	/**
+	 * Remove ecore packages.
+	 * @param pm Package.
+	 */
 	public void Visit(EpackageModif pm) {
-			
+
 		// for each  subpackage	
 		for (EpackageModif subPackage : pm.getPackageModif()) {
 			//  visitor call for each subpackage
@@ -57,7 +66,7 @@ public class ModifRemove implements ModifElementVisitor {
 			//  visitor call for each subclass
 			((EnumModifImpl) subEnum).accept(this);			
 		}		
-		
+
 		if (pm.getEcore()!=null && pm.getModif()!=null){		
 			// remove if necessary EAnnotations
 			if (pm.getModif().isRemoveEAnnotations()){				
@@ -70,9 +79,14 @@ public class ModifRemove implements ModifElementVisitor {
 			}
 		}
 	}
-	
+
+
+	/**
+	 * Remove ecore classes.
+	 * @param cm Class.
+	 */
 	public void Visit(EclassModif cm){
-		
+
 		// for each attribute	
 		for (EattributeModif att: cm.getAttributeModif()) {
 			//  visitor call for each attribute
@@ -83,40 +97,34 @@ public class ModifRemove implements ModifElementVisitor {
 			//  visitor call for each reference
 			((EreferenceModifImpl)ref).accept(this);		
 		}
-		
-		
+
 		if (cm.getEcore()!=null && cm.getModif()!=null){
 			// remove all EOperations
 			cm.getEcore().getEOperations().clear();	
 			// remove if necessary EAnnotations
-			if (cm.getModif().isRemoveEAnnotations()){				
-				cm.getEcore().getEAnnotations().clear();	
-			}
+			if (cm.getModif().isRemoveEAnnotations()){ cm.getEcore().getEAnnotations().clear();	}
 			// remove if necessary the EClass
 			if (cm.getModif().isRemove()){	
-				
 				EcoreUtil.delete(cm.getEcore());
 				cm.setEcore(null);
-				
 			}
-			
+
 			// remove if necessary (only) the EClass
-			if (cm.isMerged()){		
-				EcoreUtil.delete(cm.getEcore());
-			}
+			if (cm.isMerged()){	EcoreUtil.delete(cm.getEcore()); }
 		}
 	}
-	
+
+
+	/**
+	 * Remove ecore references.
+	 * @param rm Reference.
+	 */
 	public void Visit(EreferenceModif rm){
 		if (rm.getEcore()!=null && rm.getModif()!=null){
 			// remove if necessary EAnnotations
-			if (rm.getModif().isRemoveEAnnotations()){				
-				rm.getEcore().getEAnnotations().clear();	
-			}
+			if (rm.getModif().isRemoveEAnnotations()){ rm.getEcore().getEAnnotations().clear();	}
 			// remove if necessary EOpposite
-			if (rm.getModif().isRemoveOpposite() && rm.getModif().getAddOpposite()!=null){
-				rm.getEcore().setEOpposite(null);	
-			}
+			if (rm.getModif().isRemoveOpposite() && rm.getModif().getAddOpposite()!=null){ rm.getEcore().setEOpposite(null); }
 			// remove if necessary the EReference
 			if (rm.getModif().isRemove()){			
 				EcoreUtil.delete(rm.getEcore());	
@@ -124,13 +132,16 @@ public class ModifRemove implements ModifElementVisitor {
 			}
 		}
 	}
-	
+
+
+	/**
+	 * Remove ecore attributes.
+	 * @param am Attribute.
+	 */
 	public void Visit(EattributeModif am){
 		if (am.getEcore()!=null && am.getModif()!=null){
 			// remove if necessary EAnnotations
-			if (am.getModif().isRemoveEAnnotations()){				
-				am.getEcore().getEAnnotations().clear();	
-			}	
+			if (am.getModif().isRemoveEAnnotations()){	am.getEcore().getEAnnotations().clear(); }	
 			// remove if necessary the EAttribute
 			if (am.getModif().isRemove()){			
 				EcoreUtil.delete(am.getEcore());
@@ -138,13 +149,16 @@ public class ModifRemove implements ModifElementVisitor {
 			}		
 		}
 	}
-	
+
+
+	/**
+	 * Remove ecore datat types.
+	 * @param dtm DataType.
+	 */
 	public void Visit(EdataTypeModif dtm) {
 		if (dtm.getEcore()!=null && dtm.getModif()!=null){
 			// remove if necessary EAnnotations
-			if (dtm.getModif().isRemoveEAnnotations()){				
-				dtm.getEcore().getEAnnotations().clear();	
-			}	
+			if (dtm.getModif().isRemoveEAnnotations()){	dtm.getEcore().getEAnnotations().clear(); }	
 			// remove if necessary the EDataType
 			if (dtm.getModif().isRemove()){			
 				EcoreUtil.delete(dtm.getEcore());
@@ -152,20 +166,23 @@ public class ModifRemove implements ModifElementVisitor {
 			}		
 		}		
 	}
-	
+
+
+	/**
+	 * Remove ecore enumerations.
+	 * @param enm Enumeration.
+	 */
 	public void Visit(EnumModif enm){		
-		
+
 		// for each subEnumLiteral	
 		for (EnumLiteralModif subEnumLit : enm.getEnumLiteralModif()) {
 			//  visitor call for each subenum
 			((EnumLiteralModifImpl) subEnumLit).accept(this);			
 		}
-		
+
 		if (enm.getEcore()!=null && enm.getModif()!=null){
 			// remove if necessary EAnnotations
-			if (enm.getModif().isRemoveEAnnotations()){				
-				enm.getEcore().getEAnnotations().clear();	
-			}	
+			if (enm.getModif().isRemoveEAnnotations()){	enm.getEcore().getEAnnotations().clear(); }	
 			// remove if necessary the EENum
 			if (enm.getModif().isRemove()){			
 				EcoreUtil.delete(enm.getEcore());
@@ -174,13 +191,16 @@ public class ModifRemove implements ModifElementVisitor {
 		}
 	}
 
+
+	/**
+	 * Remove ecore enum literals.
+	 * @param elm EnumLiteral.
+	 */
 	public void Visit(EnumLiteralModif elm){	
-		
+
 		if (elm.getEcore()!=null && elm.getModif()!=null){
 			// remove if necessary EAnnotations
-			if (elm.getModif().isRemoveEAnnotations()){				
-				elm.getEcore().getEAnnotations().clear();
-			}
+			if (elm.getModif().isRemoveEAnnotations()){	elm.getEcore().getEAnnotations().clear(); }
 			// remove if necessary the ENumLiteral
 			if (elm.getModif().isRemove()){			
 				EcoreUtil.delete(elm.getEcore());

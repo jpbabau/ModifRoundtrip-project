@@ -1,6 +1,6 @@
 /**
  * 
- * operator to change properties of ecore elements
+ * Operator to change properties of ecore elements.
  *
  *  Copyright (C) 2013 IDL
  * 
@@ -20,17 +20,27 @@ import ecoremodif.*;
 import ecoremodif.impl.*;
 
 public class ModifChangeProperties implements ModifElementVisitor {
-	
+
+
+	/**
+	 * Visit the root Ecore+Modif in order to change properties of ecore elements.
+	 * @param rm root Ecore+Modif.
+	 */
 	public void VisitRoot(RootEcoreModif rm){
 		// access to the root package 
 		EpackageModifImpl root = (EpackageModifImpl) rm.getRoot();
-		
+
 		// visitor call for root package
 		root.accept(this);
 	}
-	
+
+
+	/**
+	 * Visit a package in order to change properties of ecore elements.
+	 * @param pm Package.
+	 */
 	public void Visit(EpackageModif pm) {
-		
+
 		// for each  subpackage	
 		for (EpackageModif subPackage : pm.getPackageModif()) {
 			//  visitor call for each subpackage
@@ -52,14 +62,19 @@ public class ModifChangeProperties implements ModifElementVisitor {
 			((EnumModifImpl) subEnum).accept(this);			
 		}
 	}
-	
+
+
+	/**
+	 * Visit a class in order to change properties of ecore elements.
+	 * @param cm Class.
+	 */
 	public void Visit(EclassModif cm){
 		if (cm.getEcore()!=null && cm.getModif()!=null){
 			if (cm.getModif().isChangeAbstract()) {
 				cm.getEcore().setAbstract(! cm.getEcore().isAbstract());
 			}	
 		}
-		
+
 		// for each attribute	
 		for (EattributeModif att: cm.getAttributeModif()) {
 			//  visitor call for each attribute
@@ -71,7 +86,12 @@ public class ModifChangeProperties implements ModifElementVisitor {
 			((EreferenceModifImpl)ref).accept(this);		
 		}
 	}
-	
+
+
+	/**
+	 * Change properties of a reference.
+	 * @param rm Reference.
+	 */
 	public void Visit(EreferenceModif rm){
 		if (rm.getEcore()!=null && rm.getModif()!=null ){
 			// modification (if necessary) of containment property
@@ -81,52 +101,54 @@ public class ModifChangeProperties implements ModifElementVisitor {
 			// modifications of bounds
 			rm.getEcore().setLowerBound(rm.getModif().getChangeBounds().getNewLower());	
 			rm.getEcore().setUpperBound(rm.getModif().getChangeBounds().getNewUpper());
-			
+
 			// add (if necessary) an EOpposite reference
 			// if no eopposite exists, or if eopposite exist and remove it 
 			if ((rm.getEcore().getEOpposite()==null && rm.getModif().getAddOpposite()!=null) 
-				|| (rm.getEcore().getEOpposite()!=null && rm.getModif().isRemoveOpposite() && rm.getModif().getAddOpposite()!=null)	) {
+					|| (rm.getEcore().getEOpposite()!=null && rm.getModif().isRemoveOpposite() && rm.getModif().getAddOpposite()!=null)	) {
 
 				// the reference is not removed and not reified
 				if (! rm.getModif().isRemove() && rm.getModif().getReify()== null) {
-				// if the opposite name already exists
-				EreferenceModif orm = ((EclassModifImpl) rm.getTo()).containsNewNameReference(rm.getModif().getAddOpposite().getOppositeName());
-				if (orm != null) {
-					// set the EOpposite property
-					rm.getEcore().setEOpposite(orm.getEcore());					
-				} else {
-					// create a new EReference and then a new EreferenceModif
-					EcoreFactory aFactory = new EcoreFactoryImpl();
-					EReference aRef = aFactory.createEReference();
-					// set the attributes of the EReference
-					if (rm.getModif().getAddOpposite().getOppositeName() == "_") {
-						aRef.setName("opp_"+rm.getModif().getNewName());
+					// if the opposite name already exists
+					EreferenceModif orm = ((EclassModifImpl) rm.getTo()).containsNewNameReference(rm.getModif().getAddOpposite().getOppositeName());
+					if (orm != null) {
+						// set the EOpposite property
+						rm.getEcore().setEOpposite(orm.getEcore());					
 					} else {
-						aRef.setName(rm.getModif().getAddOpposite().getOppositeName());					
+						// create a new EReference and then a new EreferenceModif
+						EcoreFactory aFactory = new EcoreFactoryImpl();
+						EReference aRef = aFactory.createEReference();
+						// set the attributes of the EReference
+						if (rm.getModif().getAddOpposite().getOppositeName() == "_") { aRef.setName("opp_"+rm.getModif().getNewName()); } 
+						else { aRef.setName(rm.getModif().getAddOpposite().getOppositeName());	}
+						aRef.setLowerBound(rm.getModif().getAddOpposite().getOppositeLower());
+						aRef.setUpperBound(rm.getModif().getAddOpposite().getOppositeUpper());
+						aRef.setContainment(false);
+						aRef.setEType(rm.getFrom().getEcore());
+						// add the EReference to the referenced EClass
+						rm.getTo().getEcore().getEStructuralFeatures().add(aRef);
+						// set the EOpposite property
+						rm.getEcore().setEOpposite(aRef);
+						aRef.setEOpposite(rm.getEcore());
+						// create the corresponding EreferenceModif
+						EreferenceModif oppRef = new EreferenceModifImpl(aRef,null,rm.getTo());
+						oppRef.setTo(rm.getFrom());
 					}
-					aRef.setLowerBound(rm.getModif().getAddOpposite().getOppositeLower());
-					aRef.setUpperBound(rm.getModif().getAddOpposite().getOppositeUpper());
-					aRef.setContainment(false);
-					aRef.setEType(rm.getFrom().getEcore());
-					// add the EReference to the referenced EClass
-					rm.getTo().getEcore().getEStructuralFeatures().add(aRef);
-					// set the EOpposite property
-					rm.getEcore().setEOpposite(aRef);
-					aRef.setEOpposite(rm.getEcore());
-					// create the corresponding EreferenceModif
-					EreferenceModif oppRef = new EreferenceModifImpl(aRef,null,rm.getTo());
-					oppRef.setTo(rm.getFrom());
-				}
 				}
 			}
 		}
 	}
-	
+
+
+	/**
+	 * Change properties of an attribute.
+	 * @param am Attribute.
+	 */
 	public void Visit(EattributeModif am){
 		if (am.getEcore()!=null && am.getModif()!=null) {
 			am.getEcore().setLowerBound(am.getModif().getChangeBounds().getNewLower());	
 			am.getEcore().setUpperBound(am.getModif().getChangeBounds().getNewUpper());	
-		
+
 			if (am.getModif().isChangeType() && am.getModif().getNewType()!=null) {
 				switch(am.getModif().getNewType().getValue()) {
 				case 0: am.getEcore().setEType(EcorePackage.Literals.EINT); break;
@@ -139,21 +161,30 @@ public class ModifChangeProperties implements ModifElementVisitor {
 			}
 		}
 	}
-	
+
 	public void Visit(EdataTypeModif dtm){	}
-	
+
+
+	/**
+	 * Change properties of an enumeration.
+	 * @param enm Enumeration.
+	 */
 	public void Visit(EnumModif enm){	
-		
+
 		// for each subEnumLiteral	
 		for (EnumLiteralModif subEnumLit : enm.getEnumLiteralModif()) {
 			//  visitor call for each subenum
 			((EnumLiteralModifImpl) subEnumLit).accept(this);			
 		}
-		
 	}
 
+
+	/**
+	 * Change properties of an enumeration literal.
+	 * @param elm EnumerationLiteral.
+	 */
 	public void Visit(EnumLiteralModif elm){	
-		
+
 		if (elm.getEcore()!=null && elm.getModif()!=null){
 			elm.getEcore().setValue(elm.getModif().getNewValue());	
 			elm.getEcore().setLiteral(elm.getModif().getNewLiteral());

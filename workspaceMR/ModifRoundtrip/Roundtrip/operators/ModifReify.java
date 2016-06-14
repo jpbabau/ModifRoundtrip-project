@@ -1,6 +1,6 @@
- /**
+/**
  * 
- * operator to reify EReference and EENum elements (if necessary)
+ * Operator to reify EReference and EENum elements (if necessary).
  *
  *  Copyright (C) 2013 IDL
  * 
@@ -23,19 +23,29 @@ import ecoremodif.*;
 import ecoremodif.impl.*;
 
 public class ModifReify implements ModifElementVisitor {
-	
+
 	public RootEcoreModif root;
-	
+
+
+	/**
+	 * Reify EReference and EENum elements.
+	 * @param rm Root Ecore+Modif.
+	 */
 	public void VisitRoot(RootEcoreModif rm){
 		// access to the root package 
 		root = rm;
-		
+
 		// visitor call for root package
 		((EpackageModifImpl) rm.getRoot()).accept(this);
 	}
-	
+
+
+	/**
+	 * Reify EReference and EENum elements.
+	 * @param pm Package.
+	 */
 	public void Visit(EpackageModif pm) {
-			
+
 		// for each  subpackage	
 		for (EpackageModif subPackage : pm.getPackageModif()) {
 			//  visitor call for each subpackage
@@ -52,9 +62,14 @@ public class ModifReify implements ModifElementVisitor {
 			((EnumModifImpl) subEnum).accept(this);			
 		}		
 	}
-	
+
+
+	/**
+	 * Reify EReference and EENum elements.
+	 * @param cm Class.
+	 */
 	public void Visit(EclassModif cm){
-		
+
 		if (cm.getEcore()!= null) {
 			// for each attribute	
 			for (EattributeModif att: cm.getAttributeModif()) {
@@ -68,7 +83,12 @@ public class ModifReify implements ModifElementVisitor {
 			}
 		}
 	}
-	
+
+
+	/**
+	 * Reify EReference and EENum elements.
+	 * @param rm Reference.
+	 */
 	public void Visit(EreferenceModif rm){
 		if (rm.getEcore()!=null ){
 			if (rm.getModif().getReify() !=null) {			
@@ -76,12 +96,12 @@ public class ModifReify implements ModifElementVisitor {
 				// initialize to the reified EClass 
 				EcoreFactory theFactory = new EcoreFactoryImpl();
 				EClass refClass = theFactory.createEClass();
-				
+
 				refClass.setAbstract(false);	
 				refClass.setName(rm.getModif().getReify().getNameClass());	
-				
+
 				rm.getFrom().getEcore().getEPackage().getEClassifiers().add(refClass);
-				
+
 				// if rm is not a containment reference
 				// add the reified EClass in the container of the EClass containing rm
 				// create the containment EReference
@@ -96,12 +116,9 @@ public class ModifReify implements ModifElementVisitor {
 					// add the containment to the EClass containing rm.getFrom()
 					for ( EclassModif ecm :root.getAllClassModifications()) {
 						for ( EreferenceModif erm : ecm.getAllReferences()) {
-							if (erm.getTo()==rm.getFrom() && erm.getEcore().isContainment()	) {
-								ecm.getEcore().getEStructuralFeatures().add(aRefC);
-							}
+							if (erm.getTo()==rm.getFrom() && erm.getEcore().isContainment()	) { ecm.getEcore().getEStructuralFeatures().add(aRefC); }
 						}						
 					}
-					
 				}
 				// create the references to/from the reified EClass 
 				EReference toRef = theFactory.createEReference();
@@ -120,7 +137,7 @@ public class ModifReify implements ModifElementVisitor {
 				// add the EReferences to the EClasses
 				rm.getFrom().getEcore().getEStructuralFeatures().add(toRef);
 				refClass.getEStructuralFeatures().add(fromRef);
-				
+
 				// remove the EReference 	
 				EcoreUtil.delete(rm.getEcore());
 				rm.setEcore(null);
@@ -128,47 +145,63 @@ public class ModifReify implements ModifElementVisitor {
 		}
 	}
 
+
+	/**
+	 * Reify EReference and EENum elements.
+	 * @param am Attribute.
+	 */
 	public void Visit(EattributeModif am)  {    
 		if (am.getEcore()!=null && am.getModif()!=null){
 			if (! am.getModif().isRemove() && am.getEnumModif()!=null) {
 				if (am.getEnumModif().getModif().isReify()) {
-				for (EnumLiteralModif elm : am.getEnumModif().getEnumLiteralModif()) {
-					// create to the reified subclasses 
-					EcoreFactory theFactory = new EcoreFactoryImpl();
-					EClass enumClass = theFactory.createEClass();
-				
-					enumClass.setAbstract(am.getClassModif().getEcore().isAbstract());	
-					enumClass.setName(am.getClassModif().getModif().getNewName()+"_"+am.getModif().getNewName()+"_"+elm.getModif().getNewName());	
-					enumClass.getESuperTypes().add(am.getClassModif().getEcore());
-					
-					am.getClassModif().getEcore().getEPackage().getEClassifiers().add(enumClass);
-				}
-				am.getClassModif().getEcore().setAbstract(true);
-				// remove the attribute
-				EcoreUtil.delete(am.getEcore());
-				am.setEcore(null);
+					for (EnumLiteralModif elm : am.getEnumModif().getEnumLiteralModif()) {
+						// create to the reified subclasses 
+						EcoreFactory theFactory = new EcoreFactoryImpl();
+						EClass enumClass = theFactory.createEClass();
+
+						enumClass.setAbstract(am.getClassModif().getEcore().isAbstract());	
+						enumClass.setName(am.getClassModif().getModif().getNewName()+"_"+am.getModif().getNewName()+"_"+elm.getModif().getNewName());	
+						enumClass.getESuperTypes().add(am.getClassModif().getEcore());
+
+						am.getClassModif().getEcore().getEPackage().getEClassifiers().add(enumClass);
+					}
+					am.getClassModif().getEcore().setAbstract(true);
+					// remove the attribute
+					EcoreUtil.delete(am.getEcore());
+					am.setEcore(null);
 				}
 			}
 		}
 	}
-	
+
+
 	public void Visit(EdataTypeModif dtm)  {	}
-	
+
+
+	/**
+	 * Reify EReference and EENum elements.
+	 * @param enm Enumeration.
+	 */
 	public void Visit(EnumModif enm)	   {	
 		if (enm.getEcore() != null && enm.getModif().isReify() ) {
-			
+
 			// remove each subEnumLiteral	
 			for (EnumLiteralModif subEnumLit : enm.getEnumLiteralModif()) {
 				//  visitor call for each Literal
 				((EnumLiteralModifImpl) subEnumLit).accept(this);			
 			}
-			
+
 			// remove enum
 			EcoreUtil.delete(enm.getEcore());
 			enm.setEcore(null);
 		}
 	}
-	
+
+
+	/**
+	 * Reify EReference and EENum elements.
+	 * @param elm EnumLiteral.
+	 */
 	public void Visit(EnumLiteralModif elm){    
 		if (elm.getEcore() != null) {
 			EcoreUtil.delete(elm.getEcore());

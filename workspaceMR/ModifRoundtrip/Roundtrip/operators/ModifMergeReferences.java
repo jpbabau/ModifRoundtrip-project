@@ -1,6 +1,6 @@
 /**
  * 
- *  operator to merge (same name) references
+ *  Operator to merge (same name) references.
  *
  *  Copyright (C) 2013 IDL
  * 
@@ -21,15 +21,25 @@ import ecoremodif.*;
 import ecoremodif.impl.*;
 
 public class ModifMergeReferences implements ModifElementVisitor{
-	
+
+
+	/**
+	 * Visit the root Ecore+Modif in order to merge references with the same name.
+	 * @param rm Root Ecore+Modif.
+	 */
 	public void VisitRoot(RootEcoreModif rm){
 		// access to the root package 
 		EpackageModifImpl root = (EpackageModifImpl) rm.getRoot();
-				
+
 		// visitor call for root package
 		root.accept(this);
 	}
-	
+
+
+	/**
+	 * Visit a package if in order to merge references with the same name.
+	 * @param pm Package.
+	 */
 	public void Visit(EpackageModif pm) { 
 
 		// for each  subpackage	
@@ -43,26 +53,30 @@ public class ModifMergeReferences implements ModifElementVisitor{
 			((EclassModifImpl)subClass).accept(this);			
 		}
 	}
-	
+
+
+	/**
+	 * Merge references with the same name.
+	 * @param cm Class.
+	 */
 	public void Visit(EclassModif cm) {	
-			
+
 		List<EreferenceModif> refs;
 		refs = cm.getReferenceModif();
 		for(int i = 1; i<refs.size(); i++){
 			if(refs.get(i)!=refs.get(i-1) && refs.get(i).getEcore() != null && refs.get(i-1).getEcore() != null){
 				if(refs.get(i).getEcore().getName().equals(refs.get(i-1).getEcore().getName())){
 					if(refs.get(i).getEcore().getEReferenceType() == refs.get(i-1).getEcore().getEReferenceType() && 
-						refs.get(i).getEcore().getLowerBound()==refs.get(i-1).getEcore().getLowerBound() &&
-						refs.get(i).getEcore().getUpperBound()==refs.get(i-1).getEcore().getUpperBound()){
+							refs.get(i).getEcore().getLowerBound()==refs.get(i-1).getEcore().getLowerBound() &&
+							refs.get(i).getEcore().getUpperBound()==refs.get(i-1).getEcore().getUpperBound()){
 						EcoreUtil.delete(refs.get(i-1).getEcore());
-					}else{
-						System.out.println("*** ERROR : There may not be many features named "+refs.get(i).getEcore().getName()+" ***");
-					}
+					}else{ System.out.println("*** ERROR : There may not be many features named "+refs.get(i).getEcore().getName()+" ***"); }
 				}
 			}
 		}
 	}
-	
+
+
 	public void Visit(EreferenceModif rm) {}
 	public void Visit(EattributeModif am) {}
 	public void Visit(EdataTypeModif dtm) {}
