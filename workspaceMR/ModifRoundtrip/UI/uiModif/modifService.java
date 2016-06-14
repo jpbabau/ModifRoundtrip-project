@@ -124,7 +124,7 @@ public class modifService {
 	ArrayList<String> hiddenInstances = new ArrayList<String>();
 	private boolean result;
 
-	
+
 	/**
 	 * Constructor
 	 */
@@ -436,7 +436,7 @@ public class modifService {
 	 */
 	public String Refactor() {
 		if (theRootEcoreModif != null) {
-			if (ApplyOperators.isOk(theRootEcoreModif)) {
+			if (ApplyOperators.ecoreModifIsValid(theRootEcoreModif)) {
 				// launch refactoring operators
 				ApplyOperators.operate(theRootEcoreModif);
 				// save the resulting ecore model		
@@ -490,7 +490,7 @@ public class modifService {
 		EPackage refactoredWithoutK = null;
 		//String refactoredWithoutKFileName = null;
 		if (theRootEcoreModif != null) {
-			if (ApplyOperators.isOk(theRootEcoreModif)) {
+			if (ApplyOperators.ecoreModifIsValid(theRootEcoreModif)) {
 				// launch refactoring operators
 				ApplyOperators.operate(theRootEcoreModif);
 				// save the resulting ecore model		
@@ -524,7 +524,7 @@ public class modifService {
 	public ArrayList<EPackage> Refactoring(RootEcoreModif theRootEcoreModif) {
 		ArrayList<EPackage> refactoredPackages = new ArrayList<EPackage>();
 		if (theRootEcoreModif != null) {
-			if (ApplyOperators.isOk(theRootEcoreModif)) {
+			if (ApplyOperators.ecoreModifIsValid(theRootEcoreModif)) {
 				// launch refactoring operators
 				ApplyOperators.operate(theRootEcoreModif);
 			}
@@ -693,7 +693,7 @@ public class modifService {
 				//UtilEMF.saveMetamodel(refactoredMetamodel, refactoredMetamodelPath.replace("UUID",""));
 			}
 		}else {	CreateModifUML(); 
-			//refactoredMetamodelPath = Refactor();
+		//refactoredMetamodelPath = Refactor();
 		}
 		return refactoredMetamodelPath;
 	}
@@ -757,7 +757,7 @@ public class modifService {
 		return refactoredMetamodelPath;
 	}
 
-	
+
 	/**
 	 * Refactoring and migration.
 	 * 
@@ -819,7 +819,7 @@ public class modifService {
 		}
 	}
 
-	
+
 	/**
 	 * Checks if the domain metamodel and the tool metamodel fully matches.
 	 * 
@@ -841,8 +841,8 @@ public class modifService {
 		else{ check = false; }
 		return check;
 	}
-	
-	
+
+
 	/**
 	 *  Checks if a metamodel fully matches with an existing metamodel.
 	 *  
@@ -863,8 +863,8 @@ public class modifService {
 		List<org.eclipse.emf.compare.Diff> differences = ((org.eclipse.emf.compare.Comparison) comparison).getDifferences();
 		return differences;
 	}
-	
-	
+
+
 	/**
 	 * Indicates the classes to be deleted or not, in order to match the two metamodels.
 	 * 
@@ -896,8 +896,8 @@ public class modifService {
 		}
 		return match;
 	}
-	
-	
+
+
 	/**
 	 * Generate migration specification.
 	 * @param sourceModelPath Path of the model to be migrated.
@@ -914,8 +914,8 @@ public class modifService {
 		System.out.println("[saving] migration specification : ok.");
 		return migratedModelFile;
 	}
-	
-	
+
+
 	/**
 	 * Generate the Migration specification for the input model.
 	 * 
@@ -943,7 +943,7 @@ public class modifService {
 		return migratedModelFile;
 	}
 
-	
+
 	/**
 	 * Onward migration of a given input model to a new model conforming with the targeted tool's definition domain.
 	 * 
@@ -956,8 +956,8 @@ public class modifService {
 		migratedModel = migrt.onwardMigration();
 		return migrt;
 	}
-	
-	
+
+
 	/**
 	 * Onward migration of a given input model to a new model conforming with the targeted tool's definition domain.
 	 * 
@@ -984,8 +984,8 @@ public class modifService {
 		} catch (IOException e) { e.printStackTrace(); }
 		return migrt;
 	}
-	
-	
+
+
 	/**
 	 * Onward migration of a given input model to a new model conforming with the targeted tool's definition domain.
 	 * 
@@ -1012,8 +1012,8 @@ public class modifService {
 		} catch (IOException e) { e.printStackTrace(); }
 		return migrt;
 	}
-	
-	
+
+
 	/**
 	 * Migration of a model.
 	 * 
@@ -1097,8 +1097,8 @@ public class modifService {
 			}
 		}
 	}
-	
-	
+
+
 	/**
 	 * Reverse migration of a processed model.
 	 * 
@@ -1131,8 +1131,8 @@ public class modifService {
 		} catch (IOException e) { e.printStackTrace(); }
 		return migrt;
 	}
-	
-	
+
+
 	/**
 	 * Recontextualization by keys of a reversed model.
 	 * 
@@ -1169,7 +1169,7 @@ public class modifService {
 		} catch (IOException e) { e.printStackTrace(); }
 	}
 
-	
+
 	/**
 	 * Recontextualization by graph of a recontextualized by graph model.
 	 * 
@@ -1184,8 +1184,8 @@ public class modifService {
 		} catch (IOException e) { e.printStackTrace(); }
 		return null;
 	}
-	
-	
+
+
 	/**
 	 * Migration code generation.
 	 * 
@@ -1265,8 +1265,8 @@ public class modifService {
 		bw.close();
 
 	}
-	
-	
+
+
 	/**
 	 * Add deleted references to the migration specification.
 	 * 
@@ -1276,8 +1276,8 @@ public class modifService {
 	{
 		migrationSpecificationGenerator.addDeleteReferences(migration);
 	}
-	
-		
+
+
 	/**
 	 * Clean the custom migration specification.
 	 * 
@@ -1287,7 +1287,7 @@ public class modifService {
 		migrationSpecificationGenerator.cleanMigrationSpecification(migration);
 	}
 
-	
+
 	/**
 	 * Update the migration specification.
 	 * 
@@ -1303,8 +1303,8 @@ public class modifService {
 		catch (IOException e) { e.printStackTrace(); }
 		return newMigration;
 	}
-	
-	
+
+
 	/**
 	 * Return the name of the by default modif specification
 	 * @return modifFileName Name of the modif file.
@@ -1312,8 +1312,8 @@ public class modifService {
 	public String getModifFileName() {
 		return modifFileName;
 	}
-	
-	
+
+
 	/**
 	 * Return the name of the refactored metamodel without keys.
 	 * @return refactoredWithoutKFileName Name of the refactored metamodel.
@@ -1321,8 +1321,8 @@ public class modifService {
 	public String getRefactoredWithoutKFileName(){
 		return refactoredWithoutKFileName;
 	}
-	
-	
+
+
 	/**
 	 * Get the map relating old name and new name of references.
 	 * 
@@ -1331,8 +1331,8 @@ public class modifService {
 	public Map<String,String> getNewReferencesNameMap(){
 		return this.newReferenceName;
 	}
-	
-	
+
+
 	/**
 	 * Get the name of the migrated model.
 	 * 
@@ -1341,8 +1341,8 @@ public class modifService {
 	public String getMigratedModelFileName(){
 		return migratedModelFile;
 	}
-	
-	
+
+
 	/**
 	 * Get the name of the migration specification file.
 	 * 
@@ -1351,8 +1351,8 @@ public class modifService {
 	public String getMigrationFileName(){
 		return migrationFile;
 	}
-	
-	
+
+
 	/**
 	 * Get the name of the recontextualized model.
 	 * 
@@ -1361,8 +1361,8 @@ public class modifService {
 	public String getRecontexGraphFileName(){
 		return recontextualizedFinalModelFile;
 	}
-	
-	
+
+
 	/**
 	 * Get the list of hidden classes.
 	 * 
@@ -1371,8 +1371,8 @@ public class modifService {
 	public ArrayList<String> getHideClassList(){
 		return hideClassList;
 	}
-	
-	
+
+
 	/**
 	 * Get the list of flattened classes.
 	 * 
@@ -1381,8 +1381,8 @@ public class modifService {
 	public ArrayList<String> getFlattenClassList(){
 		return flattenClassList;
 	}
-	
-	
+
+
 	/**
 	 * Get the rename map.
 	 * 
@@ -1391,8 +1391,8 @@ public class modifService {
 	public Map<String, Map<String, Map<String, String>>>  getRenameMap(){
 		return renamemap;
 	}
-	
-	
+
+
 	/**
 	 * Construct a map relating oldname and new name of all elements of a metamodel.
 	 */
@@ -1417,8 +1417,8 @@ public class modifService {
 			renamemap.put(oldNameClass, tempMap);
 		}
 	}
-	
-	
+
+
 	/**
 	 * Build a map with all references going to an instance.
 	 * @param rootPackage Metamodel to which the model is conform.
@@ -1430,7 +1430,7 @@ public class modifService {
 		return referencesToInstanceMap;
 	}
 
-	
+
 	/**
 	 * Build a map of supertypes.
 	 * @param rootEcoreModif 
@@ -1449,8 +1449,8 @@ public class modifService {
 			}
 		}
 	}
-	
-	
+
+
 	/**
 	 * Fills the map of instances whose EClasses are hidden.
 	 * 
@@ -1485,7 +1485,7 @@ public class modifService {
 		return hidemap;
 	}
 
-	
+
 	/**
 	 * Reversed hideMap for reverse migration.
 	 * 
@@ -1522,7 +1522,7 @@ public class modifService {
 		return reversedMap;
 	}
 
-	
+
 	/**
 	 * Reversed names map for reverse migration
 	 * 
@@ -1551,12 +1551,11 @@ public class modifService {
 		return result;
 	}
 
-	
+
 	/**
 	 * Build the list of classes marked with the hide operator.
 	 * 
 	 * @param rootEcoreModif Root ecore.
-	 * @return hideClassList List of hidden classes.
 	 */
 	public void buildHideList(RootEcoreModif rootEcoreModif){	
 		hideClassList = new ArrayList<String>();
@@ -1567,12 +1566,11 @@ public class modifService {
 		}
 	}
 
-	
+
 	/**
 	 * Build the list of classes marked with the flatten operator.
 	 * 
 	 * @param rootEcoreModif Root ecore.
-	 * @return flattenClassList List of flattened classes.
 	 */
 	public void buildFlattenList(RootEcoreModif rootEcoreModif){	
 		flattenClassList = new ArrayList<String>();
@@ -1583,7 +1581,7 @@ public class modifService {
 		}
 	}
 
-	
+
 	/**
 	 * Check if a class has supertypes.
 	 * 
@@ -1604,7 +1602,7 @@ public class modifService {
 		return result;
 	}
 
-	
+
 	/**
 	 * Check if the class of an instance is hidden.
 	 * 
@@ -1621,8 +1619,8 @@ public class modifService {
 		}
 		return hide;
 	}
-	
-	
+
+
 	/**
 	 * Verify dependences to external ecores.
 	 * 
@@ -1647,8 +1645,8 @@ public class modifService {
 		}
 		return depends;
 	}
-	
-	
+
+
 	/**
 	 *  Add schema location to a xmi file.
 	 * @param inputfile Input file.

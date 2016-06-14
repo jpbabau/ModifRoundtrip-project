@@ -585,28 +585,13 @@ public class UtilEMF {
 		}*/
 	}
 
-	/**
-	 * Buid the map of references of an instance.
-	 * 
-	 * @param modelRoot Root object.
-	 * @param rootPackage Root package.
-	 * @return referencesToInstanceMap Map relating a class and the list of references of the class.
-	 */
-	private Map<String, ArrayList<String>> buildMapReferencesToInstance(EObject modelRoot, EPackage rootPackage){
-		Map<String, ArrayList<String>> referencesToInstanceMap = new HashMap<String, ArrayList<String>>();
-		for(EReference reference : modelRoot.eClass().getEAllReferences()){
-			//String referenceName = reference.getName();
-			//EClassifier referenceType = reference.getEType();
-		}
-		return referencesToInstanceMap;
-	}
 
 	/**
 	 * Relink a package with its external packages.
 	 * 
-	 * @param rootPackage Root package.
+	 * @param packageKeyPackageMap
 	 * @param relatedPackages List of external packages related to a package.
-	 * @return packageLocationMap Map relating packages and their paths.
+	 * @return
 	 */
 	private Map<EPackage, String> relinkMetamodels(Map<EPackage, EPackage> packageKeyPackageMap, Map<EPackage, ArrayList<EPackage>> relatedPackages){
 		ArrayList<EPackage> packageWithUUID = new ArrayList<EPackage>();
@@ -971,6 +956,27 @@ public class UtilEMF {
 	}
 
 	/**
+	 * Return a class contained in a package.
+	 * @param ePackage Package in which the class is searched.
+	 * @param eClassName name of the class to search in the package.
+	 * @return A class of the package.
+	 */
+	public static EClass getClass(EPackage ePackage, String eClassName){
+		EClass ec = null;
+		for(TreeIterator<EObject> it = ePackage.eAllContents(); it.hasNext();){
+			EObject next = it.next();
+			if(next instanceof EClass){
+				EClass c = (EClass) next;
+				if(c.getName().equals(eClassName)){
+					ec = c;
+					break;
+				}
+			}
+		}
+		return ec;
+	}
+
+	/**
 	 * Add super to a package. And associate it to existing classes of the package.
 	 * @param rootPackage Root object of the metamodel.
 	 * @param packageKeyPackageMap Map relatinf packages with UUIDs and packages without UUIDs.
@@ -990,9 +996,9 @@ public class UtilEMF {
 	/**
 	 * Add super to a package. And associate it to existing classes of the package.
 	 * @param rootPackage Root object of the metamodel.
-	 * @param packageKeyPackageMap Map relatinf packages with UUIDs and packages without UUIDs.
+	 * @param relatedPackagesMap
 	 * @param toAddMap
-	 * @return rootPackage Root package containing the added super class.
+	 * @return
 	 */
 	private EPackage addSuperClasses(EPackage rootPackage, Map<EPackage, ArrayList<EPackage>> relatedPackagesMap, Map<String, ArrayList<EClass>> toAddMap){
 		for(EPackage subp : rootPackage.getESubpackages()){
@@ -1334,9 +1340,18 @@ public class UtilEMF {
 	 * @param metamodelFilePath File path of the metamodel to load.
 	 * @return Root package of the loaded metamodel.
 	 */
-	public static EPackage loadMetamodel (String metamodelFilePath) {		
+	public static EPackage loadMetamodel (String metamodelFilePath) {
+		EPackage loadedMetamodel = null;
+		File metamodelFile = new File(metamodelFilePath);
+		if(metamodelFile.exists()){
+			loadedMetamodel = loadMetamodel(URI.createFileURI(new File(metamodelFilePath).getAbsolutePath()));
+		}else{
+		System.err.println("[Loading] file "+metamodelFilePath+" : file does not exist.");
+		System.exit(1);
+		}
+		
 		// Metamodel loading:				
-		return loadMetamodel(URI.createFileURI(new File(metamodelFilePath).getAbsolutePath()));
+		return loadedMetamodel;
 	}
 
 	/**
@@ -1506,8 +1521,9 @@ public class UtilEMF {
 
 	/**
 	 * Metamodel processor: removes annotations. 
-	 * @param metaModelRootObject Root object of the metamodel to be processed.
-	 * @return Root object of the updated metamodel (without annotations).
+	 * @param rootPackage object of the updated metamodel (without annotations).
+	 * @param relatedPackages
+	 * @return
 	 */
 	public static EPackage removeAnnotation(EPackage rootPackage, Map<EPackage, ArrayList<EPackage>> relatedPackages){
 		for(EPackage subp : rootPackage.getESubpackages()){
@@ -1694,5 +1710,21 @@ public class UtilEMF {
 	public static Map<String, Map<String, ArrayList<Object>>> buildMapDerived() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	/**
+	 * Build the map of references of an instance.
+	 * 
+	 * @param modelRoot Root object.
+	 * @param rootPackage Root package.
+	 * @return referencesToInstanceMap Map relating a class and the list of references of the class.
+	 */
+	public static Map<String, ArrayList<String>> buildMapReferencesToInstance(EObject modelRoot, EPackage rootPackage){
+		Map<String, ArrayList<String>> referencesToInstanceMap = new HashMap<String, ArrayList<String>>();
+		for(EReference reference : modelRoot.eClass().getEAllReferences()){
+			//String referenceName = reference.getName();
+			//EClassifier referenceType = reference.getEType();
+		}
+		return referencesToInstanceMap;
 	}
 }

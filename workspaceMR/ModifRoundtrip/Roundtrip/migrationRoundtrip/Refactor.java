@@ -87,7 +87,7 @@ public class Refactor {
 			modifIO.setModifIO(sourceMetamodel, modifSpecification);	
 			theRootEcoreModif = modifIO.getEcoreModif();			
 			if (theRootEcoreModif != null) {
-				if (ApplyOperators.isOk(theRootEcoreModif)) {
+				if (ApplyOperators.ecoreModifIsValid(theRootEcoreModif)) {
 					// launch refactoring operators
 					ApplyOperators.operate(theRootEcoreModif);
 				}

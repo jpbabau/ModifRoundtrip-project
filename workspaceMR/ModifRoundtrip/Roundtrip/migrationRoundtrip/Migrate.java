@@ -37,7 +37,13 @@ public class Migrate {
 	
 	public static void migrateModel(EPackage targetMetamodel){
 		MigrationRoundtrip migrt = null;
-		migrt = new MigrationRoundtrip(migrationSpecification, targetMetamodel);
+		migrt = new MigrationRoundtrip(migrationSpecification, null, targetMetamodel);
+		targetModel = migrt.onwardMigration();
+	}
+	
+	public static void migrateModel(EPackage sourceMetamodel, EPackage targetMetamodel){
+		MigrationRoundtrip migrt = null;
+		migrt = new MigrationRoundtrip(migrationSpecification, sourceMetamodel, targetMetamodel);
 		targetModel = migrt.onwardMigration();
 	}
 	

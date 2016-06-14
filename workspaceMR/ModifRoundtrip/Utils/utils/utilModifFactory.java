@@ -338,7 +338,8 @@ public class utilModifFactory {
 
 	/**
 	 * 
-	 * @param eraseAllModel
+	 * @param epackage
+	 * @return
 	 */
 	public Modifications generateEraseAll(EPackage epackage) {
 		Modifications eraseAllModel = generateNoModif(epackage);

@@ -26,27 +26,27 @@ import utils.UtilEMF;
 public class Main {
 
 	/** 
-	 * GUI = true -> with GUI
-	 * GUI = false -> without GUI
+	 * GUI = true, with GUI
+	 * GUI = false, without GUI
 	 */
 	static boolean GUI = false;
 
 	/**
-	 * mode = 1 -> refactoring
-	 * mode = 2 -> coevolution
-	 * mode = 3 -> reuse
+	 * mode = 1,  refactoring
+	 * mode = 2 ,  coevolution
+	 * mode = 3,  reuse
 	 */
 	static int mode;
 
 	/**
-	 * isUML = true -> the source metamodel is UML
-	 * isUML = false -> the source metamodel is not UML
+	 * isUML = true, the source metamodel is UML
+	 * isUML = false, the source metamodel is not UML
 	 */
 	static boolean isUML;
 
 	/**
-	 * withMigrationCodeGeneration = true -> the code for migration is generated
-	 * withMigrationCodeGeneration = false -> the code for migration is not generated and the migration is applied automatically
+	 * withMigrationCodeGeneration = true, the code for migration is generated
+	 * withMigrationCodeGeneration = false, the code for migration is not generated and the migration is applied automatically
 	 */
 	static boolean withMigrationCodeGeneration;
 

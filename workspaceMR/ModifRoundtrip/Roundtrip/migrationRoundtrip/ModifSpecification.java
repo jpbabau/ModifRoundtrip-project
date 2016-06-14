@@ -90,7 +90,7 @@ public class ModifSpecification {
 	 */
 	public static void minimizeStrong() {
 		Minimize tool = new Minimize();
-		tool.go(modifSpecification, 2);		
+		tool.accept(modifSpecification, 2);		
 	}
 
 	/**
@@ -100,7 +100,7 @@ public class ModifSpecification {
 	 */
 	public static void minimizeToUpdate() {
 		Minimize tool = new Minimize();
-		tool.go(modifSpecification, 1);
+		tool.accept(modifSpecification, 1);
 	}
 	
 	/**

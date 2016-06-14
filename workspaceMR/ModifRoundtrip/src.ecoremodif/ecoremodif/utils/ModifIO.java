@@ -31,7 +31,7 @@ import com.google.inject.Injector;
  * This program is free software: you can redistribute it and/or modify
  *  under the terms of the GNU General Public License V 3
  *  
- *  @authors Mickaël kerboeuf, Jean-Philippe Babau
+ *  @author Mickaël kerboeuf, Jean-Philippe Babau
  *  22/11/2013
  */
 
@@ -85,12 +85,10 @@ public class ModifIO {
 				return ((EPackage) resource.getContents().get(0));
 	}
 
-
 	/**
 	 * Utilitary fonction for serialise and deserialise a modif file or an ecore file. 
 	 * @param inputFile File to be loaded.
-	 * @param isModif Indicates the nature of the file: Modif (true) or Ecore (false).
-	 * @return Objet racine du fichier fourni.
+	 * @return Root object of the given file.
 	 */
 	public Modifications LoadModif(String inputFile) {
 

@@ -100,19 +100,16 @@ public class UtilUUID {
 			// Get only the classes
 			if (next instanceof EClass) {
 				EClass c = (EClass) next;
-				System.out.println("c  ! "+c.getName());
 				// Scan of inherited classes
 				EList<EClass> superClasses = c.getESuperTypes();
-				System.out.println("superClasses  ! "+superClasses);
-				System.out.println("size  ! "+superClasses.size());
 				// Add classes to the top classes list
 				if(superClasses.size() == 0) {
 					topClassesList.add(c);
-					System.out.println("added "+c.getName());
+				}else if(superClasses.size() == 1){
+					if(superClasses.get(0).getName().equals("UUIDClass")){ topClassesList.add(c); }
 				}
 			}
 		}
-		System.out.println("topClassesList  ! "+topClassesList);
 		return topClassesList;
 	}
 
@@ -213,8 +210,7 @@ public class UtilUUID {
 		// All operations and annotations are removed from the metamodel
 		metamodelWithUUID = UtilEMF.removeOperations(UtilEMF.removeOppositeFeature(UtilEMF.removeAnnotations(metamodelWithUUID)));
 		
-		ArrayList<EClass> topClasses = getTopClasses(metamodelWithUUID);
-		
+		ArrayList<EClass> topClasses = getTopClasses(metamodelWithUUID);		
 		// Create UUIDClass
 		EClass UUIDClass = createUUIDClass();
 		// Add the UUIDClass to the metamodel
@@ -224,7 +220,9 @@ public class UtilUUID {
 			// Get only the classes
 			if (next instanceof EClass) {
 				EClass c = (EClass) next;
-				if(topClasses.contains(c)) c.getESuperTypes().add(UUIDClass); 
+				if(topClasses.contains(c)){
+					c.getESuperTypes().add(UUIDClass); 
+				}
 			}
 		}
 		return metamodelWithUUID;

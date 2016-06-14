@@ -168,9 +168,7 @@ public class MigrationRoundtrip {
 		URI outputMetamodelFile = URI.createURI(migration.getOutputMetamodelURI());
 		// Initialisation of metamodels and of the input model:	
 		this.metamodelSource = UtilEMF.loadMetamodel(inputMetamodelFile);
-		
-		System.out.println("outputMetamodelFile "+outputMetamodelFile);
-		
+				
 		this.metamodelTarget = UtilEMF.loadMetamodel(outputMetamodelFile);
 				
 		//this.model1SInit     = UtilEMF.loadModel(inputModelFile, this.metamodelSource);
@@ -221,9 +219,9 @@ public class MigrationRoundtrip {
 	
 	public MigrationRoundtrip(Migration migration, EPackage sourceMetamodel, EPackage targetMetamodel) {
 		// Extraction of URIs:
-		URI inputModelFile      = URI.createURI(migration.getInputModelURI()     );
+		URI inputModelFile      = URI.createURI(migration.getInputModelURI());
 		URI inputMetamodelFile  = URI.createURI(migration.getInputMetamodelURI());
-		URI outputFile          = URI.createURI(migration.getOutputModelURI()    );
+		URI outputFile          = URI.createURI(migration.getOutputModelURI());
 		URI outputMetamodelFile = URI.createURI(migration.getOutputMetamodelURI());
 		// Initialisation of metamodels and of the input model:	
 		this.metamodelSource = sourceMetamodel;
@@ -271,6 +269,19 @@ public class MigrationRoundtrip {
 				}
 			}
 		}
+		
+		System.out.println(" +++ targetMetamodelUUID : --- "+ this.metamodelTarget.getName());
+		for(EClassifier ec: this.metamodelTarget.getEClassifiers()){
+			System.out.print(ec.getName()+ " : ");
+			for(EObject ea : ec.eContents()){
+				if(ea instanceof EAttribute){
+					System.out.println(((EAttribute) ea).getName());
+				}
+			}
+		}
+
+		
+		
 		// Metamodel update:		
 		this.model2TMigrated = UtilEMF.changeMetamodel(model1SInitCopy, this.metamodelTarget);
 		return this.model2TMigrated;

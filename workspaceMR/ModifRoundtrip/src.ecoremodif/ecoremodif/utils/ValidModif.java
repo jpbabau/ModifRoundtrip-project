@@ -12,7 +12,7 @@ import ecoremodif.impl.*;
  * This program is free software: you can redistribute it and/or modify
  *  under the terms of the GNU General Public License V 3
  *  
- *  @authors Jean-Philippe Babau
+ *  @author Jean-Philippe Babau
  *  22/11/2013
  */
 public class ValidModif {
@@ -141,8 +141,8 @@ public class ValidModif {
 
 	/**
 	 * Verifies if the EnumModif is well formed.
-	 * @param nm EnumModif to validate.
-	 * @return valid True if it is well formed, False otherwise
+	 * @param enm EnumModif to validate.
+	 * @return valid True if it is well formed, False otherwise.
 	 */
 	public boolean isValid(EnumModif enm){	
 		// TODO complete validation
