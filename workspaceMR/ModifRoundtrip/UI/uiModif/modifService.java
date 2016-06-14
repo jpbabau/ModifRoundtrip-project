@@ -121,6 +121,10 @@ public class modifService {
 	protected Map<String, String> newReferenceName;
 	protected Map<String, Map<String, ArrayList<String>>> referencesToClassMap;
 
+	ArrayList<String> hiddenInstances = new ArrayList<String>();
+	private boolean result;
+
+	
 	/**
 	 * Constructor
 	 */
@@ -659,7 +663,6 @@ public class modifService {
 			generateModifFile(projectSourceFolder+"/metamodel/UML.ecore", modifSpecificationType, modifFileName, false);
 		}*/
 		}
-
 		// Refactoring
 		ProjectFolder = f.getParentFile();
 		if(coevolution) { setFiles(f.getParentFile().getParent().toString(), sourceMetamodelUUIDPath, modifFileName, null, null); }
@@ -694,7 +697,6 @@ public class modifService {
 		}
 		return refactoredMetamodelPath;
 	}
-
 
 
 	/**
@@ -754,7 +756,6 @@ public class modifService {
 		}
 		return refactoredMetamodelPath;
 	}
-
 
 	
 	/**
@@ -865,81 +866,11 @@ public class modifService {
 	
 	
 	/**
-	 * Return the name of the by default modif specification
-	 * @return modifFileName Name of the modif file.
-	 */
-	public String getModifFileName() {
-		return modifFileName;
-	}
-	
-	
-	/**
-	 * Return the name of the refactored metamodel without keys.
-	 * @return refactoredWithoutKFileName Name of the refactored metamodel.
-	 */
-	public String getRefactoredWithoutKFileName(){
-		return refactoredWithoutKFileName;
-	}
-	
-	
-	/**
-	 * Build a map with all references going to an instance.
-	 * @param rootPackage Metamodel to which the model is conform.
-	 * @return referencesToInstanceMap Map relating an instance with all reference going to itself
-	 */
-	public Map<String, ArrayList<String>> buildMapReferencesToInstance(EPackage rootPackage){
-		Map<String, ArrayList<String>> referencesToInstanceMap = null ;
-		referencesToInstanceMap = UtilEMF.buildMapReferencesToInstance(UtilEMF.loadModel(originalModelFile, originalEcoreFile), rootPackage);
-		return referencesToInstanceMap;
-	}
-
-
-
-
-	/**
-	 *  Add schema location to a xmi file.
-	 * @param inputfile Input file.
-	 * @param finalModelFile Model with the schema location.
-	 * @param URI URI of the metamodel.
-	 * @throws IOException
-	 */
-	public void addSchemaLocation(String inputfile, String finalModelFile, String URI, String metamodelName) throws IOException {
-		FileReader fr=new FileReader(inputfile);
-		BufferedReader br=new BufferedReader(fr);
-
-		File fout = new File(finalModelFile);
-		FileOutputStream fos = new FileOutputStream(fout);
-
-		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
-		String line=br.readLine();
-
-		while (line!=null) {
-			String xmi = "xmlns:xmi=\"http://www.omg.org/XMI\"";
-			//String nom = "Statechart.ecore";
-			if(line.contains(xmi)){
-				String newLine = line.replace(xmi, "xsi:schemaLocation=\""+ URI + " ../metamodel/"+ metamodelName +"\""+ " "+xmi);
-				bw.write(newLine);
-			}else{ bw.write(line); }
-			bw.newLine();  
-			line=br.readLine();
-		} 
-		br.close();
-		fr.close();  
-		bw.close();
-	}
-
-
-
-	/************************************************/
-
-
-
-
-
-	/**
-	 * Indicates the classes to be deleted or not, in order to match the two metamodels
+	 * Indicates the classes to be deleted or not, in order to match the two metamodels.
+	 * 
+	 * @param differences List of differences.
 	 * TODO: indicate differences related to attributes and references
-	 * @return returns true if the metamodel match or false if they do not match
+	 * @return return true if the metamodel match or false if they do not match.
 	 */
 	public boolean getConcreteDifferences(List<Diff> differences) {
 		boolean match = false;
@@ -952,17 +883,11 @@ public class modifService {
 						String className = split[1].substring(split[1].lastIndexOf(" "), split[1].length());
 						DifferenceKind kind = diff.getKind();
 						DifferenceSource source = diff.getSource();
-						if(kind.getName().equals("ADD") && source.getName().equals("LEFT")) {
-							System.out.println("  Remove the"+className+ " EClass");
-						}else if(kind.getName().equals("DELETE") && source.getName().equals("LEFT")) {
-							System.out.println("  Do not remove the"+className+ " EClass");
-						}
+						if(kind.getName().equals("ADD") && source.getName().equals("LEFT")) { System.out.println("  Remove the"+className+ " EClass"); }
+						else if(kind.getName().equals("DELETE") && source.getName().equals("LEFT")) { System.out.println("  Do not remove the"+className+ " EClass"); }
 					}
-
 				}else if(split[0].contains("AttributeChangeSpec")) {
-					if(split[0].contains("nsURI")) {
-						System.out.println("  Modify the nsURI");
-					}
+					if(split[0].contains("nsURI")) { System.out.println("  Modify the nsURI"); }
 				}
 			}
 		}else {
@@ -971,41 +896,37 @@ public class modifService {
 		}
 		return match;
 	}
-
-
-	public void constructRenameMap(){
-		HashMap<String, Map<String, Map<String, String>>>  RenameMap = new HashMap<String, Map<String, Map<String, String>>>();
-		for( EclassModif  ecm : theRootEcoreModif.getAllClassModifications()){
-			String oldNameClass = ecm.getModif().getOldName();
-			String newNameClass = ecm.getModif().getNewName();
-			Map <String, String> featuresNameMap = new HashMap<String, String>();
-			for(EattributeModif att : ecm.getAllAttributes()){
-				String oldNameAtt = att.getModif().getOldName();
-				String newNameAtt = att.getModif().getNewName();
-				featuresNameMap.put(oldNameAtt, newNameAtt);
-			}
-			for(EreferenceModif ref : ecm.getAllReferences()){
-				String oldNameRef = ref.getModif().getOldName();
-				String newNameRef = ref.getModif().getNewName();
-				featuresNameMap.put(oldNameRef, newNameRef);
-			}
-			Map<String, Map<String, String>> tempMap = new HashMap<String, Map<String,String>>();
-			tempMap.put(newNameClass, featuresNameMap);
-			renamemap.put(oldNameClass, tempMap);
-		}
-	}
-
+	
+	
 	/**
-	 * Generates the Migration specification
-	 * 
-	 * @param inputModel
-	 * @param keyModelFileName
+	 * Generate migration specification.
+	 * @param sourceModelPath Path of the model to be migrated.
+	 * @param sourceMetamodelPath Path of the metamodel to which the model is conform.
+	 * @param targetModelPath Path of the migrated model.
+	 * @param targetMetamodelPath Path of the metamodel to which the migrated model is conform.
+	 * @return migratedModelFile Name of the migrated model.
 	 * @throws IOException
-	 * 
-	 * @return Name of the migrated model
 	 */
-	public String GenerateMigrationSpecification(String inputModel, String keyModelFileName, 
-			ArrayList<String> hideClassesList, ArrayList<String> flattenClassesList) throws IOException{	
+	public String GenerateMigrationSpecification(String sourceModelPath, String sourceMetamodelPath, String targetModelPath, String targetMetamodelPath) throws IOException{	
+		migratedModelFile = targetModelPath;
+		migrationSpecificationGenerator = new MigrationSpecificationGenerator(theRootEcoreModif, projectFile, sourceModelPath, migratedModelFile);
+		migrationFile = migrationSpecificationGenerator.getMigrationFileName();
+		System.out.println("[saving] migration specification : ok.");
+		return migratedModelFile;
+	}
+	
+	
+	/**
+	 * Generate the Migration specification for the input model.
+	 * 
+	 * @param inputModel Model to be migrated.
+	 * @param keyModelFileName Model with keys.
+	 * @param hideClassesList List of hidden classes.
+	 * @param flattenClassesList List of flatten classes.
+	 * @return migratedModelFile Name of the migrated model.
+	 * @throws IOException
+	 */
+	public String GenerateMigrationSpecification(String inputModel, String keyModelFileName, ArrayList<String> hideClassesList, ArrayList<String> flattenClassesList) throws IOException{	
 		Modifications theRootModif = modifIO.LoadModif(modifFile);	
 		renamemap = new HashMap<String, Map<String, Map<String, String>>>();
 		constructRenameMap();
@@ -1022,27 +943,86 @@ public class modifService {
 		return migratedModelFile;
 	}
 
+	
 	/**
+	 * Onward migration of a given input model to a new model conforming with the targeted tool's definition domain.
 	 * 
-	 * @param sourceModelPath
-	 * @param sourceMetamodelPath
-	 * @param targetModelPath
-	 * @param targetMetamodelPath
-	 * @return
-	 * @throws IOException
+	 * @return migrt Migration.
 	 */
-	public String GenerateMigrationSpecification(String sourceModelPath, String sourceMetamodelPath,
-			String targetModelPath, String targetMetamodelPath) throws IOException{	
-		migratedModelFile = targetModelPath;
-		migrationSpecificationGenerator = new MigrationSpecificationGenerator(theRootEcoreModif, projectFile, sourceModelPath, migratedModelFile);
-		migrationFile = migrationSpecificationGenerator.getMigrationFileName();
-		System.out.println("[saving] migration specification : ok.");
-		return migratedModelFile;
+	public MigrationRoundtrip Migration() {
+		MigrationRoundtrip migrt = null;
+		Migration migration = (Migration) UtilEMF.loadModel(this.migrationFile, MigrationPackage.eINSTANCE);
+		migrt = new MigrationRoundtrip(migration);
+		migratedModel = migrt.onwardMigration();
+		return migrt;
 	}
-
-	/** Migration code generation or automatic migration
-	 * @throws IOException 
+	
+	
+	/**
+	 * Onward migration of a given input model to a new model conforming with the targeted tool's definition domain.
 	 * 
+	 * @param newReferenceNameMap Map of references names.
+	 * @param renameMap Map of classes and attributes names. 
+	 * @return migrt Migration.
+	 */
+	public MigrationRoundtrip Migration(Map<String,String> newReferenceNameMap, Map<String, Map<String, Map<String, String>>> renameMap) {
+		MigrationRoundtrip migrt = null;
+		try {
+			Migration migration = (Migration) UtilEMF.loadModel(this.migrationFile, MigrationPackage.eINSTANCE);
+			Map<String, Map<String, ArrayList<ArrayList<String>>>>  hideMap = new HashMap<String, Map<String, ArrayList<ArrayList<String>>>>();
+			hideMap = createHideMap(migration);
+			migrt = new MigrationRoundtrip(migration);
+			EObject migratedModel;
+			if(hasHide(migration)){ 
+				migratedModel = migrt.onwardMigrationHide(migration, newReferenceNameMap, renameMap); }
+			else{ 
+				//migratedModel = migrt.onwardMigration(); 
+				migratedModel = migrt.onwardMigrationRename(renameMap);
+			}
+			migrt.serializeMigratedModel();
+			System.out.println("[saving] migrated file : ok.");	
+		} catch (IOException e) { e.printStackTrace(); }
+		return migrt;
+	}
+	
+	
+	/**
+	 * Onward migration of a given input model to a new model conforming with the targeted tool's definition domain.
+	 * 
+	 * @param newReferenceNameMap Map of references names.
+	 * @param renameMap Map of classes and attributes names. 
+	 * @param migrationFile Name of the migration specification.
+	 * @return migrt Migration.
+	 */
+	public MigrationRoundtrip Migration(Map<String,String> newReferenceNameMap, Map<String, Map<String, Map<String, String>>> renameMap, String migrationFile) {
+		MigrationRoundtrip migrt = null;
+		try {
+			migration = (Migration) UtilEMF.loadModel(migrationFile, MigrationPackage.eINSTANCE);
+			Map<String, Map<String, ArrayList<ArrayList<String>>>>  hideMap = new HashMap<String, Map<String, ArrayList<ArrayList<String>>>>();
+			hideMap = createHideMap(migration);
+			migrt = new MigrationRoundtrip(migration);
+			EObject migratedModel;
+			if(hasHide(migration)){ migratedModel = migrt.onwardMigrationHide(migration, newReferenceNameMap, renameMap); }
+			else{ 
+				//migratedModel = migrt.onwardMigration(); 
+				migratedModel = migrt.onwardMigrationRename(renameMap);
+			}
+			migrt.serializeMigratedModel();
+			System.out.println("[saving] migrated file : ok.");	
+		} catch (IOException e) { e.printStackTrace(); }
+		return migrt;
+	}
+	
+	
+	/**
+	 * Migration of a model.
+	 * 
+	 * @param projectSourceFolder Folder containing metamodels and models.
+	 * @param sourceModelPath Path of the model to be migrated.
+	 * @param refactoredMetamodelPath Path of the refactored metamodel.
+	 * @param isUML True if the metamodel is UML. False otherwise.
+	 * @param withMigrationCodeGeneration True if the migration code has to be generated. False otherwise.
+	 * @throws IOException
 	 */
 	public void Migrating(String projectSourceFolder, String sourceModelPath, String refactoredMetamodelPath, boolean isUML, boolean withMigrationCodeGeneration) throws IOException {
 		String sourceModelUUIDPath;
@@ -1053,7 +1033,6 @@ public class modifService {
 		EObject modelUUID2;
 		String migrationSpecificationName;
 		EObject migratedModel;
-
 		if(isUML) {
 			sourceModelUUIDPath = sourceModelPath.replace("."+theRootEcoreModif.getRoot().getModif().getOldName(), ".umluuid.xmi");
 			sourceMetamodelUUIDPath = theRootEcoreModif.getRoot().getModif().getOldURIName();
@@ -1118,12 +1097,101 @@ public class modifService {
 			}
 		}
 	}
-
+	
+	
 	/**
-	 * Migration code generation
-	 * @param projectSourceFolder
-	 * @param migrationSpecificationName
-	 * @param migratedModelNoUUIDPath
+	 * Reverse migration of a processed model.
+	 * 
+	 * @param migrt migration specification.
+	 * @return migration Migration object.
+	 */
+	public MigrationRoundtrip ReverseMigration(MigrationRoundtrip migrt){
+		try {
+			this.migration = (Migration) UtilEMF.loadModel(this.migrationFile, MigrationPackage.eINSTANCE);
+			EObject toolOutputModel = UtilEMF.loadModel(this.toolOutputModelFile, URI.createURI(migration.getOutputMetamodelURI()).path());
+			String reversedModelName = null;
+			if(isUML){
+				String inputmodelName = migration.getInputModelURI();
+				String[] strArray = inputmodelName.split("\\.");
+				String modelName = strArray[0];
+				reversedModelName = (inputmodelName.replace(modelName, modelName+"_reversed").replace("file:",""));
+			}else{
+				String inputmodelName = migration.getInputModelURI();
+				String[] strArray = inputmodelName.split("\\.");
+				String metamodelName = strArray[1];
+				String[] strArrayTool = toolOutputModelFile.split("\\.");
+				String toolPutputModelName = strArrayTool[0];
+				String metamodelToolName = strArrayTool[1];
+				reversedModelName = toolOutputModelFile.replace(toolPutputModelName, toolPutputModelName+"_reversed").replace(metamodelToolName, metamodelName);			
+			}
+			Map<String,Map<String,Map<String,String>>> inversedMap = reversedMap(renamemap);
+			if(hasHide(migration)){	UtilEMF.saveModel(migrt.reverseMigration(toolOutputModel, inversedMap, migration), reversedModelName); }
+			else{ UtilEMF.saveModel(migrt.reverseMigration(toolOutputModel), reversedModelName); }
+			System.out.println("[saving] reversed file : ok.");	
+		} catch (IOException e) { e.printStackTrace(); }
+		return migrt;
+	}
+	
+	
+	/**
+	 * Recontextualization by keys of a reversed model.
+	 * 
+	 * @param migrt Migration object.
+	 */
+	public void Recontextualization(MigrationRoundtrip migrt){
+		try {
+			String recontextualizedKeysModelFile = null;
+			String inputmodelName = migration.getInputModelURI();
+			File f = new File(inputmodelName);
+			String[] strArray = inputmodelName.split("\\.");
+			String metamodelName = strArray[1];
+			String[] strArrayTool = toolOutputModelFile.split("\\.");
+			String toolPutputModelName = strArrayTool[0];
+			String metamodelToolName = strArrayTool[1];
+			recontextualizedKeysModelFile = toolOutputModelFile.replace(toolPutputModelName, toolPutputModelName+"_recontextkey").replace(metamodelToolName, metamodelName);	
+			UtilEMF.saveModel(migrt.recontextualizationKey(), recontextualizedKeysModelFile);
+			System.out.println("[saving] recontextualized by key file : ok.");	
+		} catch (IOException e) { e.printStackTrace(); }
+		Graph g = (Graph) UtilEMF.loadModel(graphFile, DependencyPackage.eINSTANCE);
+		try {
+			String inputmodelName = migration.getInputModelURI();
+			File f = new File(inputmodelName);
+			String[] strArray = inputmodelName.split("\\.");
+			//recontextualizedGraphModelFile = (inputmodelName.replace(modelName, modelName+"_recontextgraph").replace("file:",""));
+			recontextualizedFinalModelFile = (toolOutputModelFile.replace("_migrated", "_recontextgraph"));
+			String[] strArrayTool = toolOutputModelFile.split("\\.");
+			String toolPutputModelName = strArrayTool[0];
+			String metamodelToolName = strArrayTool[1];
+			String metamodelName = strArray[1];
+			recontextualizedGraphModelFile = toolOutputModelFile.replace(toolPutputModelName, toolPutputModelName+"_recontextgraph").replace(metamodelToolName, metamodelName);	
+			UtilEMF.saveModel(migrt.recontextualizationGraph(g),recontextualizedGraphModelFile);
+			System.out.println("[saving] recontextualized by graph file : ok.");	
+		} catch (IOException e) { e.printStackTrace(); }
+	}
+
+	
+	/**
+	 * Recontextualization by graph of a recontextualized by graph model.
+	 * 
+	 * @param migrt Migration object.
+	 * @return
+	 */
+	public MigrationRoundtrip RecontextualizationGraph(MigrationRoundtrip migrt) {
+		Graph g = (Graph) UtilEMF.loadModel(graphFile, DependencyPackage.eINSTANCE);
+		try {
+			UtilEMF.saveModel(migrt.recontextualizationGraph(g),  recontextualizedGraphModelFile);
+			System.out.println("[saving] recontextualized by graph file : ok.");	
+		} catch (IOException e) { e.printStackTrace(); }
+		return null;
+	}
+	
+	
+	/**
+	 * Migration code generation.
+	 * 
+	 * @param projectSourceFolder Folder containing models and metamodels.
+	 * @param migrationSpecificationName Name of the migration specification.
+	 * @param migratedModelNoUUIDPath Path of the migrated model without identifiers.
 	 * @throws IOException
 	 */
 	public void GenerateMigrationCode(String projectSourceFolder, String migrationSpecificationName, String migratedModelNoUUIDPath, boolean isUML, String refactoredMetamodelPath) throws IOException {
@@ -1197,45 +1265,36 @@ public class modifService {
 		bw.close();
 
 	}
-
-
+	
+	
 	/**
+	 * Add deleted references to the migration specification.
 	 * 
-	 * @return
+	 * @param migration Migration specification to be updated.
 	 */
-	public String getMigratedModelFileName(){
-		return migratedModelFile;
+	public void addDeletedReferences(Migration migration)
+	{
+		migrationSpecificationGenerator.addDeleteReferences(migration);
+	}
+	
+		
+	/**
+	 * Clean the custom migration specification.
+	 * 
+	 * @param migration Migration specification to be updated.
+	 */
+	public void cleanMigrationSpecification(Migration migration){
+		migrationSpecificationGenerator.cleanMigrationSpecification(migration);
 	}
 
+	
 	/**
+	 * Update the migration specification.
 	 * 
-	 * @return
-	 */
-	public EObject getMigratedModel() {
-		return migratedModel;
-	}
-
-	/**
-	 * 
-	 * @return
-	 */
-	public Map<String,String> getNewReferencesNameMap(){
-		return this.newReferenceName;
-	}
-
-	/**
-	 * 
-	 * @return
-	 */
-	public String getMigrationFileName(){
-		return migrationFile;
-	}
-
-	/**
-	 * Update the migration specification
-	 * @param instanceUUID
-	 * @param value
-	 * @param migration
+	 * @param instanceUUID Instance of the migration specification.
+	 * @param value Value to set the deletion attribute.
+	 * @param migration Migration specification.
+	 * @return newMigration Updated migration specification.
 	 */
 	public Migration modifyInstance(String instanceUUID, boolean value, Migration migration)
 	{
@@ -1244,35 +1303,159 @@ public class modifService {
 		catch (IOException e) { e.printStackTrace(); }
 		return newMigration;
 	}
-
+	
+	
 	/**
-	 * 
-	 * @param migration
+	 * Return the name of the by default modif specification
+	 * @return modifFileName Name of the modif file.
 	 */
-	public void addDeletedReferences(Migration migration)
-	{
-		migrationSpecificationGenerator.addDeleteReferences(migration);
+	public String getModifFileName() {
+		return modifFileName;
 	}
-
+	
+	
 	/**
-	 * Clean the custom migration specification
+	 * Return the name of the refactored metamodel without keys.
+	 * @return refactoredWithoutKFileName Name of the refactored metamodel.
 	 */
-	public void cleanMigrationSpecification(Migration migration){
-		migrationSpecificationGenerator.cleanMigrationSpecification(migration);
+	public String getRefactoredWithoutKFileName(){
+		return refactoredWithoutKFileName;
 	}
-
-	ArrayList<String> hiddenInstances = new ArrayList<String>();
-	private boolean result;
-
-	ArrayList<String> getHiddenInstances(){
-		return hiddenInstances;
-	}
-
+	
+	
 	/**
-	 * Fills the map of instances whose EClasses are hidden
+	 * Get the map relating old name and new name of references.
 	 * 
-	 * @param migration migration specification
-	 * @return hidemap
+	 * @return newReferenceName Map of references names.
+	 */
+	public Map<String,String> getNewReferencesNameMap(){
+		return this.newReferenceName;
+	}
+	
+	
+	/**
+	 * Get the name of the migrated model.
+	 * 
+	 * @return migratedModelFile Name of the migrated model.
+	 */
+	public String getMigratedModelFileName(){
+		return migratedModelFile;
+	}
+	
+	
+	/**
+	 * Get the name of the migration specification file.
+	 * 
+	 * @return migrationFile Name of the migration specification.
+	 */
+	public String getMigrationFileName(){
+		return migrationFile;
+	}
+	
+	
+	/**
+	 * Get the name of the recontextualized model.
+	 * 
+	 * @return Name of the recontextualized model.
+	 */
+	public String getRecontexGraphFileName(){
+		return recontextualizedFinalModelFile;
+	}
+	
+	
+	/**
+	 * Get the list of hidden classes.
+	 * 
+	 * @return hideClassList List of classes marked with hide operator.
+	 */
+	public ArrayList<String> getHideClassList(){
+		return hideClassList;
+	}
+	
+	
+	/**
+	 * Get the list of flattened classes.
+	 * 
+	 * @return flattenClassList List of classes marked with flatten operator.
+	 */
+	public ArrayList<String> getFlattenClassList(){
+		return flattenClassList;
+	}
+	
+	
+	/**
+	 * Get the rename map.
+	 * 
+	 * @return renamemap Map of old and new names.
+	 */
+	public Map<String, Map<String, Map<String, String>>>  getRenameMap(){
+		return renamemap;
+	}
+	
+	
+	/**
+	 * Construct a map relating oldname and new name of all elements of a metamodel.
+	 */
+	public void constructRenameMap(){
+		HashMap<String, Map<String, Map<String, String>>>  RenameMap = new HashMap<String, Map<String, Map<String, String>>>();
+		for( EclassModif  ecm : theRootEcoreModif.getAllClassModifications()){
+			String oldNameClass = ecm.getModif().getOldName();
+			String newNameClass = ecm.getModif().getNewName();
+			Map <String, String> featuresNameMap = new HashMap<String, String>();
+			for(EattributeModif att : ecm.getAllAttributes()){
+				String oldNameAtt = att.getModif().getOldName();
+				String newNameAtt = att.getModif().getNewName();
+				featuresNameMap.put(oldNameAtt, newNameAtt);
+			}
+			for(EreferenceModif ref : ecm.getAllReferences()){
+				String oldNameRef = ref.getModif().getOldName();
+				String newNameRef = ref.getModif().getNewName();
+				featuresNameMap.put(oldNameRef, newNameRef);
+			}
+			Map<String, Map<String, String>> tempMap = new HashMap<String, Map<String,String>>();
+			tempMap.put(newNameClass, featuresNameMap);
+			renamemap.put(oldNameClass, tempMap);
+		}
+	}
+	
+	
+	/**
+	 * Build a map with all references going to an instance.
+	 * @param rootPackage Metamodel to which the model is conform.
+	 * @return referencesToInstanceMap Map relating an instance with all reference going to itself
+	 */
+	public Map<String, ArrayList<String>> buildMapReferencesToInstance(EPackage rootPackage){
+		Map<String, ArrayList<String>> referencesToInstanceMap = null ;
+		referencesToInstanceMap = UtilEMF.buildMapReferencesToInstance(UtilEMF.loadModel(originalModelFile, originalEcoreFile), rootPackage);
+		return referencesToInstanceMap;
+	}
+
+	
+	/**
+	 * Build a map of supertypes.
+	 * @param rootEcoreModif 
+	 */
+	public void buildSuperTypesMap(RootEcoreModif rootEcoreModif){
+		superTypesMap = new HashMap<String, ArrayList<String>>();
+		attributesMap = new HashMap<String, ArrayList<String>>();
+		for( EClassifier c : rootEcoreModif.getRoot().getEcore().getEClassifiers()){
+			ArrayList<String> supertypes = new ArrayList<String>();
+			ArrayList<String> attributes = new ArrayList<String>();
+			if(c instanceof EClass){
+				for(EAttribute a : ((EClass)c).getEAttributes()){ attributes.add(a.getName()); }
+				attributesMap.put(c.getName(), attributes);
+				for(EClass st : ((EClass)c).getEAllSuperTypes()){ supertypes.add(st.getName()); }
+				superTypesMap.put(c.getName(), supertypes);
+			}
+		}
+	}
+	
+	
+	/**
+	 * Fills the map of instances whose EClasses are hidden.
+	 * 
+	 * @param migration Migration specification.
+	 * @return hidemap Map of hidden classes.
 	 */
 	public Map<String, Map<String, ArrayList<ArrayList<String>>>> createHideMap(Migration migration){
 		hidemap = new HashMap<String, Map<String, ArrayList<ArrayList<String>>>>();
@@ -1302,105 +1485,11 @@ public class modifService {
 		return hidemap;
 	}
 
+	
 	/**
-	 * Onward migration of a given input model to a new model
-	 * conforming with the targeted tool's definition domain
-	 */
-	public MigrationRoundtrip Migration(Map<String,String> newReferenceNameMap, Map<String, Map<String, Map<String, String>>> renameMap) {
-		MigrationRoundtrip migrt = null;
-		try {
-			Migration migration = (Migration) UtilEMF.loadModel(this.migrationFile, MigrationPackage.eINSTANCE);
-			Map<String, Map<String, ArrayList<ArrayList<String>>>>  hideMap = new HashMap<String, Map<String, ArrayList<ArrayList<String>>>>();
-			hideMap = createHideMap(migration);
-			migrt = new MigrationRoundtrip(migration);
-			EObject migratedModel;
-			if(hasHide(migration)){ 
-				migratedModel = migrt.onwardMigrationHide(migration, newReferenceNameMap, renameMap); }
-			else{ 
-				//migratedModel = migrt.onwardMigration(); 
-				migratedModel = migrt.onwardMigrationRename(renameMap);
-			}
-			migrt.serializeMigratedModel();
-			System.out.println("[saving] migrated file : ok.");	
-		} catch (IOException e) { e.printStackTrace(); }
-		return migrt;
-	}
-
-	/**
-	 * Onward migration of a given input model to a new model
-	 * conforming with the targeted tool's definition domain
-	 */
-	public MigrationRoundtrip Migration() {
-		MigrationRoundtrip migrt = null;
-		Migration migration = (Migration) UtilEMF.loadModel(this.migrationFile, MigrationPackage.eINSTANCE);
-		migrt = new MigrationRoundtrip(migration);
-		migratedModel = migrt.onwardMigration();
-		return migrt;
-	}
-
-	/**
+	 * Reversed hideMap for reverse migration.
 	 * 
-	 * @param newReferenceNameMap
-	 * @param renameMap
-	 * @param migrationFile
-	 * @return
-	 */
-	public MigrationRoundtrip Migration(Map<String,String> newReferenceNameMap, Map<String, Map<String, Map<String, String>>> renameMap, String migrationFile) {
-		MigrationRoundtrip migrt = null;
-		try {
-			migration = (Migration) UtilEMF.loadModel(migrationFile, MigrationPackage.eINSTANCE);
-			Map<String, Map<String, ArrayList<ArrayList<String>>>>  hideMap = new HashMap<String, Map<String, ArrayList<ArrayList<String>>>>();
-			hideMap = createHideMap(migration);
-			migrt = new MigrationRoundtrip(migration);
-			EObject migratedModel;
-			if(hasHide(migration)){ 
-				migratedModel = migrt.onwardMigrationHide(migration, newReferenceNameMap, renameMap); }
-			else{ 
-				//migratedModel = migrt.onwardMigration(); 
-				migratedModel = migrt.onwardMigrationRename(renameMap);
-			}
-			migrt.serializeMigratedModel();
-			System.out.println("[saving] migrated file : ok.");	
-		} catch (IOException e) { e.printStackTrace(); }
-		return migrt;
-	}
-
-	/**
-	 * Reverse migration of a processed model
-	 * @param migrt migration
-	 * @return migration object
-	 */
-	public MigrationRoundtrip ReverseMigration(MigrationRoundtrip migrt){
-		try {
-			this.migration = (Migration) UtilEMF.loadModel(this.migrationFile, MigrationPackage.eINSTANCE);
-			EObject toolOutputModel = UtilEMF.loadModel(this.toolOutputModelFile, URI.createURI(migration.getOutputMetamodelURI()).path());
-			String reversedModelName = null;
-			if(isUML){
-				String inputmodelName = migration.getInputModelURI();
-				String[] strArray = inputmodelName.split("\\.");
-				String modelName = strArray[0];
-				reversedModelName = (inputmodelName.replace(modelName, modelName+"_reversed").replace("file:",""));
-			}else{
-				String inputmodelName = migration.getInputModelURI();
-				String[] strArray = inputmodelName.split("\\.");
-				String metamodelName = strArray[1];
-				String[] strArrayTool = toolOutputModelFile.split("\\.");
-				String toolPutputModelName = strArrayTool[0];
-				String metamodelToolName = strArrayTool[1];
-				reversedModelName = toolOutputModelFile.replace(toolPutputModelName, toolPutputModelName+"_reversed").replace(metamodelToolName, metamodelName);			
-			}
-			Map<String,Map<String,Map<String,String>>> inversedMap = reversedMap(renamemap);
-			if(hasHide(migration)){	UtilEMF.saveModel(migrt.reverseMigration(toolOutputModel, inversedMap, migration), reversedModelName); }
-			else{ UtilEMF.saveModel(migrt.reverseMigration(toolOutputModel), reversedModelName); }
-			System.out.println("[saving] reversed file : ok.");	
-		} catch (IOException e) { e.printStackTrace(); }
-		return migrt;
-	}
-
-	/**
-	 * Reversed hideMap for reverse migration
-	 * 
-	 * @param map
+	 * @param map 
 	 * @return map
 	 */
 	public Map<String, Map<String, ArrayList<ArrayList<String>>>> reversedHideMap(Map<String, Map<String, ArrayList<ArrayList<String>>>> map){
@@ -1433,6 +1522,7 @@ public class modifService {
 		return reversedMap;
 	}
 
+	
 	/**
 	 * Reversed names map for reverse migration
 	 * 
@@ -1461,83 +1551,45 @@ public class modifService {
 		return result;
 	}
 
-
+	
 	/**
-	 * Recontextualization by keys of a reversed model
+	 * Build the list of classes marked with the hide operator.
 	 * 
-	 * @param migrt migration
-	 * @return migration object
+	 * @param rootEcoreModif Root ecore.
+	 * @return hideClassList List of hidden classes.
 	 */
-	public void Recontextualization(MigrationRoundtrip migrt){
-		try {
-			String recontextualizedKeysModelFile = null;
-			String inputmodelName = migration.getInputModelURI();
-			File f = new File(inputmodelName);
-			String[] strArray = inputmodelName.split("\\.");
-			String metamodelName = strArray[1];
-			String[] strArrayTool = toolOutputModelFile.split("\\.");
-			String toolPutputModelName = strArrayTool[0];
-			String metamodelToolName = strArrayTool[1];
-			recontextualizedKeysModelFile = toolOutputModelFile.replace(toolPutputModelName, toolPutputModelName+"_recontextkey").replace(metamodelToolName, metamodelName);	
-			UtilEMF.saveModel(migrt.recontextualizationKey(), recontextualizedKeysModelFile);
-			System.out.println("[saving] recontextualized by key file : ok.");	
-		} catch (IOException e) { e.printStackTrace(); }
-		Graph g = (Graph) UtilEMF.loadModel(graphFile, DependencyPackage.eINSTANCE);
-		try {
-			String inputmodelName = migration.getInputModelURI();
-			File f = new File(inputmodelName);
-			String[] strArray = inputmodelName.split("\\.");
-			//recontextualizedGraphModelFile = (inputmodelName.replace(modelName, modelName+"_recontextgraph").replace("file:",""));
-			recontextualizedFinalModelFile = (toolOutputModelFile.replace("_migrated", "_recontextgraph"));
-			String[] strArrayTool = toolOutputModelFile.split("\\.");
-			String toolPutputModelName = strArrayTool[0];
-			String metamodelToolName = strArrayTool[1];
-			String metamodelName = strArray[1];
-			recontextualizedGraphModelFile = toolOutputModelFile.replace(toolPutputModelName, toolPutputModelName+"_recontextgraph").replace(metamodelToolName, metamodelName);	
-			UtilEMF.saveModel(migrt.recontextualizationGraph(g),recontextualizedGraphModelFile);
-			System.out.println("[saving] recontextualized by graph file : ok.");	
-		} catch (IOException e) { e.printStackTrace(); }
-	}
-
-	public String getRecontexGraphFileName(){
-		return recontextualizedFinalModelFile;
-	}
-
-	/**
-	 * Recontextualization by graph of a recontextualized by graph model
-	 * 
-	 * @param migrt migration 
-	 * @return
-	 */
-	public MigrationRoundtrip RecontextualizationGraph(MigrationRoundtrip migrt) {
-		Graph g = (Graph) UtilEMF.loadModel(graphFile, DependencyPackage.eINSTANCE);
-		try {
-			UtilEMF.saveModel(migrt.recontextualizationGraph(g),  recontextualizedGraphModelFile);
-			System.out.println("[saving] recontextualized by graph file : ok.");	
-		} catch (IOException e) { e.printStackTrace(); }
-		return null;
-	}
-
-	public void buildSuperTypesMap(RootEcoreModif rootEcoreModif){
-		superTypesMap = new HashMap<String, ArrayList<String>>();
-		attributesMap = new HashMap<String, ArrayList<String>>();
-		for( EClassifier c : rootEcoreModif.getRoot().getEcore().getEClassifiers()){
-			ArrayList<String> supertypes = new ArrayList<String>();
-			ArrayList<String> attributes = new ArrayList<String>();
-			if(c instanceof EClass){
-				for(EAttribute a : ((EClass)c).getEAttributes()){ attributes.add(a.getName()); }
-				attributesMap.put(c.getName(), attributes);
-				for(EClass st : ((EClass)c).getEAllSuperTypes()){ supertypes.add(st.getName()); }
-				superTypesMap.put(c.getName(), supertypes);
+	public void buildHideList(RootEcoreModif rootEcoreModif){	
+		hideClassList = new ArrayList<String>();
+		for( ClassModification ecm : rootEcoreModif.getRoot().getModif().getClassModification()){
+			if(ecm.isHide()){
+				if(hasSuperTypes(rootEcoreModif, ecm)){ hideClassList.add(ecm.getOldName()); }
 			}
 		}
 	}
 
+	
 	/**
+	 * Build the list of classes marked with the flatten operator.
 	 * 
-	 * @param rootEcoreModif
-	 * @param ecm
-	 * @return
+	 * @param rootEcoreModif Root ecore.
+	 * @return flattenClassList List of flattened classes.
+	 */
+	public void buildFlattenList(RootEcoreModif rootEcoreModif){	
+		flattenClassList = new ArrayList<String>();
+		for( ClassModification ecm : rootEcoreModif.getRoot().getModif().getClassModification()){
+			if(ecm.isFlatten()){ 
+				if(hasSuperTypes(rootEcoreModif, ecm)){ flattenClassList.add(ecm.getOldName()); }
+			}
+		}
+	}
+
+	
+	/**
+	 * Check if a class has supertypes.
+	 * 
+	 * @param rootEcoreModif Root ecore.
+	 * @param ecm Class to be checked.
+	 * @return result True if the class has supertypes. False otherwise.
 	 */
 	private boolean hasSuperTypes(RootEcoreModif rootEcoreModif, ClassModification ecm){
 		boolean result = false;
@@ -1552,58 +1604,12 @@ public class modifService {
 		return result;
 	}
 
+	
 	/**
-	 * Builds the list of classes marked with the hide operator
-	 * @param rootEcoreModif
-	 * @return hideClassList
-	 */
-	public void buildHideList(RootEcoreModif rootEcoreModif){	
-		hideClassList = new ArrayList<String>();
-		for( ClassModification ecm : rootEcoreModif.getRoot().getModif().getClassModification()){
-			if(ecm.isHide()){
-				if(hasSuperTypes(rootEcoreModif, ecm)){
-					hideClassList.add(ecm.getOldName());
-				}
-			}
-		}
-	}
-
-	/**
-	 * Builds the list of classes marked with the flatten operator
-	 * @param rootEcoreModif
-	 * @return flattenClassList
-	 */
-	public void buildFlattenList(RootEcoreModif rootEcoreModif){	
-		flattenClassList = new ArrayList<String>();
-		for( ClassModification ecm : rootEcoreModif.getRoot().getModif().getClassModification()){
-			if(ecm.isFlatten()){ 
-				if(hasSuperTypes(rootEcoreModif, ecm)){
-					flattenClassList.add(ecm.getOldName()); 
-				}
-			}
-		}
-	}
-
-	/**
+	 * Check if the class of an instance is hidden.
 	 * 
-	 * @return list of classes marked with hide operator
-	 */
-	public ArrayList<String> getHideClassList(){
-		return hideClassList;
-	}
-
-	/**
-	 * 
-	 * @return list of classes marked with flatten operator
-	 */
-	public ArrayList<String> getFlattenClassList(){
-		return flattenClassList;
-	}
-
-	/**
-	 * 
-	 * @param migration
-	 * @return
+	 * @param migration Migration specification.
+	 * @return hide True if the class is hidden. False otherwise.
 	 */
 	public boolean hasHide(Migration migration){
 		boolean hide = false;
@@ -1615,18 +1621,13 @@ public class modifService {
 		}
 		return hide;
 	}
-
+	
+	
 	/**
+	 * Verify dependences to external ecores.
 	 * 
-	 * @return
-	 */
-	public Map<String, Map<String, Map<String, String>>>  getRenameMap(){
-		return renamemap;
-	}
-
-	/**
-	 * Verifying dependences to external ecores
-	 * @return
+	 * @param externalPackages List of packages.
+	 * @return depends
 	 */
 	public boolean dependingOnExternalEcore(Set<EPackage> externalPackages) {
 		boolean depends = false;
@@ -1646,4 +1647,38 @@ public class modifService {
 		}
 		return depends;
 	}
+	
+	
+	/**
+	 *  Add schema location to a xmi file.
+	 * @param inputfile Input file.
+	 * @param finalModelFile Model with the schema location.
+	 * @param URI URI of the metamodel.
+	 * @throws IOException
+	 */
+	public void addSchemaLocation(String inputfile, String finalModelFile, String URI, String metamodelName) throws IOException {
+		FileReader fr=new FileReader(inputfile);
+		BufferedReader br=new BufferedReader(fr);
+
+		File fout = new File(finalModelFile);
+		FileOutputStream fos = new FileOutputStream(fout);
+
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
+		String line=br.readLine();
+
+		while (line!=null) {
+			String xmi = "xmlns:xmi=\"http://www.omg.org/XMI\"";
+			//String nom = "Statechart.ecore";
+			if(line.contains(xmi)){
+				String newLine = line.replace(xmi, "xsi:schemaLocation=\""+ URI + " ../metamodel/"+ metamodelName +"\""+ " "+xmi);
+				bw.write(newLine);
+			}else{ bw.write(line); }
+			bw.newLine();  
+			line=br.readLine();
+		} 
+		br.close();
+		fr.close();  
+		bw.close();
+	}
+
 }
