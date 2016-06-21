@@ -299,9 +299,9 @@ public class UtilUUID {
 	 */
 	public static EPackage removeUUIDMetamodelAttribute(EPackage metamodelWithUUID) {
 		// TODO There is not UUIDClass in metamodel
-		EPackage metamodel = EcoreUtil.copy(metamodelWithUUID);
+	//	EPackage metamodel = EcoreUtil.copy(metamodelWithUUID);
 		EClass UUIDClass = null;
-		for(TreeIterator<EObject> it = metamodel.eAllContents(); it.hasNext();){
+		for(TreeIterator<EObject> it = metamodelWithUUID.eAllContents(); it.hasNext();){
 			EObject next = it.next();
 			// Get only the classes
 			if (next instanceof EClass) {
@@ -313,8 +313,8 @@ public class UtilUUID {
 			}
 		}
 
-		if(UUIDClass != null) EcoreUtil.remove(UUIDClass); 
-		return metamodel;
+		if(UUIDClass != null) EcoreUtil.delete(UUIDClass); 
+		return metamodelWithUUID;
 	}
 
 	/**
