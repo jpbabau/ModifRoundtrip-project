@@ -1,9 +1,5 @@
 package uiMigrationSpecificationEdition;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
-
 /**
  * A MigratedObject has the following properties: id, class, object and delete.
  * 
@@ -11,6 +7,7 @@ import java.util.HashMap;
 public class MigratedObject {
 
 	public int id = 0;
+	public String UUID = "0";
 	private String eclass = ""; 
 	private String delete = "False";
 	private String object = "";
@@ -36,6 +33,10 @@ public class MigratedObject {
 		return id;
 	}
 
+	
+	public String getUUID(){
+		return UUID;
+	}
 
 	/**
 	 * Get the object.
@@ -75,6 +76,11 @@ public class MigratedObject {
 	 */
 	public void setId(int identifier){
 		id = identifier;
+	}
+	
+	
+	public void setUUID(String identifier){
+		UUID = identifier;
 	}
 
 

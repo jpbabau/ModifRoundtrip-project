@@ -2,6 +2,7 @@ package uiMigrationSpecificationEdition;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -9,7 +10,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
 
-import org.eclipse.emf.ecore.EClass;
+import migration.Instance;
+import migration.Migration;
 
 
 /**
@@ -27,27 +29,31 @@ public class MigratedObjectList {
 	// Combo box choices
 	static final String[] DELETES_ARRAY = { "False", "True" };
 
-	HashMap<String, Boolean> removeMap;
-	HashMap<String, ArrayList<String>> featuresMap;
-	HashMap<String, Integer> newIdMap;
-	HashMap<String, String> classMap;
-
+	Migration migrationSpecification;
+	HashMap<String, ArrayList<String>> modelFeaturesMap;
+	HashMap<String, String> modelClassesMap;
+	HashMap<String, Integer> deleteMap = new HashMap<String, Integer>();
 
 	/**
 	 * Constructor 
 	 * 
-	 * @param theRemoveMap 
-	 * @param theFeaturesMap
-	 * @param theNewIdMap
-	 * @param theClassMap
+	 * @param migrationSPec Migration specification.
 	 */
-	public MigratedObjectList(HashMap<String, Boolean> theRemoveMap, HashMap<String, ArrayList<String>> theFeaturesMap, HashMap<String, Integer> theNewIdMap, HashMap<String, String> theClassMap){
-		super();
-		removeMap = theRemoveMap;
-		featuresMap = theFeaturesMap;
-		newIdMap = theNewIdMap;
-		classMap = theClassMap;
+	public MigratedObjectList(){
+		super();		
+		this.initData();
+	}
 
+	/**
+	 * Constructor 
+	 * 
+	 * @param migrationSPec Migration specification.
+	 */
+	public MigratedObjectList(Migration migrationSpec, HashMap<String, ArrayList<String>> featuresMap, HashMap<String, String> classesMap){
+		super();	
+		migrationSpecification = migrationSpec;
+		modelFeaturesMap = featuresMap;
+		modelClassesMap = classesMap;
 		this.initData();
 	}
 
@@ -57,31 +63,38 @@ public class MigratedObjectList {
 	 * It creates the migratedObjects and add them to the list of migrated objects.
 	 */
 	private void initData() {
-		ArrayList<Integer> removedObjects = new ArrayList<Integer>();
 		MigratedObject migratedObject;
-		if(newIdMap != null){
-			Iterator it = newIdMap.entrySet().iterator();
-			while (it.hasNext()) {
-				Map.Entry e = (Map.Entry)it.next();
-				String key = (String) e.getKey();
-				boolean removed = removeMap.get(key);
-				if(!removed){
-					int iden = ((Integer) e.getValue());
-					removedObjects.add(iden);
-				}
-			}
+		HashMap<String, Integer> idMap = buildIdMap();
+		Collection<Integer> ids = idMap.values();
+		ArrayList<Integer> objects = new ArrayList<Integer>();
+		Iterator<Integer> it = ids.iterator();
+		while(it.hasNext())
+		{
+			int i = it.next();
+			objects.add(i);
 		}
-		COUNT = removedObjects.size();
-		for (int i = 0; i < COUNT; i++) {
-			int id = removedObjects.get(i);
 
-			// MigratedObject with its features (attributes et references)
-			ArrayList<String> features = getFeatures(id);
+		COUNT = objects.size();
+		for (int i = 0; i < COUNT; i++) {
+			int id = objects.get(i);
+			// MigratedObject with its features (attributes and references)
+			ArrayList<String> features = getFeatures(id, idMap);
 			String featuresString = "";
 			for(String f : features){ featuresString += "\n"+f; }
 			migratedObject = new MigratedObject(featuresString);
 			migratedObject.setId(id);
-			migratedObject.setEClass(getclass(id));
+			
+			Iterator it2 = idMap.entrySet().iterator();
+			while (it2.hasNext()) {
+				Map.Entry e = (Map.Entry)it2.next();
+				String key = (String) e.getKey();
+				Integer value =(Integer) e.getValue();
+				if(value == id){ 
+					migratedObject.setUUID(key);
+				}
+			}
+			
+			migratedObject.setEClass(getclass(id, idMap));
 			migratedObject.setDelete(DELETES_ARRAY[0]);
 			migratedObjects.add(migratedObject);
 		}
@@ -94,14 +107,20 @@ public class MigratedObjectList {
 	 * @param id Identifier of the object.
 	 * @return eclass Name of the class.
 	 */
-	public String getclass(int id){
+	public String getclass(int id, HashMap<String, Integer> idMap){
 		String eclass = "";
-		Iterator it = newIdMap.entrySet().iterator();
+		Iterator it = idMap.entrySet().iterator();
 		while (it.hasNext()) {
 			Map.Entry e = (Map.Entry)it.next();
 			String key = (String) e.getKey();
 			Integer value =(Integer) e.getValue();
-			if(value == id){ eclass = classMap.get(key); }
+			if(value == id){ 
+				for(Instance i : migrationSpecification.getInstances()){
+					if(i.getUUID().equals(key)){
+						eclass = modelClassesMap.get(key);
+					}
+				}
+			}
 		}
 		return eclass;
 	}
@@ -166,24 +185,40 @@ public class MigratedObjectList {
 	 * @param id Identifier of the object.
 	 * @return features List of object features.
 	 */
-	public ArrayList<String> getFeatures(int id){
-		ArrayList<String> features = new ArrayList<String>();
-		int iden ;
-		String key =  "" ;
-		if(newIdMap != null){
-			Iterator it = newIdMap.entrySet().iterator();
-			while (it.hasNext()) {
-				Map.Entry e = (Map.Entry)it.next();
-				int identity = ((Integer) e.getValue());
-				if(identity == id){
-					iden = id;
-					key = (String) e.getKey();
-					break;
-				}
+	public ArrayList<String> getFeatures(int id, HashMap<String, Integer> idMap){
+		ArrayList<String> features = new ArrayList<String>();		
+		Iterator it = modelFeaturesMap.entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry e = (Map.Entry)it.next();
+			String key = (String) e.getKey();
+			ArrayList<String> value = (ArrayList<String>) e.getValue();
+			int identifier = idMap.get(key);
+			if(identifier == id){
+				features.addAll(value);
 			}
 		}
-		if(!key.equals("")){ features = featuresMap.get(key); }
+
 		return features;
+	}
+
+
+	private HashMap<String, Integer> buildIdMap(){
+		HashMap<String, Integer> idMap = new HashMap<String, Integer>();
+		int id = 0;
+		String UUID;
+		for(Instance instance : this.migrationSpecification.getInstances()){
+			UUID = instance.getUUID();
+			if(!instance.getDeletion().isDeleteInstance()){
+				id = id + 1;
+				idMap.put(UUID, id);
+			}
+		}
+		return idMap;
+	}
+	
+	
+	public HashMap<String, Integer> getDeleteMap(){
+		return deleteMap;
 	}
 
 }

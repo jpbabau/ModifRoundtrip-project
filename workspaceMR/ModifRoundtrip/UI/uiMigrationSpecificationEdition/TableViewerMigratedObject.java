@@ -3,8 +3,21 @@ package uiMigrationSpecificationEdition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Vector;
 
+
+
+
+
+
+
+
+import javax.print.attribute.HashPrintJobAttributeSet;
+
+import migration.Instance;
+import migration.Migration;
 
 import org.eclipse.jface.viewers.*;
 import org.eclipse.swt.SWT;
@@ -25,6 +38,12 @@ import org.eclipse.swt.widgets.*;
 
 public class TableViewerMigratedObject {
 
+	public static Migration migrationSpecification;
+	public static HashMap<String, ArrayList<String>> modelFeaturesMap;
+	public static HashMap<String, String> modelClassesMap;
+	public static HashMap<String, Boolean> deleteMap;
+	public static HashMap<String, Boolean> newDeleteMap;
+
 	/**
 	 * Constructor
 	 */
@@ -42,19 +61,10 @@ public class TableViewerMigratedObject {
 
 	private Table table;
 	private TableViewer tableViewer;
-	private Button closeButton;
-
-	// Map relating UUID of an instance with the value of the deleted attribute.
-	static HashMap<String, Boolean> removeMap;
-	// Map relating UUID of an instance with the names of its features.
-	static HashMap<String, ArrayList<String>> featuresMap;
-	// Map relating the UUID of an instance with the Id showed in the table.
-	static HashMap<String, Integer> newIdMap;
-	// Map relating the UUID of an intance with the name of the object's class.
-	static HashMap<String, String> classMap;
+	private Button closeButton;	
 
 	// Create a MigratedObjectList and assign it to an instance variable
-	private static MigratedObjectList migratedObjectList = new MigratedObjectList(removeMap, featuresMap, newIdMap, classMap); 
+	private static MigratedObjectList migratedObjectList; 
 
 	// Set the table column property names
 	public final String ID_COLUMN		= "id";
@@ -153,7 +163,7 @@ public class TableViewerMigratedObject {
 		tableViewer.setContentProvider(new ExampleContentProvider());
 		tableViewer.setLabelProvider(new MigratedObjectLabelProvider());
 		// The input for the table viewer is the instance of ExampleMigratedObjectList
-		migratedObjectList = new MigratedObjectList(removeMap, featuresMap, newIdMap, classMap);
+		migratedObjectList = new MigratedObjectList(migrationSpecification, modelFeaturesMap, modelClassesMap);
 		tableViewer.setInput(migratedObjectList);
 
 		// Add the buttons
@@ -263,7 +273,7 @@ public class TableViewerMigratedObject {
 	 * Create the TableViewer 
 	 */
 	private void createTableViewer() {
-
+		migratedObjectList = new MigratedObjectList(migrationSpecification, modelFeaturesMap, modelClassesMap);
 		tableViewer = new TableViewer(table);
 		tableViewer.setUseHashlookup(true);
 
@@ -375,7 +385,18 @@ public class TableViewerMigratedObject {
 
 			// Add a migratedObject to the ExampleMigratedObjectList and refresh the view
 			public void widgetSelected(SelectionEvent e) {
-				//migratedObjectList.addMigratedObject();
+				newDeleteMap = new HashMap<String, Boolean>();
+				for(int i = 0; i< migratedObjectList.getMigratedObjects().size(); i++){
+					MigratedObject m = (MigratedObject) migratedObjectList.getMigratedObjects().get(i);
+					String delete = m.getDelete();
+					if(delete.equals("True")){
+						newDeleteMap.put(m.getUUID(), true);
+					}else if(delete.equals("False")){
+						newDeleteMap.put(m.getUUID(), false);
+					}
+
+				}
+				close();
 			}
 		});
 
@@ -449,27 +470,27 @@ public class TableViewerMigratedObject {
 	/**
 	 * Return the collection of migrated objects.
 	 * 
-	 * @return mig Colelction of migratedObjects.
+	 * @return mig Collection of migratedObjects.
 	 */
 	public static Vector getMigratedElements(){
 		Vector mig = migratedObjectList.getMigratedObjects();
-
 		return mig;
 	}
 
 
 	/**
-	 * Set Maps
+	 * Set the migration specification.
 	 * 
-	 * @param theRemoveMap
-	 * @param theFeaturesMap
-	 * @param theNewIdMap
+	 * @param migrationSpec Migration specification.
 	 */
-	public void setMaps(HashMap<String, Boolean> theRemoveMap, HashMap<String, ArrayList<String>> theFeaturesMap, HashMap<String, Integer> theNewIdMap, HashMap<String, String> theClassMap){
-		removeMap = theRemoveMap;
-		featuresMap = theFeaturesMap;
-		newIdMap = theNewIdMap;
-		classMap = theClassMap;
+	public void setMigrationSpecification(Migration migrationSpec, HashMap<String, ArrayList<String>> featuresMap, HashMap<String, String> classesNamesMap){
+		migrationSpecification = migrationSpec;
+		modelFeaturesMap = featuresMap;
+		modelClassesMap = classesNamesMap;
+	}
+
+	public HashMap<String, Boolean> getNewDeleteMap(){
+		return newDeleteMap;
 	}
 
 }
