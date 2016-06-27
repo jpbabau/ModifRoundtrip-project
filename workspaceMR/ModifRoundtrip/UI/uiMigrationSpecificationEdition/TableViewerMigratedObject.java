@@ -3,20 +3,9 @@ package uiMigrationSpecificationEdition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.Vector;
 
 
-
-
-
-
-
-
-import javax.print.attribute.HashPrintJobAttributeSet;
-
-import migration.Instance;
 import migration.Migration;
 
 import org.eclipse.jface.viewers.*;
@@ -26,6 +15,7 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
+
 
 /**
  * 
@@ -43,21 +33,6 @@ public class TableViewerMigratedObject {
 	public static HashMap<String, String> modelClassesMap;
 	public static HashMap<String, Boolean> deleteMap;
 	public static HashMap<String, Boolean> newDeleteMap;
-
-	/**
-	 * Constructor
-	 */
-	public TableViewerMigratedObject(){ }
-
-
-	/**
-	 * Constructor
-	 * 
-	 * @param parent composite to attach the table.
-	 */
-	private TableViewerMigratedObject(Composite parent) {
-		this.addChildControls(parent);
-	}
 
 	private Table table;
 	private TableViewer tableViewer;
@@ -77,6 +52,22 @@ public class TableViewerMigratedObject {
 
 	// Set column names
 	private String[] columnNames = new String[] { ID_COLUMN, ECLASS_COLUMN, OBJECT_COLUMN, DELETE_COLUMN, };
+	
+	
+	/**
+	 * Constructor
+	 */
+	public TableViewerMigratedObject(){ }
+
+
+	/**
+	 * Constructor
+	 * 
+	 * @param parent composite to attach the table.
+	 */
+	private TableViewerMigratedObject(Composite parent) {
+		this.addChildControls(parent);
+	}
 
 
 	/**
@@ -107,6 +98,7 @@ public class TableViewerMigratedObject {
 		tableViewerExample.run(shell);
 	}
 
+	
 	/**
 	 * Run and wait for a close event.
 	 * 
@@ -394,8 +386,8 @@ public class TableViewerMigratedObject {
 					}else if(delete.equals("False")){
 						newDeleteMap.put(m.getUUID(), false);
 					}
-
 				}
+				// TODO : No close
 				close();
 			}
 		});
