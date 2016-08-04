@@ -1,0 +1,2463 @@
+root uml to uml2
+Prefix uml to uml2
+URI "http://www.eclipse.org/uml2/5.0.0/UML" to "http://www.eclipse.org/uml2/5.0.0/UML"
+
+class {
+	remove ActivityContent to ActivityContent ;
+	remove Activity to Activity {
+		remove ref ownedGroup to ownedGroup bounds (0,-1) to (0,-1)
+		annotation {
+			remove "http:///org/eclipse/emf/ecore/util/ExtendedMetaData" to
+			"http:///org/eclipse/emf/ecore/util/ExtendedMetaData" detailsEntry {
+				remove name to name oldValue group to group } ;
+				remove kind to kind oldValue element to element }
+			} ;
+			remove subsets to subsets
+		}
+		remove ref edge to edge bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref node to node bounds (0,-1) to (0,-1)
+		annotation {
+			remove "http:///org/eclipse/emf/ecore/util/ExtendedMetaData" to
+			"http:///org/eclipse/emf/ecore/util/ExtendedMetaData" detailsEntry {
+				remove kind to kind oldValue attribute to attribute }
+			} ;
+			remove "http://www.eclipse.org/emf/CDO" to "http://www.eclipse.org/emf/CDO" detailsEntry {
+				remove persistent to persistent oldValue ^true to ^true } ;
+				remove filter to filter oldValue ownedNode to ownedNode }
+			} ;
+			remove subsets to subsets
+		}
+		remove ref variable to variable bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref group to group bounds (0,-1) to (0,-1)
+		annotation {
+			remove "http:///org/eclipse/emf/ecore/util/ExtendedMetaData" to
+			"http:///org/eclipse/emf/ecore/util/ExtendedMetaData" detailsEntry {
+				remove kind to kind oldValue attribute to attribute }
+			} ;
+			remove "http://www.eclipse.org/emf/CDO" to "http://www.eclipse.org/emf/CDO" detailsEntry {
+				remove persistent to persistent oldValue ^true to ^true } ;
+				remove filter to filter oldValue ownedGroup to ownedGroup }
+			} ;
+			remove subsets to subsets
+		}
+		remove ref ownedNode to ownedNode bounds (0,-1) to (0,-1)
+		annotation {
+			remove "http:///org/eclipse/emf/ecore/util/ExtendedMetaData" to
+			"http:///org/eclipse/emf/ecore/util/ExtendedMetaData" detailsEntry {
+				remove name to name oldValue node to node } ;
+				remove kind to kind oldValue element to element }
+			} ;
+			remove subsets to subsets
+		}
+		remove att isReadOnly to isReadOnly bounds (1,1) to (1,1)
+		remove att isSingleExecution to isSingleExecution bounds (1,1) to (1,1)
+		remove ref partition to partition bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref structuredNode to structuredNode bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove Behavior to Behavior {
+		remove ref specification to specification bounds (0,1) to (0,1)
+		remove ref context to context bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove att isReentrant to isReentrant bounds (0,1) to (0,1)
+		remove ref ownedParameter to ownedParameter bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref ownedParameterSet to ownedParameterSet bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref postcondition to postcondition bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref precondition to precondition bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref redefinedBehavior to redefinedBehavior bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove Class to Class {
+		remove ref ownedOperation to ownedOperation bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref extension to extension bounds (0,-1) to (0,-1)
+		remove att isActive to isActive bounds (1,1) to (1,1)
+		remove ref nestedClassifier to nestedClassifier bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref ownedReception to ownedReception bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref superClass to superClass bounds (0,-1) to (0,-1)
+		annotation {
+			remove redefines to redefines
+		}
+	}
+	annotation {
+		remove duplicates to duplicates
+	} ;
+	remove BehavioredClassifier to BehavioredClassifier {
+		remove ref classifierBehavior to classifierBehavior bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref interfaceRealization to interfaceRealization bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref ownedBehavior to ownedBehavior bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove Classifier to Classifier {
+		remove ref feature to feature bounds (0,-1) to (0,-1)
+		annotation {
+			remove union to union ;
+			remove subsets to subsets
+		}
+		remove ref attribute to attribute bounds (0,-1) to (0,-1)
+		annotation {
+			remove union to union ;
+			remove subsets to subsets
+		}
+		remove ref collaborationUse to collaborationUse bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref general to general bounds (0,-1) to (0,-1)
+		remove ref generalization to generalization bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref powertypeExtent to powertypeExtent bounds (0,-1) to (0,-1)
+		remove ref inheritedMember to inheritedMember bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove att isAbstract to isAbstract bounds (1,1) to (1,1)
+		remove att isFinalSpecialization to isFinalSpecialization bounds (1,1) to (1,1)
+		remove ref ownedUseCase to ownedUseCase bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref useCase to useCase bounds (0,-1) to (0,-1)
+		remove ref redefinedClassifier to redefinedClassifier bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref representation to representation bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref substitution to substitution bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+	}
+	annotation {
+		remove duplicates to duplicates
+		annotation {
+			remove ownedTemplateSignature to ownedTemplateSignature detailsEntry {
+				remove eType to eType oldValue "uml::RedefinableTemplateSignature" to "uml::RedefinableTemplateSignature" }
+			} ;
+			remove templateParameter to templateParameter detailsEntry {
+				remove eType to eType oldValue "uml::ClassifierTemplateParameter" to "uml::ClassifierTemplateParameter" }
+			}
+		}
+	} ;
+	remove Namespace to Namespace {
+		remove ref ownedRule to ownedRule bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref elementImport to elementImport bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref packageImport to packageImport bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref ownedMember to ownedMember bounds (0,-1) to (0,-1)
+		annotation {
+			remove union to union ;
+			remove subsets to subsets
+		}
+		remove ref importedMember to importedMember bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref member to member bounds (0,-1) to (0,-1)
+		annotation {
+			remove union to union
+		}
+	} ;
+	remove NamedElement to NamedElement {
+		remove ref clientDependency to clientDependency bounds (0,-1) to (0,-1)
+		remove att name to name bounds (0,1) to (0,1)
+		remove ref nameExpression to nameExpression bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref namespace to namespace bounds (0,1) to (0,1)
+		annotation {
+			remove union to union ;
+			remove subsets to subsets
+		}
+		remove att qualifiedName to qualifiedName bounds (0,1) to (0,1)
+		remove att visibility to visibility bounds (0,1) to (0,1)
+	} ;
+	remove Element to Element {
+		remove ref ownedComment to ownedComment bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref ownedElement to ownedElement bounds (0,-1) to (0,-1)
+		annotation {
+			remove union to union
+		}
+		remove ref owner to owner bounds (0,1) to (0,1)
+		annotation {
+			remove union to union
+		}
+	} ;
+	remove Comment to Comment {
+		remove ref annotatedElement to annotatedElement bounds (0,-1) to (0,-1)
+		remove att body to body bounds (0,1) to (0,1)
+		annotation {
+			remove "http:///org/eclipse/emf/ecore/util/ExtendedMetaData" to
+			"http:///org/eclipse/emf/ecore/util/ExtendedMetaData" detailsEntry {
+				remove kind to kind oldValue element to element }
+			}
+		}
+	} ;
+	remove Stereotype to Stereotype {
+		remove ref icon to icon bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref profile to profile bounds (1,1) to (1,1)
+	} ;
+	remove Image to Image {
+		remove att content to content bounds (0,1) to (0,1)
+		remove att format to format bounds (0,1) to (0,1)
+		remove att location to location bounds (0,1) to (0,1)
+	} ;
+	remove Profile to Profile {
+		remove ref metaclassReference to metaclassReference bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref metamodelReference to metamodelReference bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove Package to Package {
+		remove att ^URI to ^URI bounds (0,1) to (0,1)
+		remove ref nestedPackage to nestedPackage bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref nestingPackage to nestingPackage bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref ownedStereotype to ownedStereotype bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref ownedType to ownedType bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref packageMerge to packageMerge bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref packagedElement to packagedElement bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref profileApplication to profileApplication bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+	}
+	annotation {
+		remove duplicates to duplicates
+	} ;
+	remove PackageableElement to PackageableElement
+	annotation {
+		remove duplicates to duplicates
+	} ;
+	remove ParameterableElement to ParameterableElement {
+		remove ref owningTemplateParameter to owningTemplateParameter bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref templateParameter to templateParameter bounds (0,1) to (0,1)
+	} ;
+	remove TemplateParameter to TemplateParameter {
+		remove ref default to default bounds (0,1) to (0,1)
+		remove ref ownedDefault to ownedDefault bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref parameteredElement to parameteredElement bounds (1,1) to (1,1)
+		remove ref signature to signature bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref ownedParameteredElement to ownedParameteredElement bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove TemplateSignature to TemplateSignature {
+		remove ref parameter to parameter bounds (1,-1) to (1,-1)
+		remove ref template to template bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref ownedParameter to ownedParameter bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove TemplateableElement to TemplateableElement {
+		remove ref templateBinding to templateBinding bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref ownedTemplateSignature to ownedTemplateSignature bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove TemplateBinding to TemplateBinding {
+		remove ref parameterSubstitution to parameterSubstitution bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref signature to signature bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref boundElement to boundElement bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove DirectedRelationship to DirectedRelationship {
+		remove ref source to source bounds (1,-1) to (1,-1)
+		annotation {
+			remove union to union ;
+			remove subsets to subsets
+		}
+		remove ref target to target bounds (1,-1) to (1,-1)
+		annotation {
+			remove union to union ;
+			remove subsets to subsets
+		}
+	} ;
+	remove Relationship to Relationship {
+		remove ref relatedElement to relatedElement bounds (1,-1) to (1,-1)
+		annotation {
+			remove union to union
+		}
+	} ;
+	remove TemplateParameterSubstitution to TemplateParameterSubstitution {
+		remove ref actual to actual bounds (1,1) to (1,1)
+		remove ref formal to formal bounds (1,1) to (1,1)
+		remove ref ownedActual to ownedActual bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref templateBinding to templateBinding bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove Type to Type {
+		remove ref ^package to ^package bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove Association to Association {
+		remove ref endType to endType bounds (1,-1) to (1,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove att isDerived to isDerived bounds (1,1) to (1,1)
+		remove ref memberEnd to memberEnd bounds (2,-1) to (2,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref ownedEnd to ownedEnd bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref navigableOwnedEnd to navigableOwnedEnd bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove Property to Property {
+		remove ref datatype to datatype bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref interface to interface bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove att default to default bounds (0,1) to (0,1)
+		remove att aggregation to aggregation bounds (1,1) to (1,1)
+		remove ref associationEnd to associationEnd bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref qualifier to qualifier bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref ^class to ^class bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref defaultValue to defaultValue bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove att isComposite to isComposite bounds (1,1) to (1,1)
+		remove att isDerived to isDerived bounds (1,1) to (1,1)
+		remove att isDerivedUnion to isDerivedUnion bounds (1,1) to (1,1)
+		remove att isID to isID bounds (1,1) to (1,1)
+		remove ref opposite to opposite bounds (0,1) to (0,1)
+		remove ref owningAssociation to owningAssociation bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref redefinedProperty to redefinedProperty bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref subsettedProperty to subsettedProperty bounds (0,-1) to (0,-1)
+		remove ref association to association bounds (0,1) to (0,1)
+	}
+	annotation {
+		remove duplicates to duplicates
+	} ;
+	remove ConnectableElement to ConnectableElement {
+		remove ref end to end bounds (0,-1) to (0,-1)
+	}
+	annotation {
+		remove duplicates to duplicates
+		annotation {
+			remove templateParameter to templateParameter detailsEntry {
+				remove eType to eType oldValue "uml::ConnectableElementTemplateParameter" to
+				"uml::ConnectableElementTemplateParameter" }
+			}
+		}
+	} ;
+	remove TypedElement to TypedElement {
+		remove ref type to type bounds (0,1) to (0,1)
+	} ;
+	remove ConnectorEnd to ConnectorEnd {
+		remove ref definingEnd to definingEnd bounds (0,1) to (0,1)
+		remove ref partWithPort to partWithPort bounds (0,1) to (0,1)
+		remove ref role to role bounds (1,1) to (1,1)
+	} ;
+	remove MultiplicityElement to MultiplicityElement {
+		remove att isOrdered to isOrdered bounds (1,1) to (1,1)
+		remove att isUnique to isUnique bounds (1,1) to (1,1)
+		remove att lower to lower bounds (0,1) to (0,1)
+		remove ref lowerValue to lowerValue bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove att upper to upper bounds (1,1) to (1,1)
+		remove ref upperValue to upperValue bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove ValueSpecification to ValueSpecification
+	annotation {
+		remove duplicates to duplicates
+	} ;
+	remove ConnectableElementTemplateParameter to ConnectableElementTemplateParameter
+	annotation {
+		remove duplicates to duplicates
+		annotation {
+			remove parameteredElement to parameteredElement detailsEntry {
+				remove eType to eType oldValue "uml::ConnectableElement" to "uml::ConnectableElement" }
+			}
+		}
+	} ;
+	remove DeploymentTarget to DeploymentTarget {
+		remove ref deployedElement to deployedElement bounds (0,-1) to (0,-1)
+		remove ref deployment to deployment bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove Deployment to Deployment {
+		remove ref configuration to configuration bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref deployedArtifact to deployedArtifact bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref location to location bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove Dependency to Dependency {
+		remove ref client to client bounds (1,-1) to (1,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref supplier to supplier bounds (1,-1) to (1,-1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove DeploymentSpecification to DeploymentSpecification {
+		remove att deploymentLocation to deploymentLocation bounds (0,1) to (0,1)
+		remove att executionLocation to executionLocation bounds (0,1) to (0,1)
+		remove ref deployment to deployment bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove Artifact to Artifact {
+		remove att fileName to fileName bounds (0,1) to (0,1)
+		remove ref manifestation to manifestation bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref nestedArtifact to nestedArtifact bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref ownedAttribute to ownedAttribute bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref ownedOperation to ownedOperation bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove DeployedArtifact to DeployedArtifact ;
+	remove Manifestation to Manifestation {
+		remove ref utilizedElement to utilizedElement bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove Abstraction to Abstraction {
+		remove ref mapping to mapping bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove OpaqueExpression to OpaqueExpression {
+		remove ref behavior to behavior bounds (0,1) to (0,1)
+		remove att body to body bounds (0,-1) to (0,-1)
+		annotation {
+			remove "http:///org/eclipse/emf/ecore/util/ExtendedMetaData" to
+			"http:///org/eclipse/emf/ecore/util/ExtendedMetaData" detailsEntry {
+				remove kind to kind oldValue element to element }
+			}
+		}
+		remove att language to language bounds (0,-1) to (0,-1)
+		remove ref result to result bounds (0,1) to (0,1)
+	}
+	annotation {
+		remove duplicates to duplicates
+	} ;
+	remove Parameter to Parameter {
+		remove att default to default bounds (0,1) to (0,1)
+		remove ref defaultValue to defaultValue bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove att direction to direction bounds (1,1) to (1,1)
+		remove att effect to effect bounds (0,1) to (0,1)
+		remove att isException to isException bounds (1,1) to (1,1)
+		remove att isStream to isStream bounds (1,1) to (1,1)
+		remove ref operation to operation bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref parameterSet to parameterSet bounds (0,-1) to (0,-1)
+	} ;
+	remove Operation to Operation {
+		remove ref bodyCondition to bodyCondition bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref ^class to ^class bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref datatype to datatype bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref interface to interface bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove att isOrdered to isOrdered bounds (1,1) to (1,1)
+		remove att isQuery to isQuery bounds (1,1) to (1,1)
+		remove att isUnique to isUnique bounds (1,1) to (1,1)
+		remove att lower to lower bounds (0,1) to (0,1)
+		remove ref postcondition to postcondition bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref precondition to precondition bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref redefinedOperation to redefinedOperation bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref type to type bounds (0,1) to (0,1)
+		remove att upper to upper bounds (0,1) to (0,1)
+	}
+	annotation {
+		remove duplicates to duplicates
+		annotation {
+			remove templateParameter to templateParameter detailsEntry {
+				remove eType to eType oldValue "uml::OperationTemplateParameter" to "uml::OperationTemplateParameter" }
+			}
+		}
+	} ;
+	remove BehavioralFeature to BehavioralFeature {
+		remove att concurrency to concurrency bounds (1,1) to (1,1)
+		remove att isAbstract to isAbstract bounds (1,1) to (1,1)
+		remove ref method to method bounds (0,-1) to (0,-1)
+		remove ref ownedParameter to ownedParameter bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref ownedParameterSet to ownedParameterSet bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref raisedException to raisedException bounds (0,-1) to (0,-1)
+	}
+	annotation {
+		remove duplicates to duplicates
+	} ;
+	remove Feature to Feature {
+		remove ref featuringClassifier to featuringClassifier bounds (0,-1) to (0,-1)
+		annotation {
+			remove union to union
+		}
+		remove att isStatic to isStatic bounds (1,1) to (1,1)
+	} ;
+	remove RedefinableElement to RedefinableElement {
+		remove att isLeaf to isLeaf bounds (1,1) to (1,1)
+		remove ref redefinedElement to redefinedElement bounds (0,-1) to (0,-1)
+		annotation {
+			remove union to union
+		}
+		remove ref redefinitionContext to redefinitionContext bounds (0,-1) to (0,-1)
+		annotation {
+			remove union to union
+		}
+	} ;
+	remove ParameterSet to ParameterSet {
+		remove ref condition to condition bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref parameter to parameter bounds (1,-1) to (1,-1)
+	} ;
+	remove Constraint to Constraint {
+		remove ref constrainedElement to constrainedElement bounds (0,-1) to (0,-1)
+		remove ref context to context bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref specification to specification bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove DataType to DataType {
+		remove ref ownedAttribute to ownedAttribute bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref ownedOperation to ownedOperation bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove Interface to Interface {
+		remove ref nestedClassifier to nestedClassifier bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref ownedAttribute to ownedAttribute bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref ownedReception to ownedReception bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref protocol to protocol bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref redefinedInterface to redefinedInterface bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref ownedOperation to ownedOperation bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove Reception to Reception {
+		remove ref signal to signal bounds (1,1) to (1,1)
+	} ;
+	remove Signal to Signal {
+		remove ref ownedAttribute to ownedAttribute bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove ProtocolStateMachine to ProtocolStateMachine {
+		remove ref conformance to conformance bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+	}
+	annotation {
+		remove duplicates to duplicates
+	} ;
+	remove StateMachine to StateMachine {
+		remove ref connectionPoint to connectionPoint bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref submachineState to submachineState bounds (0,-1) to (0,-1)
+		remove ref region to region bounds (1,-1) to (1,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref extendedStateMachine to extendedStateMachine bounds (0,-1) to (0,-1)
+		annotation {
+			remove redefines to redefines
+		}
+	}
+	annotation {
+		remove duplicates to duplicates
+	} ;
+	remove Pseudostate to Pseudostate {
+		remove ref state to state bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove att kind to kind bounds (1,1) to (1,1)
+		remove ref stateMachine to stateMachine bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove Vertex to Vertex {
+		remove ref container to container bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref incoming to incoming bounds (0,-1) to (0,-1)
+		remove ref outgoing to outgoing bounds (0,-1) to (0,-1)
+	} ;
+	remove Region to Region {
+		remove ref extendedRegion to extendedRegion bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref state to state bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref stateMachine to stateMachine bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref transition to transition bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref subvertex to subvertex bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+	}
+	annotation {
+		remove duplicates to duplicates
+		annotation {
+			remove redefinitionContext to redefinitionContext detailsEntry {
+				remove lowerBound to lowerBound oldValue "1" to "1" } ;
+				remove upperBound to upperBound oldValue "1" to "1" }
+			}
+		}
+	} ;
+	remove State to State {
+		remove ref connection to connection bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref connectionPoint to connectionPoint bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref deferrableTrigger to deferrableTrigger bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref doActivity to doActivity bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref entry to entry bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref exit to exit bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove att isComposite to isComposite bounds (1,1) to (1,1)
+		remove att isOrthogonal to isOrthogonal bounds (1,1) to (1,1)
+		remove att isSimple to isSimple bounds (1,1) to (1,1)
+		remove att isSubmachineState to isSubmachineState bounds (1,1) to (1,1)
+		remove ref redefinedState to redefinedState bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref stateInvariant to stateInvariant bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref submachine to submachine bounds (0,1) to (0,1)
+		remove ref region to region bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+	}
+	annotation {
+		remove duplicates to duplicates
+		annotation {
+			remove redefinitionContext to redefinitionContext detailsEntry {
+				remove lowerBound to lowerBound oldValue "1" to "1" } ;
+				remove upperBound to upperBound oldValue "1" to "1" }
+			}
+		}
+	} ;
+	remove ConnectionPointReference to ConnectionPointReference {
+		remove ref entry to entry bounds (0,-1) to (0,-1)
+		remove ref exit to exit bounds (0,-1) to (0,-1)
+		remove ref state to state bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove Trigger to Trigger {
+		remove ref event to event bounds (1,1) to (1,1)
+		remove ref port to port bounds (0,-1) to (0,-1)
+	} ;
+	remove Event to Event ;
+	remove Port to Port {
+		remove att isBehavior to isBehavior bounds (1,1) to (1,1)
+		remove att isConjugated to isConjugated bounds (1,1) to (1,1)
+		remove att isService to isService bounds (1,1) to (1,1)
+		remove ref protocol to protocol bounds (0,1) to (0,1)
+		remove ref provided to provided bounds (0,-1) to (0,-1)
+		remove ref redefinedPort to redefinedPort bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref required to required bounds (0,-1) to (0,-1)
+	} ;
+	remove Transition to Transition {
+		remove ref effect to effect bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref guard to guard bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove att kind to kind bounds (1,1) to (1,1)
+		remove ref redefinedTransition to redefinedTransition bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref source to source bounds (1,1) to (1,1)
+		remove ref target to target bounds (1,1) to (1,1)
+		remove ref trigger to trigger bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref container to container bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+	}
+	annotation {
+		remove duplicates to duplicates
+		annotation {
+			remove redefinitionContext to redefinitionContext detailsEntry {
+				remove lowerBound to lowerBound oldValue "1" to "1" } ;
+				remove upperBound to upperBound oldValue "1" to "1" }
+			}
+		}
+	} ;
+	remove ProtocolConformance to ProtocolConformance {
+		remove ref generalMachine to generalMachine bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref specificMachine to specificMachine bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove OperationTemplateParameter to OperationTemplateParameter
+	annotation {
+		remove duplicates to duplicates
+		annotation {
+			remove parameteredElement to parameteredElement detailsEntry {
+				remove eType to eType oldValue "uml::Operation" to "uml::Operation" }
+			}
+		}
+	} ;
+	remove StructuralFeature to StructuralFeature {
+		remove att isReadOnly to isReadOnly bounds (1,1) to (1,1)
+	} ;
+	remove PackageMerge to PackageMerge {
+		remove ref mergedPackage to mergedPackage bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref receivingPackage to receivingPackage bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove ProfileApplication to ProfileApplication {
+		remove ref appliedProfile to appliedProfile bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove att isStrict to isStrict bounds (1,1) to (1,1)
+		remove ref applyingPackage to applyingPackage bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove Enumeration to Enumeration {
+		remove ref ownedLiteral to ownedLiteral bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove EnumerationLiteral to EnumerationLiteral {
+		remove ref enumeration to enumeration bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+	}
+	annotation {
+		remove duplicates to duplicates
+		annotation {
+			remove classifier to classifier detailsEntry {
+				remove lowerBound to lowerBound oldValue "1" to "1" } ;
+				remove upperBound to upperBound oldValue "1" to "1" }
+			}
+		}
+	} ;
+	remove InstanceSpecification to InstanceSpecification {
+		remove ref classifier to classifier bounds (0,-1) to (0,-1)
+		remove ref slot to slot bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref specification to specification bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove Slot to Slot {
+		remove ref definingFeature to definingFeature bounds (1,1) to (1,1)
+		remove ref value to value bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref owningInstance to owningInstance bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove PrimitiveType to PrimitiveType ;
+	remove ElementImport to ElementImport {
+		remove att alias to alias bounds (0,1) to (0,1)
+		remove ref importedElement to importedElement bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref importingNamespace to importingNamespace bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove att visibility to visibility bounds (1,1) to (1,1)
+	} ;
+	remove PackageImport to PackageImport {
+		remove ref importedPackage to importedPackage bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref importingNamespace to importingNamespace bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove att visibility to visibility bounds (1,1) to (1,1)
+	} ;
+	remove Extension to Extension {
+		remove att isRequired to isRequired bounds (1,1) to (1,1)
+		remove ref metaclass to metaclass bounds (1,1) to (1,1)
+	}
+	annotation {
+		remove duplicates to duplicates
+		annotation {
+			remove ownedEnd to ownedEnd detailsEntry {
+				remove lowerBound to lowerBound oldValue "1" to "1" } ;
+				remove upperBound to upperBound oldValue "1" to "1" }
+			}
+		}
+	} ;
+	remove ExtensionEnd to ExtensionEnd
+	annotation {
+		remove duplicates to duplicates
+		annotation {
+			remove type to type detailsEntry {
+				remove lowerBound to lowerBound oldValue "1" to "1" } ;
+				remove eType to eType oldValue "uml::Stereotype" to "uml::Stereotype" }
+			}
+		}
+	} ;
+	remove Model to Model {
+		remove att viewpoint to viewpoint bounds (0,1) to (0,1)
+	} ;
+	remove StringExpression to StringExpression {
+		remove ref owningExpression to owningExpression bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref subExpression to subExpression bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+	}
+	annotation {
+		remove duplicates to duplicates
+	} ;
+	remove Expression to Expression {
+		remove ref operand to operand bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove att symbol to symbol bounds (0,1) to (0,1)
+	} ;
+	remove Usage to Usage ;
+	remove CollaborationUse to CollaborationUse {
+		remove ref roleBinding to roleBinding bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref type to type bounds (1,1) to (1,1)
+	} ;
+	remove Collaboration to Collaboration {
+		remove ref collaborationRole to collaborationRole bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove StructuredClassifier to StructuredClassifier {
+		remove ref ownedAttribute to ownedAttribute bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref ownedConnector to ownedConnector bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref part to part bounds (0,-1) to (0,-1)
+		remove ref role to role bounds (0,-1) to (0,-1)
+		annotation {
+			remove union to union ;
+			remove subsets to subsets
+		}
+	} ;
+	remove Connector to Connector {
+		remove ref contract to contract bounds (0,-1) to (0,-1)
+		remove ref end to end bounds (2,-1) to (2,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove att kind to kind bounds (1,1) to (1,1)
+		remove ref redefinedConnector to redefinedConnector bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref type to type bounds (0,1) to (0,1)
+	} ;
+	remove Generalization to Generalization {
+		remove ref general to general bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref generalizationSet to generalizationSet bounds (0,-1) to (0,-1)
+		remove att isSubstitutable to isSubstitutable bounds (0,1) to (0,1)
+		remove ref specific to specific bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove GeneralizationSet to GeneralizationSet {
+		remove att isCovering to isCovering bounds (1,1) to (1,1)
+		remove att isDisjoint to isDisjoint bounds (1,1) to (1,1)
+		remove ref powertype to powertype bounds (0,1) to (0,1)
+		remove ref generalization to generalization bounds (0,-1) to (0,-1)
+	} ;
+	remove RedefinableTemplateSignature to RedefinableTemplateSignature {
+		remove ref extendedSignature to extendedSignature bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref inheritedParameter to inheritedParameter bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref classifier to classifier bounds (1,1) to (1,1)
+		annotation {
+			remove redefines to redefines ;
+			remove subsets to subsets
+		}
+	}
+	annotation {
+		remove duplicates to duplicates
+	} ;
+	remove UseCase to UseCase {
+		remove ref extend to extend bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref extensionPoint to extensionPoint bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref include to include bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref subject to subject bounds (0,-1) to (0,-1)
+	} ;
+	remove Extend to Extend {
+		remove ref condition to condition bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref extendedCase to extendedCase bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref extensionLocation to extensionLocation bounds (1,-1) to (1,-1)
+		remove ref extension to extension bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove ExtensionPoint to ExtensionPoint {
+		remove ref useCase to useCase bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove Include to Include {
+		remove ref addition to addition bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref includingCase to includingCase bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove Substitution to Substitution {
+		remove ref contract to contract bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref substitutingClassifier to substitutingClassifier bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove Realization to Realization ;
+	remove ClassifierTemplateParameter to ClassifierTemplateParameter {
+		remove att allowSubstitutable to allowSubstitutable bounds (1,1) to (1,1)
+		remove ref constrainingClassifier to constrainingClassifier bounds (0,-1) to (0,-1)
+	}
+	annotation {
+		remove duplicates to duplicates
+		annotation {
+			remove parameteredElement to parameteredElement detailsEntry {
+				remove eType to eType oldValue "uml::Classifier" to "uml::Classifier" }
+			}
+		}
+	} ;
+	remove InterfaceRealization to InterfaceRealization {
+		remove ref contract to contract bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref implementingClassifier to implementingClassifier bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove EncapsulatedClassifier to EncapsulatedClassifier {
+		remove ref ownedPort to ownedPort bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove ActivityGroup to ActivityGroup {
+		remove ref containedEdge to containedEdge bounds (0,-1) to (0,-1)
+		annotation {
+			remove union to union
+		}
+		remove ref containedNode to containedNode bounds (0,-1) to (0,-1)
+		annotation {
+			remove union to union
+		}
+		remove ref inActivity to inActivity bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref subgroup to subgroup bounds (0,-1) to (0,-1)
+		annotation {
+			remove union to union ;
+			remove subsets to subsets
+		}
+		remove ref superGroup to superGroup bounds (0,1) to (0,1)
+		annotation {
+			remove union to union ;
+			remove subsets to subsets
+		}
+	}
+	annotation {
+		remove duplicates to duplicates
+	} ;
+	remove ActivityEdge to ActivityEdge {
+		remove ref activity to activity bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref guard to guard bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref inPartition to inPartition bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref interrupts to interrupts bounds (0,1) to (0,1)
+		remove ref inStructuredNode to inStructuredNode bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref target to target bounds (1,1) to (1,1)
+		remove ref source to source bounds (1,1) to (1,1)
+		remove ref redefinedEdge to redefinedEdge bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref weight to weight bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref inGroup to inGroup bounds (0,-1) to (0,-1)
+		annotation {
+			remove union to union
+		}
+	}
+	annotation {
+		remove duplicates to duplicates
+	} ;
+	remove ActivityPartition to ActivityPartition {
+		remove att isDimension to isDimension bounds (1,1) to (1,1)
+		remove att isExternal to isExternal bounds (1,1) to (1,1)
+		remove ref node to node bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref represents to represents bounds (0,1) to (0,1)
+		remove ref subpartition to subpartition bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref superPartition to superPartition bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref edge to edge bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove ActivityNode to ActivityNode {
+		remove ref activity to activity bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref inGroup to inGroup bounds (0,-1) to (0,-1)
+		annotation {
+			remove union to union
+		}
+		remove ref inInterruptibleRegion to inInterruptibleRegion bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref inStructuredNode to inStructuredNode bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref incoming to incoming bounds (0,-1) to (0,-1)
+		remove ref outgoing to outgoing bounds (0,-1) to (0,-1)
+		remove ref redefinedNode to redefinedNode bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref inPartition to inPartition bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+	}
+	annotation {
+		remove duplicates to duplicates
+	} ;
+	remove InterruptibleActivityRegion to InterruptibleActivityRegion {
+		remove ref interruptingEdge to interruptingEdge bounds (0,-1) to (0,-1)
+		remove ref node to node bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove StructuredActivityNode to StructuredActivityNode {
+		remove ref edge to edge bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove att mustIsolate to mustIsolate bounds (1,1) to (1,1)
+		remove ref structuredNodeInput to structuredNodeInput bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref structuredNodeOutput to structuredNodeOutput bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref variable to variable bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref node to node bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+	}
+	annotation {
+		remove duplicates to duplicates
+	} ;
+	remove Action to Action {
+		remove ref context to context bounds (0,1) to (0,1)
+		remove ref input to input bounds (0,-1) to (0,-1)
+		annotation {
+			remove union to union ;
+			remove subsets to subsets
+		}
+		remove att isLocallyReentrant to isLocallyReentrant bounds (1,1) to (1,1)
+		remove ref localPostcondition to localPostcondition bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref localPrecondition to localPrecondition bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref output to output bounds (0,-1) to (0,-1)
+		annotation {
+			remove union to union ;
+			remove subsets to subsets
+		}
+	} ;
+	remove ExecutableNode to ExecutableNode {
+		remove ref handler to handler bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove ExceptionHandler to ExceptionHandler {
+		remove ref exceptionInput to exceptionInput bounds (1,1) to (1,1)
+		remove ref exceptionType to exceptionType bounds (1,-1) to (1,-1)
+		remove ref handlerBody to handlerBody bounds (1,1) to (1,1)
+		remove ref protectedNode to protectedNode bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove ObjectNode to ObjectNode {
+		remove ref inState to inState bounds (0,-1) to (0,-1)
+		remove att isControlType to isControlType bounds (1,1) to (1,1)
+		remove att ordering to ordering bounds (1,1) to (1,1)
+		remove ref selection to selection bounds (0,1) to (0,1)
+		remove ref upperBound to upperBound bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove InputPin to InputPin ;
+	remove Pin to Pin {
+		remove att isControl to isControl bounds (1,1) to (1,1)
+	} ;
+	remove OutputPin to OutputPin ;
+	remove Variable to Variable {
+		remove ref activityScope to activityScope bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref scope to scope bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove ValueSpecificationAction to ValueSpecificationAction {
+		remove ref result to result bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref value to value bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove VariableAction to VariableAction {
+		remove ref variable to variable bounds (1,1) to (1,1)
+	} ;
+	remove WriteLinkAction to WriteLinkAction ;
+	remove LinkAction to LinkAction {
+		remove ref endData to endData bounds (2,-1) to (2,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref inputValue to inputValue bounds (1,-1) to (1,-1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove LinkEndData to LinkEndData {
+		remove ref end to end bounds (1,1) to (1,1)
+		remove ref qualifier to qualifier bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref value to value bounds (0,1) to (0,1)
+	} ;
+	remove QualifierValue to QualifierValue {
+		remove ref qualifier to qualifier bounds (1,1) to (1,1)
+		remove ref value to value bounds (1,1) to (1,1)
+	} ;
+	remove WriteStructuralFeatureAction to WriteStructuralFeatureAction {
+		remove ref result to result bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref value to value bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove StructuralFeatureAction to StructuralFeatureAction {
+		remove ref object to object bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref structuralFeature to structuralFeature bounds (1,1) to (1,1)
+	} ;
+	remove WriteVariableAction to WriteVariableAction {
+		remove ref value to value bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove AcceptCallAction to AcceptCallAction {
+		remove ref returnInformation to returnInformation bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove AcceptEventAction to AcceptEventAction {
+		remove att isUnmarshall to isUnmarshall bounds (1,1) to (1,1)
+		remove ref result to result bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref trigger to trigger bounds (1,-1) to (1,-1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove ActionInputPin to ActionInputPin {
+		remove ref fromAction to fromAction bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove AddStructuralFeatureValueAction to AddStructuralFeatureValueAction {
+		remove ref insertAt to insertAt bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove att isReplaceAll to isReplaceAll bounds (1,1) to (1,1)
+	} ;
+	remove AddVariableValueAction to AddVariableValueAction {
+		remove ref insertAt to insertAt bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove att isReplaceAll to isReplaceAll bounds (1,1) to (1,1)
+	} ;
+	remove BroadcastSignalAction to BroadcastSignalAction {
+		remove ref signal to signal bounds (1,1) to (1,1)
+	} ;
+	remove InvocationAction to InvocationAction {
+		remove ref argument to argument bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref onPort to onPort bounds (0,1) to (0,1)
+	} ;
+	remove CallAction to CallAction {
+		remove att isSynchronous to isSynchronous bounds (1,1) to (1,1)
+		remove ref result to result bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove CallBehaviorAction to CallBehaviorAction {
+		remove ref behavior to behavior bounds (1,1) to (1,1)
+	}
+	annotation {
+		remove duplicates to duplicates
+	} ;
+	remove CallOperationAction to CallOperationAction {
+		remove ref operation to operation bounds (1,1) to (1,1)
+		remove ref target to target bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+	}
+	annotation {
+		remove duplicates to duplicates
+	} ;
+	remove Clause to Clause {
+		remove ref body to body bounds (0,-1) to (0,-1)
+		remove ref bodyOutput to bodyOutput bounds (0,-1) to (0,-1)
+		remove ref decider to decider bounds (1,1) to (1,1)
+		remove ref predecessorClause to predecessorClause bounds (0,-1) to (0,-1)
+		remove ref successorClause to successorClause bounds (0,-1) to (0,-1)
+		remove ref test to test bounds (1,-1) to (1,-1)
+	} ;
+	remove ClearAssociationAction to ClearAssociationAction {
+		remove ref association to association bounds (1,1) to (1,1)
+		remove ref object to object bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove ClearStructuralFeatureAction to ClearStructuralFeatureAction {
+		remove ref result to result bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove ClearVariableAction to ClearVariableAction ;
+	remove ConditionalNode to ConditionalNode {
+		remove ref clause to clause bounds (1,-1) to (1,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove att isAssured to isAssured bounds (1,1) to (1,1)
+		remove att isDeterminate to isDeterminate bounds (1,1) to (1,1)
+		remove ref result to result bounds (0,-1) to (0,-1)
+		annotation {
+			remove redefines to redefines
+		}
+	}
+	annotation {
+		remove duplicates to duplicates
+	} ;
+	remove CreateLinkAction to CreateLinkAction
+	annotation {
+		remove duplicates to duplicates
+	} ;
+	remove LinkEndCreationData to LinkEndCreationData {
+		remove ref insertAt to insertAt bounds (0,1) to (0,1)
+		remove att isReplaceAll to isReplaceAll bounds (1,1) to (1,1)
+	}
+	annotation {
+		remove duplicates to duplicates
+	} ;
+	remove CreateLinkObjectAction to CreateLinkObjectAction {
+		remove ref result to result bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove CreateObjectAction to CreateObjectAction {
+		remove ref classifier to classifier bounds (1,1) to (1,1)
+		remove ref result to result bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove DestroyLinkAction to DestroyLinkAction
+	annotation {
+		remove duplicates to duplicates
+	} ;
+	remove LinkEndDestructionData to LinkEndDestructionData {
+		remove ref destroyAt to destroyAt bounds (0,1) to (0,1)
+		remove att isDestroyDuplicates to isDestroyDuplicates bounds (1,1) to (1,1)
+	}
+	annotation {
+		remove duplicates to duplicates
+	} ;
+	remove DestroyObjectAction to DestroyObjectAction {
+		remove att isDestroyLinks to isDestroyLinks bounds (1,1) to (1,1)
+		remove att isDestroyOwnedObjects to isDestroyOwnedObjects bounds (1,1) to (1,1)
+		remove ref target to target bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove ExpansionNode to ExpansionNode {
+		remove ref regionAsInput to regionAsInput bounds (0,1) to (0,1)
+		remove ref regionAsOutput to regionAsOutput bounds (0,1) to (0,1)
+	} ;
+	remove ExpansionRegion to ExpansionRegion {
+		remove att mode to mode bounds (1,1) to (1,1)
+		remove ref outputElement to outputElement bounds (0,-1) to (0,-1)
+		remove ref inputElement to inputElement bounds (1,-1) to (1,-1)
+	} ;
+	remove LoopNode to LoopNode {
+		remove ref bodyOutput to bodyOutput bounds (0,-1) to (0,-1)
+		remove ref bodyPart to bodyPart bounds (0,-1) to (0,-1)
+		remove ref decider to decider bounds (1,1) to (1,1)
+		remove att isTestedFirst to isTestedFirst bounds (1,1) to (1,1)
+		remove ref loopVariable to loopVariable bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref loopVariableInput to loopVariableInput bounds (0,-1) to (0,-1)
+		annotation {
+			remove redefines to redefines
+		}
+		remove ref result to result bounds (0,-1) to (0,-1)
+		annotation {
+			remove redefines to redefines
+		}
+		remove ref setupPart to setupPart bounds (0,-1) to (0,-1)
+		remove ref test to test bounds (1,-1) to (1,-1)
+	}
+	annotation {
+		remove duplicates to duplicates
+	} ;
+	remove OpaqueAction to OpaqueAction {
+		remove att body to body bounds (0,-1) to (0,-1)
+		annotation {
+			remove "http:///org/eclipse/emf/ecore/util/ExtendedMetaData" to
+			"http:///org/eclipse/emf/ecore/util/ExtendedMetaData" detailsEntry {
+				remove kind to kind oldValue element to element }
+			}
+		}
+		remove ref inputValue to inputValue bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove att language to language bounds (0,-1) to (0,-1)
+		remove ref outputValue to outputValue bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove RaiseExceptionAction to RaiseExceptionAction {
+		remove ref exception to exception bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove ReadExtentAction to ReadExtentAction {
+		remove ref classifier to classifier bounds (1,1) to (1,1)
+		remove ref result to result bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove ReadIsClassifiedObjectAction to ReadIsClassifiedObjectAction {
+		remove ref classifier to classifier bounds (1,1) to (1,1)
+		remove att isDirect to isDirect bounds (1,1) to (1,1)
+		remove ref object to object bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref result to result bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove ReadLinkAction to ReadLinkAction {
+		remove ref result to result bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove ReadLinkObjectEndAction to ReadLinkObjectEndAction {
+		remove ref end to end bounds (1,1) to (1,1)
+		remove ref object to object bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref result to result bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove ReadLinkObjectEndQualifierAction to ReadLinkObjectEndQualifierAction {
+		remove ref object to object bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref qualifier to qualifier bounds (1,1) to (1,1)
+		remove ref result to result bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove ReadSelfAction to ReadSelfAction {
+		remove ref result to result bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove ReadStructuralFeatureAction to ReadStructuralFeatureAction {
+		remove ref result to result bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+	}
+	annotation {
+		remove duplicates to duplicates
+	} ;
+	remove ReadVariableAction to ReadVariableAction {
+		remove ref result to result bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove ReclassifyObjectAction to ReclassifyObjectAction {
+		remove att isReplaceAll to isReplaceAll bounds (1,1) to (1,1)
+		remove ref newClassifier to newClassifier bounds (0,-1) to (0,-1)
+		remove ref object to object bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref oldClassifier to oldClassifier bounds (0,-1) to (0,-1)
+	} ;
+	remove ReduceAction to ReduceAction {
+		remove ref collection to collection bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove att isOrdered to isOrdered bounds (1,1) to (1,1)
+		remove ref reducer to reducer bounds (1,1) to (1,1)
+		remove ref result to result bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove RemoveStructuralFeatureValueAction to RemoveStructuralFeatureValueAction {
+		remove att isRemoveDuplicates to isRemoveDuplicates bounds (1,1) to (1,1)
+		remove ref removeAt to removeAt bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove RemoveVariableValueAction to RemoveVariableValueAction {
+		remove att isRemoveDuplicates to isRemoveDuplicates bounds (1,1) to (1,1)
+		remove ref removeAt to removeAt bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove ReplyAction to ReplyAction {
+		remove ref replyToCall to replyToCall bounds (1,1) to (1,1)
+		remove ref replyValue to replyValue bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref returnInformation to returnInformation bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove SendObjectAction to SendObjectAction {
+		remove ref request to request bounds (1,1) to (1,1)
+		annotation {
+			remove redefines to redefines
+		}
+		remove ref target to target bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove SendSignalAction to SendSignalAction {
+		remove ref signal to signal bounds (1,1) to (1,1)
+		remove ref target to target bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove SequenceNode to SequenceNode {
+		remove ref executableNode to executableNode bounds (0,-1) to (0,-1)
+		annotation {
+			remove redefines to redefines
+		}
+	} ;
+	remove StartClassifierBehaviorAction to StartClassifierBehaviorAction {
+		remove ref object to object bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove StartObjectBehaviorAction to StartObjectBehaviorAction {
+		remove ref object to object bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+	}
+	annotation {
+		remove duplicates to duplicates
+	} ;
+	remove TestIdentityAction to TestIdentityAction {
+		remove ref first to first bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref result to result bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref second to second bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove UnmarshallAction to UnmarshallAction {
+		remove ref object to object bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref result to result bounds (1,-1) to (1,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref unmarshallType to unmarshallType bounds (1,1) to (1,1)
+	} ;
+	remove ValuePin to ValuePin {
+		remove ref value to value bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove ActivityFinalNode to ActivityFinalNode ;
+	remove FinalNode to FinalNode ;
+	remove ControlNode to ControlNode ;
+	remove ActivityParameterNode to ActivityParameterNode {
+		remove ref parameter to parameter bounds (1,1) to (1,1)
+	} ;
+	remove CentralBufferNode to CentralBufferNode ;
+	remove ControlFlow to ControlFlow ;
+	remove DataStoreNode to DataStoreNode ;
+	remove DecisionNode to DecisionNode {
+		remove ref decisionInput to decisionInput bounds (0,1) to (0,1)
+		remove ref decisionInputFlow to decisionInputFlow bounds (0,1) to (0,1)
+	} ;
+	remove ObjectFlow to ObjectFlow {
+		remove att isMulticast to isMulticast bounds (1,1) to (1,1)
+		remove att isMultireceive to isMultireceive bounds (1,1) to (1,1)
+		remove ref selection to selection bounds (0,1) to (0,1)
+		remove ref transformation to transformation bounds (0,1) to (0,1)
+	} ;
+	remove FlowFinalNode to FlowFinalNode ;
+	remove ForkNode to ForkNode ;
+	remove InitialNode to InitialNode ;
+	remove JoinNode to JoinNode {
+		remove att isCombineDuplicate to isCombineDuplicate bounds (1,1) to (1,1)
+		remove ref joinSpec to joinSpec bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove MergeNode to MergeNode ;
+	remove InstanceValue to InstanceValue {
+		remove ref instance to instance bounds (1,1) to (1,1)
+	}
+	annotation {
+		remove duplicates to duplicates
+	} ;
+	remove AnyReceiveEvent to AnyReceiveEvent ;
+	remove MessageEvent to MessageEvent ;
+	remove CallEvent to CallEvent {
+		remove ref operation to operation bounds (1,1) to (1,1)
+	} ;
+	remove ChangeEvent to ChangeEvent {
+		remove ref changeExpression to changeExpression bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove FunctionBehavior to FunctionBehavior ;
+	remove OpaqueBehavior to OpaqueBehavior {
+		remove att body to body bounds (0,-1) to (0,-1)
+		annotation {
+			remove "http:///org/eclipse/emf/ecore/util/ExtendedMetaData" to
+			"http:///org/eclipse/emf/ecore/util/ExtendedMetaData" detailsEntry {
+				remove kind to kind oldValue element to element }
+			}
+		}
+		remove att language to language bounds (0,-1) to (0,-1)
+	} ;
+	remove SignalEvent to SignalEvent {
+		remove ref signal to signal bounds (1,1) to (1,1)
+	} ;
+	remove TimeEvent to TimeEvent {
+		remove att isRelative to isRelative bounds (1,1) to (1,1)
+		remove ref when to when bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove TimeExpression to TimeExpression {
+		remove ref expr to expr bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref observation to observation bounds (0,-1) to (0,-1)
+	}
+	annotation {
+		remove duplicates to duplicates
+	} ;
+	remove Observation to Observation ;
+	remove CommunicationPath to CommunicationPath
+	annotation {
+		remove duplicates to duplicates
+	} ;
+	remove Device to Device ;
+	remove Node to Node {
+		remove ref nestedNode to nestedNode bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove ExecutionEnvironment to ExecutionEnvironment ;
+	remove InformationFlow to InformationFlow {
+		remove ref conveyed to conveyed bounds (1,-1) to (1,-1)
+		remove ref informationSource to informationSource bounds (1,-1) to (1,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref informationTarget to informationTarget bounds (1,-1) to (1,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref realization to realization bounds (0,-1) to (0,-1)
+		remove ref realizingActivityEdge to realizingActivityEdge bounds (0,-1) to (0,-1)
+		remove ref realizingConnector to realizingConnector bounds (0,-1) to (0,-1)
+		remove ref realizingMessage to realizingMessage bounds (0,-1) to (0,-1)
+	} ;
+	remove Message to Message {
+		remove ref argument to argument bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref connector to connector bounds (0,1) to (0,1)
+		remove ref interaction to interaction bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove att messageKind to messageKind bounds (1,1) to (1,1)
+		remove att messageSort to messageSort bounds (1,1) to (1,1)
+		remove ref receiveEvent to receiveEvent bounds (0,1) to (0,1)
+		remove ref sendEvent to sendEvent bounds (0,1) to (0,1)
+		remove ref signature to signature bounds (0,1) to (0,1)
+	}
+	annotation {
+		remove duplicates to duplicates
+	} ;
+	remove Interaction to Interaction {
+		remove ref lifeline to lifeline bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref fragment to fragment bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref action to action bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref formalGate to formalGate bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref message to message bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove InteractionFragment to InteractionFragment {
+		remove ref covered to covered bounds (0,-1) to (0,-1)
+		remove ref enclosingOperand to enclosingOperand bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref enclosingInteraction to enclosingInteraction bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref generalOrdering to generalOrdering bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove Lifeline to Lifeline {
+		remove ref decomposedAs to decomposedAs bounds (0,1) to (0,1)
+		remove ref interaction to interaction bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref represents to represents bounds (0,1) to (0,1)
+		remove ref selector to selector bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref coveredBy to coveredBy bounds (0,-1) to (0,-1)
+	} ;
+	remove PartDecomposition to PartDecomposition ;
+	remove InteractionUse to InteractionUse {
+		remove ref actualGate to actualGate bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref argument to argument bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref refersTo to refersTo bounds (1,1) to (1,1)
+		remove ref returnValue to returnValue bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref returnValueRecipient to returnValueRecipient bounds (0,1) to (0,1)
+	} ;
+	remove Gate to Gate
+	annotation {
+		remove duplicates to duplicates
+	} ;
+	remove MessageEnd to MessageEnd {
+		remove ref message to message bounds (0,1) to (0,1)
+	} ;
+	remove InteractionOperand to InteractionOperand {
+		remove ref fragment to fragment bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref guard to guard bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove InteractionConstraint to InteractionConstraint {
+		remove ref maxint to maxint bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref minint to minint bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove GeneralOrdering to GeneralOrdering {
+		remove ref after to after bounds (1,1) to (1,1)
+		remove ref before to before bounds (1,1) to (1,1)
+	} ;
+	remove OccurrenceSpecification to OccurrenceSpecification {
+		remove ref toAfter to toAfter bounds (0,-1) to (0,-1)
+		remove ref toBefore to toBefore bounds (0,-1) to (0,-1)
+	}
+	annotation {
+		remove duplicates to duplicates
+		annotation {
+			remove covered to covered detailsEntry {
+				remove lowerBound to lowerBound oldValue "1" to "1" } ;
+				remove upperBound to upperBound oldValue "1" to "1" }
+			}
+		}
+	} ;
+	remove InformationItem to InformationItem {
+		remove ref represented to represented bounds (0,-1) to (0,-1)
+	} ;
+	remove ActionExecutionSpecification to ActionExecutionSpecification {
+		remove ref action to action bounds (1,1) to (1,1)
+	} ;
+	remove ExecutionSpecification to ExecutionSpecification {
+		remove ref finish to finish bounds (1,1) to (1,1)
+		remove ref start to start bounds (1,1) to (1,1)
+	} ;
+	remove BehaviorExecutionSpecification to BehaviorExecutionSpecification {
+		remove ref behavior to behavior bounds (0,1) to (0,1)
+	} ;
+	remove CombinedFragment to CombinedFragment {
+		remove ref cfragmentGate to cfragmentGate bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove att interactionOperator to interactionOperator bounds (1,1) to (1,1)
+		remove ref operand to operand bounds (1,-1) to (1,-1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove ConsiderIgnoreFragment to ConsiderIgnoreFragment {
+		remove ref message to message bounds (0,-1) to (0,-1)
+	} ;
+	remove Continuation to Continuation {
+		remove att setting to setting bounds (1,1) to (1,1)
+	} ;
+	remove DestructionOccurrenceSpecification to DestructionOccurrenceSpecification ;
+	remove MessageOccurrenceSpecification to MessageOccurrenceSpecification ;
+	remove ExecutionOccurrenceSpecification to ExecutionOccurrenceSpecification {
+		remove ref execution to execution bounds (1,1) to (1,1)
+	} ;
+	remove StateInvariant to StateInvariant {
+		remove ref invariant to invariant bounds (1,1) to (1,1)
+		annotation {
+			remove subsets to subsets
+		}
+	}
+	annotation {
+		remove duplicates to duplicates
+		annotation {
+			remove covered to covered detailsEntry {
+				remove lowerBound to lowerBound oldValue "1" to "1" } ;
+				remove upperBound to upperBound oldValue "1" to "1" }
+			}
+		}
+	} ;
+	remove FinalState to FinalState ;
+	remove ProtocolTransition to ProtocolTransition {
+		remove ref postCondition to postCondition bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref preCondition to preCondition bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref referred to referred bounds (0,-1) to (0,-1)
+	} ;
+	remove AssociationClass to AssociationClass ;
+	remove Component to Component {
+		remove att isIndirectlyInstantiated to isIndirectlyInstantiated bounds (1,1) to (1,1)
+		remove ref packagedElement to packagedElement bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref provided to provided bounds (0,-1) to (0,-1)
+		remove ref realization to realization bounds (0,-1) to (0,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref required to required bounds (0,-1) to (0,-1)
+	} ;
+	remove ComponentRealization to ComponentRealization {
+		remove ref realizingClassifier to realizingClassifier bounds (1,-1) to (1,-1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref abstraction to abstraction bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+	} ;
+	remove Actor to Actor ;
+	remove Duration to Duration {
+		remove ref expr to expr bounds (0,1) to (0,1)
+		annotation {
+			remove subsets to subsets
+		}
+		remove ref observation to observation bounds (0,-1) to (0,-1)
+	}
+	annotation {
+		remove duplicates to duplicates
+	} ;
+	remove DurationConstraint to DurationConstraint {
+		remove att firstEvent to firstEvent bounds (0,2) to (0,2)
+	}
+	annotation {
+		remove duplicates to duplicates
+		annotation {
+			remove specification to specification detailsEntry {
+				remove eType to eType oldValue "uml::DurationInterval" to "uml::DurationInterval" }
+			}
+		}
+	} ;
+	remove IntervalConstraint to IntervalConstraint
+	annotation {
+		remove duplicates to duplicates
+		annotation {
+			remove specification to specification detailsEntry {
+				remove eType to eType oldValue "uml::Interval" to "uml::Interval" }
+			}
+		}
+	} ;
+	remove Interval to Interval {
+		remove ref max to max bounds (1,1) to (1,1)
+		remove ref min to min bounds (1,1) to (1,1)
+	} ;
+	remove DurationInterval to DurationInterval
+	annotation {
+		remove duplicates to duplicates
+		annotation {
+			remove max to max detailsEntry {
+				remove eType to eType oldValue "uml::Duration" to "uml::Duration" }
+			} ;
+			remove min to min detailsEntry {
+				remove eType to eType oldValue "uml::Duration" to "uml::Duration" }
+			}
+		}
+	} ;
+	remove DurationObservation to DurationObservation {
+		remove ref event to event bounds (1,2) to (1,2)
+		remove att firstEvent to firstEvent bounds (0,2) to (0,2)
+	} ;
+	remove LiteralBoolean to LiteralBoolean {
+		remove att value to value bounds (1,1) to (1,1)
+	}
+	annotation {
+		remove duplicates to duplicates
+	} ;
+	remove LiteralSpecification to LiteralSpecification ;
+	remove LiteralInteger to LiteralInteger {
+		remove att value to value bounds (1,1) to (1,1)
+	}
+	annotation {
+		remove duplicates to duplicates
+	} ;
+	remove LiteralNull to LiteralNull
+	annotation {
+		remove duplicates to duplicates
+	} ;
+	remove LiteralReal to LiteralReal {
+		remove att value to value bounds (1,1) to (1,1)
+	}
+	annotation {
+		remove duplicates to duplicates
+	} ;
+	remove LiteralString to LiteralString {
+		remove att value to value bounds (0,1) to (0,1)
+	}
+	annotation {
+		remove duplicates to duplicates
+	} ;
+	remove LiteralUnlimitedNatural to LiteralUnlimitedNatural {
+		remove att value to value bounds (1,1) to (1,1)
+	}
+	annotation {
+		remove duplicates to duplicates
+	} ;
+	remove TimeConstraint to TimeConstraint {
+		remove att firstEvent to firstEvent bounds (0,1) to (0,1)
+	}
+	annotation {
+		remove duplicates to duplicates
+		annotation {
+			remove specification to specification detailsEntry {
+				remove eType to eType oldValue "uml::TimeInterval" to "uml::TimeInterval" }
+			}
+		}
+	} ;
+	remove TimeInterval to TimeInterval
+	annotation {
+		remove duplicates to duplicates
+		annotation {
+			remove max to max detailsEntry {
+				remove eType to eType oldValue "uml::TimeExpression" to "uml::TimeExpression" }
+			} ;
+			remove min to min detailsEntry {
+				remove eType to eType oldValue "uml::TimeExpression" to "uml::TimeExpression" }
+			}
+		}
+	} ;
+	remove TimeObservation to TimeObservation {
+		remove ref event to event bounds (1,1) to (1,1)
+		remove att firstEvent to firstEvent bounds (1,1) to (1,1)
+	}
+}
+
+enumModification {
+	remove VisibilityKind to VisibilityKind {
+		remove public to public oldLiteral public to public oldValue 0 to 0 ;
+		remove private to private oldLiteral private to private oldValue 1 to 1 ;
+		remove protected to protected oldLiteral protected to protected oldValue 2 to 2 ;
+		remove ^package to ^package oldLiteral ^package to ^package oldValue 3 to 3
+	} ;
+	remove ParameterDirectionKind to ParameterDirectionKind {
+		remove in to in oldLiteral in to in oldValue 0 to 0 ;
+		remove inout to inout oldLiteral inout to inout oldValue 1 to 1 ;
+		remove out to out oldLiteral out to out oldValue 2 to 2 ;
+		remove return to return oldLiteral return to return oldValue 3 to 3
+	} ;
+	remove ParameterEffectKind to ParameterEffectKind {
+		remove create to create oldLiteral create to create oldValue 0 to 0 ;
+		remove read to read oldLiteral read to read oldValue 1 to 1 ;
+		remove update to update oldLiteral update to update oldValue 2 to 2 ;
+		remove delete to delete oldLiteral delete to delete oldValue 3 to 3
+	} ;
+	remove CallConcurrencyKind to CallConcurrencyKind {
+		remove sequential to sequential oldLiteral sequential to sequential oldValue 0 to 0 ;
+		remove guarded to guarded oldLiteral guarded to guarded oldValue 1 to 1 ;
+		remove concurrent to concurrent oldLiteral concurrent to concurrent oldValue 2 to 2
+	} ;
+	remove TransitionKind to TransitionKind {
+		remove internal to internal oldLiteral internal to internal oldValue 0 to 0 ;
+		remove local to local oldLiteral local to local oldValue 1 to 1 ;
+		remove external to external oldLiteral external to external oldValue 2 to 2
+	} ;
+	remove PseudostateKind to PseudostateKind {
+		remove initial to initial oldLiteral initial to initial oldValue 0 to 0 ;
+		remove deepHistory to deepHistory oldLiteral deepHistory to deepHistory oldValue 1 to 1 ;
+		remove shallowHistory to shallowHistory oldLiteral shallowHistory to shallowHistory oldValue 2 to 2 ;
+		remove join to join oldLiteral join to join oldValue 3 to 3 ;
+		remove fork to fork oldLiteral fork to fork oldValue 4 to 4 ;
+		remove junction to junction oldLiteral junction to junction oldValue 5 to 5 ;
+		remove choice to choice oldLiteral choice to choice oldValue 6 to 6 ;
+		remove entryPoint to entryPoint oldLiteral entryPoint to entryPoint oldValue 7 to 7 ;
+		remove exitPoint to exitPoint oldLiteral exitPoint to exitPoint oldValue 8 to 8 ;
+		remove terminate to terminate oldLiteral terminate to terminate oldValue 9 to 9
+	} ;
+	remove AggregationKind to AggregationKind {
+		remove none to none oldLiteral none to none oldValue 0 to 0 ;
+		remove shared to shared oldLiteral shared to shared oldValue 1 to 1 ;
+		remove composite to composite oldLiteral composite to composite oldValue 2 to 2
+	} ;
+	remove ConnectorKind to ConnectorKind {
+		remove assembly to assembly oldLiteral assembly to assembly oldValue 0 to 0 ;
+		remove delegation to delegation oldLiteral delegation to delegation oldValue 1 to 1
+	} ;
+	remove ObjectNodeOrderingKind to ObjectNodeOrderingKind {
+		remove unordered to unordered oldLiteral unordered to unordered oldValue 0 to 0 ;
+		remove ordered to ordered oldLiteral ordered to ordered oldValue 1 to 1 ;
+		remove LIFO to LIFO oldLiteral LIFO to LIFO oldValue 2 to 2 ;
+		remove FIFO to FIFO oldLiteral FIFO to FIFO oldValue 3 to 3
+	} ;
+	remove ExpansionKind to ExpansionKind {
+		remove parallel to parallel oldLiteral parallel to parallel oldValue 0 to 0 ;
+		remove iterative to iterative oldLiteral iterative to iterative oldValue 1 to 1 ;
+		remove stream to stream oldLiteral stream to stream oldValue 2 to 2
+	} ;
+	remove MessageKind to MessageKind {
+		remove complete to complete oldLiteral complete to complete oldValue 0 to 0 ;
+		remove lost to lost oldLiteral lost to lost oldValue 1 to 1 ;
+		remove found to found oldLiteral found to found oldValue 2 to 2 ;
+		remove unknown to unknown oldLiteral unknown to unknown oldValue 3 to 3
+	} ;
+	remove MessageSort to MessageSort {
+		remove synchCall to synchCall oldLiteral synchCall to synchCall oldValue 0 to 0 ;
+		remove asynchCall to asynchCall oldLiteral asynchCall to asynchCall oldValue 1 to 1 ;
+		remove asynchSignal to asynchSignal oldLiteral asynchSignal to asynchSignal oldValue 2 to 2 ;
+		remove createMessage to createMessage oldLiteral createMessage to createMessage oldValue 3 to 3 ;
+		remove deleteMessage to deleteMessage oldLiteral deleteMessage to deleteMessage oldValue 4 to 4 ;
+		remove reply to reply oldLiteral reply to reply oldValue 5 to 5
+	} ;
+	remove InteractionOperatorKind to InteractionOperatorKind {
+		remove seq to seq oldLiteral seq to seq oldValue 0 to 0 ;
+		remove alt to alt oldLiteral alt to alt oldValue 1 to 1 ;
+		remove opt to opt oldLiteral opt to opt oldValue 2 to 2 ;
+		remove break to break oldLiteral break to break oldValue 3 to 3 ;
+		remove par to par oldLiteral par to par oldValue 4 to 4 ;
+		remove strict to strict oldLiteral strict to strict oldValue 5 to 5 ;
+		remove loop to loop oldLiteral loop to loop oldValue 6 to 6 ;
+		remove critical to critical oldLiteral critical to critical oldValue 7 to 7 ;
+		remove neg to neg oldLiteral neg to neg oldValue 8 to 8 ;
+		remove assert to assert oldLiteral assert to assert oldValue 9 to 9 ;
+		remove ignore to ignore oldLiteral ignore to ignore oldValue 10 to 10 ;
+		remove consider to consider oldLiteral consider to consider oldValue 11 to 11
+	}
+}
+annotation {
+	remove "http://www.eclipse.org/uml2/2.0.0/UML" to "http://www.eclipse.org/uml2/2.0.0/UML" detailsEntry {
+		remove originalName to originalName oldValue UML to UML }
+	}
+}

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_XTsTMEsjEeasFq3FZhGirQ" name="RootElement">
+  <packagedElement xmi:type="uml:StateMachine" xmi:id="_XVcmsEsjEeasFq3FZhGirQ" name="CoffeeMaker">
+    <region xmi:id="_XWsj4EsjEeasFq3FZhGirQ" name="RegionBrew">
+      <transition xmi:id="_tvHXYEsjEeasFq3FZhGirQ" source="_jRyc4EsjEeasFq3FZhGirQ" target="_YS2DEEsjEeasFq3FZhGirQ"/>
+      <transition xmi:id="_wBEy8EsjEeasFq3FZhGirQ" source="_cFiRkEsjEeasFq3FZhGirQ" target="_YS2DEEsjEeasFq3FZhGirQ">
+        <trigger xmi:id="_0oEzQEsjEeasFq3FZhGirQ" name="timeOut" event="_zkoZQEsjEeasFq3FZhGirQ"/>
+      </transition>
+      <transition xmi:id="_-IpKkEsjEeasFq3FZhGirQ" source="_YS2DEEsjEeasFq3FZhGirQ" target="_gHYWYEsjEeasFq3FZhGirQ">
+        <effect xmi:type="uml:OpaqueBehavior" xmi:id="_ESh58EskEeasFq3FZhGirQ" name="WarmerON"/>
+        <trigger xmi:id="_CKDxkEskEeasFq3FZhGirQ" name="start" event="_Bi_KgEskEeasFq3FZhGirQ"/>
+      </transition>
+      <transition xmi:id="_KuU4sEskEeasFq3FZhGirQ" source="_gHYWYEsjEeasFq3FZhGirQ" target="_cFiRkEsjEeasFq3FZhGirQ">
+        <trigger xmi:id="_QTmfIEskEeasFq3FZhGirQ" name="empty" event="_QCh9QEskEeasFq3FZhGirQ"/>
+      </transition>
+      <transition xmi:id="_Txlo8EskEeasFq3FZhGirQ" source="_heUUIEsjEeasFq3FZhGirQ" target="_cFiRkEsjEeasFq3FZhGirQ">
+        <trigger xmi:id="_bG5poEskEeasFq3FZhGirQ" name="empty" event="_ae9f4EskEeasFq3FZhGirQ"/>
+      </transition>
+      <transition xmi:id="_jTWtsEskEeasFq3FZhGirQ" source="_gHYWYEsjEeasFq3FZhGirQ" target="_heUUIEsjEeasFq3FZhGirQ">
+        <trigger xmi:id="_p6nVkEskEeasFq3FZhGirQ" name="temperatureReached" event="_n45VcEskEeasFq3FZhGirQ"/>
+      </transition>
+      <subvertex xmi:type="uml:State" xmi:id="_YS2DEEsjEeasFq3FZhGirQ" name="Idle"/>
+      <subvertex xmi:type="uml:State" xmi:id="_cFiRkEsjEeasFq3FZhGirQ" name="Warming">
+        <entry xmi:type="uml:OpaqueBehavior" xmi:id="_4gBVMEsjEeasFq3FZhGirQ" name="ClockSTART"/>
+        <exit xmi:type="uml:OpaqueBehavior" xmi:id="_7HP2IEsjEeasFq3FZhGirQ" name="WarmerOFF"/>
+      </subvertex>
+      <subvertex xmi:type="uml:Pseudostate" xmi:id="_jRyc4EsjEeasFq3FZhGirQ"/>
+      <subvertex xmi:type="uml:State" xmi:id="_gHYWYEsjEeasFq3FZhGirQ" name="Brewing_Heating"/>
+      <subvertex xmi:type="uml:State" xmi:id="_heUUIEsjEeasFq3FZhGirQ" name="Brewing_Pumping"/>
+    </region>
+    <region xmi:id="_e5QWYEsjEeasFq3FZhGirQ" name="RegionLight">
+      <transition xmi:id="_zaZCsEskEeasFq3FZhGirQ" source="_w5l54EskEeasFq3FZhGirQ" target="_xf5E4EskEeasFq3FZhGirQ"/>
+      <transition xmi:id="_0USfIEskEeasFq3FZhGirQ" source="_x16_QEskEeasFq3FZhGirQ" target="_xf5E4EskEeasFq3FZhGirQ">
+        <trigger xmi:id="_3XiNsEskEeasFq3FZhGirQ" name="off" event="_3NFRMEskEeasFq3FZhGirQ"/>
+      </transition>
+      <transition xmi:id="_4CtRoEskEeasFq3FZhGirQ" source="_xf5E4EskEeasFq3FZhGirQ" target="_x16_QEskEeasFq3FZhGirQ">
+        <trigger xmi:id="_8hct0EskEeasFq3FZhGirQ" name="on" event="_8TyFQEskEeasFq3FZhGirQ"/>
+      </transition>
+      <transition xmi:id="_Ct63IEslEeasFq3FZhGirQ" source="_x16_QEskEeasFq3FZhGirQ" target="_ydOP0EskEeasFq3FZhGirQ"/>
+      <subvertex xmi:type="uml:Pseudostate" xmi:id="_w5l54EskEeasFq3FZhGirQ"/>
+      <subvertex xmi:type="uml:State" xmi:id="_xf5E4EskEeasFq3FZhGirQ" name="LightOff"/>
+      <subvertex xmi:type="uml:State" xmi:id="_x16_QEskEeasFq3FZhGirQ" name="LightOn">
+        <entry xmi:type="uml:OpaqueBehavior" xmi:id="_FEBy4EslEeasFq3FZhGirQ" name="Off"/>
+        <exit xmi:type="uml:OpaqueBehavior" xmi:id="_GzV0YEslEeasFq3FZhGirQ" name="On"/>
+      </subvertex>
+      <subvertex xmi:type="uml:FinalState" xmi:id="_ydOP0EskEeasFq3FZhGirQ"/>
+    </region>
+  </packagedElement>
+  <packagedElement xmi:type="uml:CallEvent" xmi:id="_zkoZQEsjEeasFq3FZhGirQ" name="timeOut"/>
+  <packagedElement xmi:type="uml:CallEvent" xmi:id="_Bi_KgEskEeasFq3FZhGirQ" name="start"/>
+  <packagedElement xmi:type="uml:CallEvent" xmi:id="_QCh9QEskEeasFq3FZhGirQ" name="empty"/>
+  <packagedElement xmi:type="uml:CallEvent" xmi:id="_ae9f4EskEeasFq3FZhGirQ" name="empty"/>
+  <packagedElement xmi:type="uml:CallEvent" xmi:id="_n45VcEskEeasFq3FZhGirQ" name="temperatureReached"/>
+  <packagedElement xmi:type="uml:CallEvent" xmi:id="_3NFRMEskEeasFq3FZhGirQ" name="off"/>
+  <packagedElement xmi:type="uml:CallEvent" xmi:id="_8TyFQEskEeasFq3FZhGirQ" name="on"/>
+</uml:Model>
